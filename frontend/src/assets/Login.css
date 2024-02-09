@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500&display=swap');
+*{
+    font-family: "Plus Jakarta Sans";
+}
+#pantallaLogin{
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient(to bottom right, #3F023C, #0C0116);
+    overflow: hidden;
+    position: relative; /* Agrega esto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#defaultCanvas0{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10; /* Mantén el canvas detrás del formulario */
+}
+
+.contenedorForm{
+    width: 35%;
+    position: relative; /* Cambia a absolute */
+    z-index: 20; /* Establece un z-index más alto que el del canvas */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contenedorInputs{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contenedorInputs > input{
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    height: 2.5rem;
+    box-sizing: border-box;
+    padding: 10px;
+    color: #34004D;
+    font-size: large;
+}
+.contenedorInputs > input::placeholder{
+    color: #34004D;
+    opacity: 0.55;
+}
+.contenedorInputs > input:focus{
+    outline: none;
+}
+#inputNombre{
+    background-color: white;
+}
+#inputApellido1{
+    background-color: #FF5353;
+}
+#inputApellido2{
+    background-color: #796DFF;
+}
+#inputCorreo{
+    background-color: #FFAF52;
+}
+#inputNick{
+    background-color: #96FF8D;
+}
+#inputPwd{
+    background-color: #FFDB5B;
+}
+.opcionesForm{
+    width: 100%;
+    background-color: pink;
+    position: relative;
+}
+.botonEnvio{
+    color: white;
+    border-radius: 10px;
+    border: none;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FCAF58;
+    position: absolute;
+    top: 50%;
+    right: 0;
+}
+.mensajeOpcion{
+    font-size: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+}
