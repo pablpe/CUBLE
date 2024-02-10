@@ -1,10 +1,14 @@
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import "../assets/Login.css"
 import sketch from "../assets/cubosRotando"
 import p5 from "p5"
 
+
+
+
 export default function Login() {
+    const [enLogin, setEnlogin] = useState(false)
     useEffect(()=>{
         let sketchInstance;
         sketchInstance = new p5(sketch, 'sketch-container');
@@ -16,14 +20,14 @@ export default function Login() {
         <div id="pantallaLogin" >
             <div id="sketch-container"></div>
             <Logo/>
-            <FormRegistro/>
+            {enLogin ? <FormLogin setEnlogin={setEnlogin}/> : <FormRegistro setEnlogin={setEnlogin}/>}
         </div>
     )
 }
 function Logo() {
     
 }
-function FormRegistro() {
+function FormRegistro({setEnlogin}) {
     return(
         <div className="contenedorForm">
             <div className="contenedorInputs">
@@ -35,8 +39,22 @@ function FormRegistro() {
                 <input placeholder="Contraseña" type="password" id="inputPwd"/>
             </div>
             <div className="opcionesForm">
-                <p className="mensajeOpcion">¿Ya tienes cuenta? <span style={{color : "blue"}}>Inicia sesión</span></p>
+                <p className="mensajeOpcion">¿Ya tienes cuenta? <span style={{color : "blue",cursor : "pointer"}} onClick={()=>{setEnlogin(true)}}>Inicia sesión</span></p>
                 <button className="botonEnvio">Registrarme</button>
+            </div>
+        </div>
+    )
+}
+function FormLogin({setEnlogin}) {
+    return(
+        <div className="contenedorForm">
+            <div className="contenedorInputs">
+                <input placeholder="Correo electrónico" type="text" id="inputCorreo"/>
+                <input placeholder="Contraseña" type="password" id="inputPwd"/>
+            </div>
+            <div className="opcionesForm">
+                <p className="mensajeOpcion">¿No tienes cuenta? <span style={{color : "blue",cursor : "pointer"}} onClick={()=>{setEnlogin(false)}}>Registrate</span></p>
+                <button className="botonEnvio">Iniciar sesion</button>
             </div>
         </div>
     )

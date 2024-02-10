@@ -17,13 +17,13 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10; /* Mantén el canvas detrás del formulario */
+    z-index: 10;
 }
 
 .contenedorForm{
     width: 35%;
-    position: relative; /* Cambia a absolute */
-    z-index: 20; /* Establece un z-index más alto que el del canvas */
+    position: relative;
+    z-index: 20; 
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -49,26 +49,50 @@
     color: #34004D;
     opacity: 0.55;
 }
-.contenedorInputs > input:focus{
+.contenedorInputs > input:hover{
     outline: none;
 }
 #inputNombre{
     background-color: white;
 }
+#inputNombre:hover{
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
 #inputApellido1{
     background-color: #FF5353;
+}
+#inputApellido1:hover{
+    outline: 2px solid #FF5353;
+    outline-offset: 2px;
 }
 #inputApellido2{
     background-color: #796DFF;
 }
+#inputApellido2:hover{
+    outline: 2px solid #796DFF;
+    outline-offset: 2px;
+}
 #inputCorreo{
     background-color: #FFAF52;
+}
+#inputCorreo:hover{
+    outline: 2px solid #FFAF52;
+    outline-offset: 2px;
 }
 #inputNick{
     background-color: #96FF8D;
 }
+#inputNick:hover{
+    outline: 2px solid #96FF8D;
+    outline-offset: 2px;
+}
 #inputPwd{
     background-color: #FFDB5B;
+}
+#inputPwd:hover{
+    outline: 2px solid #FFDB5B;
+    outline-offset: 2px;
 }
 .opcionesForm{
     width: 100%;
@@ -87,11 +111,17 @@
     position: absolute;
     top: 50%;
     right: 0;
+    transition: scale 0.2s;
+    &:hover{
+        scale: 1.1;
+        cursor: pointer;
+    }
 }
 .mensajeOpcion{
-    font-size: 10px;
+    font-size: 15px;
     position: absolute;
     top: 0;
     left: 0;
     color: white;
+    transform: translateY(-50%);
 }
