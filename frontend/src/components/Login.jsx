@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 
 import { useEffect, useState } from "react"
 import "../assets/Login.css"
 import sketch from "../assets/cubosRotando"
 import p5 from "p5"
-
+import { Link } from "react-router-dom"
 
 
 
@@ -12,6 +13,7 @@ export default function Login() {
     useEffect(()=>{
         let sketchInstance;
         sketchInstance = new p5(sketch, 'sketch-container');
+        document.getElementById("cubo").querySelector("canvas").style.display = "none"
         return () => {
           sketchInstance.remove();
         };    
@@ -40,7 +42,7 @@ function FormRegistro({setEnlogin}) {
             </div>
             <div className="opcionesForm">
                 <p className="mensajeOpcion">¿Ya tienes cuenta? <span style={{color : "blue",cursor : "pointer"}} onClick={()=>{setEnlogin(true)}}>Inicia sesión</span></p>
-                <button className="botonEnvio">Registrarme</button>
+                <Link to={"/principal"} className="botonEnvio" onClick={()=>{}}>Registrarme</Link>
             </div>
         </div>
     )

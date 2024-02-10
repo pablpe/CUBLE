@@ -7,13 +7,13 @@
     height: 100vh;
     background-image: linear-gradient(to bottom right, #3F023C, #0C0116);
     overflow: hidden;
-    position: relative; /* Agrega esto */
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#defaultCanvas0{
+#sketch-container canvas{
     position: fixed;
     top: 0;
     left: 0;
@@ -116,6 +116,7 @@
         scale: 1.1;
         cursor: pointer;
     }
+    text-decoration: none;
 }
 .mensajeOpcion{
     font-size: 15px;

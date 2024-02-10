@@ -8,11 +8,7 @@ const sketch = (p) => {
       // Llama a resizeCanvas para ajustar el tamaño del canvas dinámicamente
       p.resizeCanvas(width, height);
     });
-    let cambio = 50
-    function cambioAumento(n) {
-      cambio = n
-    }
-    window.cambioAumento = cambioAumento
+    
     class Cubito {
       constructor(x, y, z, angleT, angleR, color) {
         this.x = x;
