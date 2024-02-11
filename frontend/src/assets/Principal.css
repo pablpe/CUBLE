@@ -119,6 +119,7 @@ nav{
     height: 75.7%;
     background-color: #E6B0C8;
     border-radius: 50px;
+    box-shadow: #774E73 0 0 50px 5px ;
 }
 #imgRecords{
     border-radius: 50%;
@@ -130,6 +131,7 @@ nav{
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: 1;
+    box-shadow: #774E73 0 0 30px 5px ;
 }
 #nick{
     position: absolute;
