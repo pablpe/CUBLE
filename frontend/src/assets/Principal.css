@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500&display=swap');
 *{
     font-family: "Plus Jakarta Sans";
+    user-select: none;
 }
 #pantalla-principal{
     width: 100vw;
@@ -91,7 +92,7 @@ nav{
     width: 300px;
     height: 300px;
     background-color: gray;
-    top: 25%;
+    top: 34%;
     border-radius: 50%;
     transition: border-radius 0.5s;
 }
@@ -100,4 +101,75 @@ nav{
 }
 #defaultCanvas0{
     background-color: rgba(red, green, blue, 0) !important;
+}
+
+
+.fondo-popup{
+    z-index: 30;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+.contenido-mis-records{
+    position: absolute;
+    left: 18.8%;
+    top: 22.4%;
+    width: 62.2%;
+    height: 75.7%;
+    background-color: #E6B0C8;
+    border-radius: 50px;
+}
+#imgRecords{
+    border-radius: 50%;
+    padding: 1rem;
+    background-color: #E6B0C8;
+    width: 17rem;
+    height: 17rem;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+}
+#nick{
+    position: absolute;
+    left: 50%;
+    top: 22%;
+    transform: translate(-50%,-50%);
+    font-weight: 400;
+    font-size: 50px;
+}
+#statsRecords{
+    position: absolute;
+    width: 100%;
+    height: 60%;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+.stat .contTituloRango{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    font-size: larger;
+}
+.titulo{
+    margin: 0;
+    font-weight: 400;
+    font-size: 40px;
+}
+.stat{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    color: #774E73;
+}
+.valor{
+    font-size: 35px;
+    margin: 0;
+    color: black;
 }

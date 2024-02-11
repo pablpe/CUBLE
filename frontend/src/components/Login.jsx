@@ -13,7 +13,8 @@ export default function Login() {
     useEffect(()=>{
         let sketchInstance;
         sketchInstance = new p5(sketch, 'sketch-container');
-        document.getElementById("cubo").querySelector("canvas").style.display = "none"
+        let cubo = document.getElementById("cubo")//.querySelector("canvas")
+        if(cubo) cubo.style.display = "none"
         return () => {
           sketchInstance.remove();
         };    
