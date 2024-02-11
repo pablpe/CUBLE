@@ -33,14 +33,14 @@ function Logo() {
 function FormRegistro({setEnlogin}) {
     return(
         <div className="contenedorForm">
-            <div className="contenedorInputs">
+            <form className="contenedorInputs">
                 <input placeholder="Nombre" type="text" id="inputNombre"/>
                 <input placeholder="Primer apellido" type="text" id="inputApellido1"/>
                 <input placeholder="Segundo apellido" type="text" id="inputApellido2"/>
                 <input placeholder="Correo electrónico" type="text" id="inputCorreo"/>
                 <input placeholder="Nick" type="text" id="inputNick"/>
                 <input placeholder="Contraseña" type="password" id="inputPwd"/>
-            </div>
+            </form>
             <div className="opcionesForm">
                 <p className="mensajeOpcion">¿Ya tienes cuenta? <span style={{color : "blue",cursor : "pointer"}} onClick={()=>{setEnlogin(true)}}>Inicia sesión</span></p>
                 <Link to={"/principal"} className="botonEnvio" onClick={()=>{}}>Registrarme</Link>
@@ -51,10 +51,10 @@ function FormRegistro({setEnlogin}) {
 function FormLogin({setEnlogin}) {
     return(
         <div className="contenedorForm">
-            <div className="contenedorInputs">
-                <input placeholder="Correo electrónico" type="text" id="inputCorreo"/>
+            <form className="contenedorInputs">
+            <input placeholder="Nick" type="text" id="inputNick"/>
                 <input placeholder="Contraseña" type="password" id="inputPwd"/>
-            </div>
+            </form>
             <div className="opcionesForm">
                 <p className="mensajeOpcion">¿No tienes cuenta? <span style={{color : "blue",cursor : "pointer"}} onClick={()=>{setEnlogin(false)}}>Registrate</span></p>
                 <button className="botonEnvio">Iniciar sesion</button>

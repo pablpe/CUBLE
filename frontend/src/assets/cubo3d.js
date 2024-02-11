@@ -55,7 +55,7 @@ class Cubito {
         result.z = vector.z;
         break;
       default:
-        console.error("Eje no válido. Por favor, usa 'x', 'y' o 'z'.");
+        //console.error("Eje no válido. Por favor, usa 'x', 'y' o 'z'.");
         return null;
     }
     if(result.x == -0) result.x = 0
@@ -399,7 +399,7 @@ function isSolved() {
     }
   }
   if (allMatch) {
-    console.log("resuelto")
+    //console.log("resuelto")
     window.showTime()
   }
 }
