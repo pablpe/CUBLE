@@ -76,6 +76,18 @@ app.post("/usarioModApellido2",(req,res)=>{
         return res.send("Usuario modificado")
     })
 })
+app.get("/getUsuarioNick", (req, res) => {
+    let sql = "SELECT * FROM usuario WHERE nick LIKE CONCAT('%', ?, '%')";
+    const { nick } = req.query;
+    db.query(sql, [nick], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json(data);
+    });
+});
+
 app.get("/getAmigosId",(req,res)=>{
     let sql = "SELECT id_usuario,imagen,nick FROM `usuario` WHERE (`id_usuario` in (SELECT `id_usuario1` FROM `amigos` WHERE `id_usuario2` = ?)) or (`id_usuario` in (SELECT `id_usuario2` FROM `amigos` WHERE `id_usuario1` = ?));"
     const { id } = req.query

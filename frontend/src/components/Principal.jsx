@@ -2,13 +2,19 @@
 
 import { useEffect, useState } from "react"
 import "../assets/Principal.css"
-
+import Amigos from "./Amigos"
+import Perfil from "./Perfil"
+import MisRecords from "./MisRecords"
+import Rankings from "./Rankings"
+import { Link } from "react-router-dom"
 
 function Principal() {
     const [ultimoHover, setUltimoHover] = useState("")
     const [popUpActivo,setPopUpActivo] = useState("")
     useEffect(()=>{
         document.getElementById("cubo").style.display = "block"
+        document.getElementById("cubo").style.left = "50%"
+        document.getElementById("cubo").style.top = "50%"
     },[])
     return (
         <div id="pantalla-principal">
@@ -20,6 +26,7 @@ function Principal() {
             {popUpActivo === "misRecords" ? <MisRecords setPopUpActivo={setPopUpActivo}/> : ""}
             {popUpActivo === "perfil" ? <Perfil setPopUpActivo={setPopUpActivo}/> : ""}
             {popUpActivo === "amigos" ? <Amigos setPopUpActivo={setPopUpActivo}/> :  ""}
+            {popUpActivo === "rankings" ? <Rankings setPopUpActivo={setPopUpActivo}/> :  ""}
         </div>
     )
 }
@@ -45,7 +52,7 @@ function Logo() {
 }
 function BotonPractica({ultimoHover, setUltimoHover}) {
     return(
-        <button id="boton-practica" className="boton-modo" onMouseEnter={()=>{
+        <Link id="boton-practica" className="boton-modo" onMouseEnter={()=>{
             let burbuja = document.getElementById("burbuja")
             burbuja.classList.toggle("activo");
             if (ultimoHover === "cronometro") burbuja.style.transform = "rotateZ(-100deg)"
@@ -57,13 +64,13 @@ function BotonPractica({ultimoHover, setUltimoHover}) {
                 document.getElementById("burbuja").classList.toggle("activo");
                 }}>
             Práctica
-        </button>
+        </Link>
     )
 }
 
 function BotonCronometro({ultimoHover, setUltimoHover}) {
     return(
-        <button id="boton-cronometro" className="boton-modo" onMouseEnter={()=>{
+        <Link to={"/cronometro"} id="boton-cronometro" className="boton-modo" onMouseEnter={()=>{
             let burbuja = document.getElementById("burbuja")
             burbuja.classList.toggle("activo")
             if (ultimoHover === "1vs1") burbuja.style.transform = "rotateZ(15deg)"
@@ -73,12 +80,12 @@ function BotonCronometro({ultimoHover, setUltimoHover}) {
             }} 
             onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}>
             Cronómetro
-        </button>
+        </Link>
     )
 }
 function Boton1vs1({ultimoHover, setUltimoHover}) {
     return(
-        <button id="boton-1vs1" className="boton-modo" onMouseEnter={()=>{
+        <Link id="boton-1vs1" className="boton-modo" onMouseEnter={()=>{
             let burbuja = document.getElementById("burbuja")
             burbuja.classList.toggle("activo")
             if (ultimoHover === "cronometro") burbuja.style.transform = "rotateZ(133deg)"
@@ -88,166 +95,9 @@ function Boton1vs1({ultimoHover, setUltimoHover}) {
             }} 
             onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}>
             1 <span style={{fontSize : "15px"}}>vs</span> 1
-        </button>
+        </Link>
     )
 }
-function MisRecords({setPopUpActivo}) {
-    return(
-        <div className="fondo-popup" onClick={()=>{setPopUpActivo("");}}>
-            <div className="contenido-mis-records" onClick={(e)=>{e.stopPropagation()}}>
-                <img id="imgRecords" src="https://64.media.tumblr.com/abc53e11a41ec4d895cb9f41712b595e/3cf5d0bf006b077a-41/s540x810/dedf82d88c9b79291f063feaded278673a3c8d25.jpg" alt="" />
-                <h1 id="nick">Krodwon</h1>
-                <div id="statsRecords">
-                    <div className="stat">
-                        <div className="contTituloRango">
-                            <h2 className="titulo">Mejor tiempo</h2>
-                            <span className="rango">#2</span>
-                        </div>
-                        <p className="valor">
-                            11.2s
-                        </p>
-                    </div>
-                    <div className="stat">
-                        <div className="contTituloRango">
-                            <h2 className="titulo">Mejor media de 5</h2>
-                            <span className="rango">#2</span>
-                        </div>
-                        <p className="valor">
-                            14.7s
-                        </p>
-                    </div>
-                    <div className="stat">
-                        <div className="contTituloRango">
-                            <h2 className="titulo">Victorias</h2>
-                            <span className="rango">#5</span>
-                        </div>
-                        <p className="valor">
-                            15
-                        </p>
-                    </div>
-                    <div className="stat">
-                        <div className="contTituloRango">
-                            <h2 className="titulo">Derrotas</h2>
-                            <span className="rango">#2</span>
-                        </div>
-                        <p className="valor">
-                            4
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-function Perfil({setPopUpActivo}) {
-    
-    return(
-        <div className="fondo-popup" onClick={()=>{setPopUpActivo("");}}>
-            <div className="contenido-perfil" onClick={(e)=>{e.stopPropagation()}}>
-                <div id="contenedorIMGperfil">
-                <img id="imgPerfil" src="https://64.media.tumblr.com/abc53e11a41ec4d895cb9f41712b595e/3cf5d0bf006b077a-41/s540x810/dedf82d88c9b79291f063feaded278673a3c8d25.jpg" alt="" />
-                <button id="boton-editar-imagen"><i className="fa-solid fa-pen" style={{color : "white"}}></i></button>
-                </div>
-                <div id="contenedorInfoPerfil">
-                    <div className="elementoPerfil">
-                        <div className="infoElementoPerfil">
-                            <p className="nombreElementoPerfil">Nombre:</p>
-                            <p className="valorElementoPerfil">Pablo</p>
-                        </div>
-                        <button className="botonEditarPerfil">Editar</button>
-                    </div>
-                    <div className="elementoPerfil">
-                        <div className="infoElementoPerfil">
-                            <p className="nombreElementoPerfil">Apellidos:</p>
-                            <p className="valorElementoPerfil">Pérez Colls</p>
-                        </div>
-                        <button className="botonEditarPerfil">Editar</button>
-                    </div>
-                    <div className="elementoPerfil">
-                        <div className="infoElementoPerfil">
-                            <p className="nombreElementoPerfil">Email:</p>
-                            <p className="valorElementoPerfil">pablo.perez.colls@gmail.com</p>
-                        </div>
-                    </div>
-                    <div className="elementoPerfil">
-                        <div className="infoElementoPerfil">
-                            <p className="nombreElementoPerfil">Nick:</p>
-                            <p className="valorElementoPerfil">Krodwon</p>
-                        </div>
-                        <button className="botonEditarPerfil">Editar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-function Amigos({setPopUpActivo}) {
-    
-    return(
-        <div className="fondo-popup amigos" onClick={()=>{setPopUpActivo("");}}>
-                <div id="contenedorAmigos" onClick={(e)=>{e.stopPropagation()}}>
-                    <nav>
-                    <i className="fa-solid fa-users"></i>
-                    <h1 className="h1Amigos">Amigos</h1>
-                    <i className="fa-solid fa-plus"></i>
-                    </nav>
-                    <div id="listado-amigos">
-                        <div className="info-amigo">
-                            <img src="https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg" alt="" />
-                            <h3 style={{fontWeight : "200"}}>Josito</h3>
-                            <button className="botonEditarPerfil">Perfil</button>
-                        </div>
-                        <div className="info-amigo">
-                            <img src="https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg" alt="" />
-                            <h3 style={{fontWeight : "200"}}>Josito</h3>
-                            <button className="botonEditarPerfil">Perfil</button>
-                        </div>
-                    </div>
-                </div>
 
-                <div className="contenido-mis-records" onClick={(e)=>{e.stopPropagation()}}>
-                <img id="imgRecords" src="https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg" alt="" />
-                <h1 id="nick">Josito</h1>
-                <div id="statsRecords">
-                    <div className="stat">
-                        <div className="contTituloRango">
-                            <h2 className="titulo">Mejor tiempo</h2>
-                            <span className="rango">#2</span>
-                        </div>
-                        <p className="valor">
-                            11.2s
-                        </p>
-                    </div>
-                    <div className="stat">
-                        <div className="contTituloRango">
-                            <h2 className="titulo">Mejor media de 5</h2>
-                            <span className="rango">#2</span>
-                        </div>
-                        <p className="valor">
-                            14.7s
-                        </p>
-                    </div>
-                    <div className="stat">
-                        <div className="contTituloRango">
-                            <h2 className="titulo">Victorias</h2>
-                            <span className="rango">#5</span>
-                        </div>
-                        <p className="valor">
-                            15
-                        </p>
-                    </div>
-                    <div className="stat">
-                        <div className="contTituloRango">
-                            <h2 className="titulo">Derrotas</h2>
-                            <span className="rango">#2</span>
-                        </div>
-                        <p className="valor">
-                            4
-                        </p>
-                    </div>
-                </div>
-                </div>
-        </div>
-    )
-}
+
 export default Principal

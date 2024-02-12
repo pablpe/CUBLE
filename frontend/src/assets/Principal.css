@@ -66,6 +66,10 @@
     cursor: pointer;
     transform: translateX(-50%);
     width: 18%;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #boton-practica{
     background-color: rgba(255, 168, 0, 0.1);
@@ -104,7 +108,7 @@
     background-color: rgba(red, green, blue, 0) !important;
 }
 
-
+/* records */
 .fondo-popup{
     z-index: 30;
     width: 100vw;
@@ -175,15 +179,15 @@
     color: #774E73;
 }
 .valor{
-    font-size: 110%;
+    font-size: 150%;
     margin: 0;
     color: black;
 }
 
-
+/* perfil */
 .contenido-perfil{
     position: relative;
-    width: 60%;
+    width: 55%;
     height: 70%;
     background-color: #E6B0C8;
     border-radius: 50px;
@@ -280,11 +284,27 @@
     justify-content: space-evenly;
     align-items: center;
 }
-#contenedorAmigos nav i{
+.icono-amigos{
     color: #FCAF58;
     scale: 2;
     cursor: pointer;
 }
+/* .icono-amigos::after{
+    content: "";
+    width: 0px;
+    height: 3px;
+    background-color: #FCAF58;
+    bottom: -10px;
+    left: 0;
+    position: absolute;
+    transition: all 0.2s;
+}
+.icono-amigos:hover::after{
+    width: 100%;
+}
+.icono-amigos:focus::after{
+    width: 100%;
+} */
 #listado-amigos{
     display: flex;
     flex-direction: column;
@@ -321,4 +341,65 @@
     left: 0;
     top: 7.4%;
     width: 50%;
+}
+
+/* rankings */
+.contenedor-rankings{
+    height: 82.3%;
+    width: 28.47%;
+    background-color: #E6B0C8;
+    border-radius: 25px;
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 0 15px 0 #E6B0C8;
+}
+.contenedor-rankings > *{
+    width: 90%;
+}
+.contenedor-personas-ranking{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.tituloRanking{
+    text-align: center;
+    color: #774E73;
+}
+.persona-ranking{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+    padding: 1rem 0;
+}
+.nombre-ranking{
+    font-size: larger;
+}
+.primero{
+    & .puesto-ranking{
+        color: #FF6B00;
+    };
+    background-image: linear-gradient(to right, rgb(231,245,73), rgb(245,224,115));
+}
+.segundo{
+    & .puesto-ranking{
+        color: #373737;
+    };
+    background-image: linear-gradient(to right, rgb(118,118,118), rgb(165,165,165));
+}
+.tercero{
+    & .puesto-ranking{
+        color: #A14400;
+    };
+    background-image: linear-gradient(to right, rgb(235,159,10), rgb(232,172,117));
+}
+.cuartoquinto{
+    & .puesto-ranking{
+        color: #A2A2A2;
+    };
+    background-color: #DCDCDC;
 }
