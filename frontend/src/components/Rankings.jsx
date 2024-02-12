@@ -12,22 +12,22 @@ function Rankings({setPopUpActivo}) {
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
                 <div className="persona-ranking segundo">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#2</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
                 <div className="persona-ranking tercero">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#3</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
                 <div className="persona-ranking cuartoquinto">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#4</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
                 <div className="persona-ranking cuartoquinto">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#5</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
@@ -42,22 +42,22 @@ function Rankings({setPopUpActivo}) {
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
                 <div className="persona-ranking segundo">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#2</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
                 <div className="persona-ranking tercero">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#3</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
                 <div className="persona-ranking cuartoquinto">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#4</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
                 <div className="persona-ranking cuartoquinto">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#5</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11.2s</h1>
                 </div>
@@ -72,22 +72,22 @@ function Rankings({setPopUpActivo}) {
                     <h1 className="valor-ranking">11</h1>
                 </div>
                 <div className="persona-ranking segundo">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#2</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11</h1>
                 </div>
                 <div className="persona-ranking tercero">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#3</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11</h1>
                 </div>
                 <div className="persona-ranking cuartoquinto">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#4</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11</h1>
                 </div>
                 <div className="persona-ranking cuartoquinto">
-                    <h1 className="puesto-ranking">#1</h1>
+                    <h1 className="puesto-ranking">#5</h1>
                     <p className="nombre-ranking">Xx_Josito_xX</p>
                     <h1 className="valor-ranking">11</h1>
                 </div>
