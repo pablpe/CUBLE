@@ -5,7 +5,7 @@
 #pantallaLogin{
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(to bottom right, #3F023C, #0C0116);
+    background-image: linear-gradient(to bottom right, #2c0129, #040007);
     overflow: hidden;
     position: relative;
     display: flex;

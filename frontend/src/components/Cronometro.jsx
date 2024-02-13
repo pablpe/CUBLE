@@ -14,7 +14,8 @@ function Cronometro() {
                 <Tiempos/>
             </div>
             <div id="seccion-derecha">
-
+                <DisplayScramble/>
+                <DatosSesion/>
             </div>
         </div>
     )
@@ -63,6 +64,24 @@ function Tiempo() {
             <i className="fa-solid fa-xmark eliminar-tiempo" style={{color : "#C00000",scale : "1.7"}}></i>
             <span className="valor-tiempo">17.7s</span>
             <span className="valor-media">17.5s</span>
+        </div>
+    )
+}
+function DisplayScramble() {
+    return(
+        <div id="displayScramble">
+
+        </div>
+    )
+}
+function DatosSesion() {
+    return(
+        <div id="contenedor-datos-sesion">
+            <h1 id="titulo-datos-sesion">Datos de la sesión</h1>
+            <div id="datos-sesion">
+                <span>media de movimientos : 58</span>
+                <span>media TPS : 3.32</span>
+            </div>
         </div>
     )
 }

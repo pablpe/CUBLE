@@ -52,7 +52,7 @@ function Logo() {
 }
 function BotonPractica({ultimoHover, setUltimoHover}) {
     return(
-        <Link id="boton-practica" className="boton-modo" onMouseEnter={()=>{
+        <Link to={"/practica"} id="boton-practica" className="boton-modo" onMouseEnter={()=>{
             let burbuja = document.getElementById("burbuja")
             burbuja.classList.toggle("activo");
             if (ultimoHover === "cronometro") burbuja.style.transform = "rotateZ(-100deg)"

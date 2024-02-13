@@ -2,7 +2,7 @@
 #pantalla-cronometro{
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(to bottom right, #3F023C, #0C0116);
+    background-image: linear-gradient(to bottom right, #2c0129, #040007);
     position: relative;
     display: grid;
     grid-template-columns: 30% 70%;
@@ -42,7 +42,7 @@ body::-webkit-scrollbar{
     align-items: center;
 }
 #tiempos{
-    height: calc(100vh - 10.5rem);
+    height: calc(100vh - 10.3rem);
     background-color: rgba(0, 102, 255,0.05);
     display: flex;
     flex-direction: column;
@@ -55,11 +55,12 @@ body::-webkit-scrollbar{
     width: 80%;
     background-color: #382375;
     position: relative;
-    min-height: 4rem;
+    min-height: 12%;
     display: flex;
     justify-content: space-around;
     align-items: center;
     border-radius: 50px;
+    cursor: pointer;
 }
 .tiempo > *{
     height: fit-content;
@@ -77,4 +78,63 @@ body::-webkit-scrollbar{
 }
 .eliminar-tiempo{
     cursor: pointer;
+}
+/* seccion derecha */
+#seccion-derecha{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+#displayScramble{
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 15%;
+    position: absolute;
+    height: 15%;
+    width: 85%;
+    background-color: rgba(0, 89, 222, 0.4);
+    border-radius: 20px;
+    outline: 2px rgba(0, 102, 255, 0.9) solid;
+    outline-offset: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+}
+#contenedor-datos-sesion{
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 87%;
+    position: absolute;
+    height: 15%;
+    width: 65%;
+    /* background-color: rgba(0, 89, 222, 0.4); */
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+#titulo-datos-sesion{
+    width: 50%;
+    background-color: rgba(0, 89, 222, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 200;
+}
+#datos-sesion{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    width: 80%;
+    background-color: rgba(0, 89, 222, 0.4);
+    box-sizing: border-box;
+    padding: 1rem 2rem;
 }

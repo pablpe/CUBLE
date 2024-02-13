@@ -7,7 +7,7 @@
 #pantalla-principal{
     width: 100vw;
     height: 100vh;
-    background-image: linear-gradient(to bottom right, #3F023C, #0C0116);
+    background-image: linear-gradient(to bottom right, #2c0129, #040007);
     overflow: hidden;
     position: relative;
     display: flex;
@@ -97,7 +97,8 @@
     width: 300px;
     height: 300px;
     background-color: gray;
-    top: 34%;
+    top: calc(50% - 150px);
+    left: calc(50% - 150px);
     border-radius: 50%;
     transition: border-radius 0.5s;
 }
@@ -364,6 +365,8 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    position: relative;
+    height: 90%;
 }
 .tituloRanking{
     text-align: center;
@@ -374,7 +377,9 @@
     justify-content: space-around;
     align-items: center;
     border-radius: 10px;
-    padding: 1rem 0;
+    /* padding: 1rem 0; */
+    box-sizing: border-box;
+    height: calc(20% - 16px);
 }
 .nombre-ranking{
     font-size: larger;
