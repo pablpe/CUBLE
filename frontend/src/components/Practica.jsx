@@ -7,10 +7,24 @@ function Practica() {
     },[])
     return (
         <div id="pantalla-practica">
-            <div id="contenedor-opciones-algset">
+            <ContenedorAlgsets/>
+            <ContenedorCuboYTiempos/>
+        </div>
+    )
+}
+function ContenedorAlgsets(){
+    return (
+        <div id="contenedor-opciones-algset">
+            <div id="tipos-algset">
 
+            </div>
+            <div id="contenedor-casos">
+                
             </div>
         </div>
     )
+}
+function ContenedorCuboYTiempos() {
+    
 }
 export default Practica

@@ -1,5 +1,10 @@
+/* eslint-disable react/prop-types */
+
+import { useState } from "react";
+
+/* eslint-disable react/no-unknown-property */
 function Amigos({setPopUpActivo}) {
-    
+    const [menuAmigos,setMenuAmigos] = useState("lista-amigos")
     return(
         <div className="fondo-popup amigos" onClick={()=>{setPopUpActivo("");}}>
                 <div id="contenedorAmigos" onClick={(e)=>{e.stopPropagation()}}>
@@ -8,9 +13,8 @@ function Amigos({setPopUpActivo}) {
                     <h1 className="h1Amigos">Amigos</h1>
                     <i className="fa-solid fa-plus icono-amigos" tabindex="0" role="button"></i>
                     </nav>
-                    <div id="listado-amigos">
-                        <Amigo img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
-                    </div>
+                    {menuAmigos === "buscador-amigos" && <BuscadorAmigos/>}
+                    {menuAmigos === "lista-amigos" && <ListadoAmigos/>}
                 </div>
 
                 <div className="contenido-mis-records" onClick={(e)=>{e.stopPropagation()}}>
@@ -58,6 +62,13 @@ function Amigos({setPopUpActivo}) {
         </div>
     )
 }
+function ListadoAmigos() {
+    return(
+        <div id="listado-amigos">
+            <Amigo img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+        </div>
+    )
+}
 function Amigo({img, nombre}) {
     return(
         <div className="info-amigo">
@@ -65,6 +76,11 @@ function Amigo({img, nombre}) {
             <h3 style={{fontWeight : "200", fontSize : "larger"}}>{nombre}</h3>
             <button className="botonEditarPerfil">Perfil</button>
         </div>
+    )
+}
+function BuscadorAmigos() {
+    return(
+        <></>
     )
 }
 export default Amigos
