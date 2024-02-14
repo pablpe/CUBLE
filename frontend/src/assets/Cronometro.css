@@ -99,7 +99,7 @@ body::-webkit-scrollbar{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: larger;
+    font-size: 150%;
 }
 #contenedor-datos-sesion{
     transform: translate(-50%,-50%);
@@ -137,4 +137,90 @@ body::-webkit-scrollbar{
     background-color: rgba(0, 89, 222, 0.4);
     box-sizing: border-box;
     padding: 1rem 2rem;
+}
+/* pop up tiempo */
+#fondo-popup-tiempo{
+    z-index: 30;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+    box-sizing: border-box;
+    padding: 3rem;
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5,1fr);
+    box-shadow: inset rgba(0, 0, 255, 0.3) 0 0 100px 1000px;
+}
+#fondo-popup-tiempo > *{
+    background-color: #E6B0C8;
+    box-shadow: #e6b0c881  0 0 30px 5px ;
+    width: 95%;
+    height: 95%;
+    box-sizing: border-box;
+    justify-self: center;
+    align-self: center;
+    border-radius: 10px;
+    position: relative;
+}
+
+#tiempo-y-datos{
+    grid-area: 1/1/2/6;
+    display: flex;
+    justify-content: space-evenly;
+}
+#tiempo-y-datos .dato{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    & > *{
+        margin: 0;
+    }
+    & .nombre-dato{
+        font-size: 150%;
+        color: #774E73;
+    }
+}
+#contenedor-grafico{
+    grid-area: 2/1/6/4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    & #grafico{
+        width: 100%;
+        height: 100%;
+        background-color: #040007;
+        border-radius: 5px;
+    }
+}
+#contenedor-movimientos-scramble{
+    grid-area: 2/4/6/6;
+}
+#contenedor-movimientos-scramble .dato{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50%;
+    & > *{
+        margin: 0;
+    }
+    & .nombre-dato{
+        font-size: 150%;
+        color: #774E73;
+    }
+    & .valor-dato{
+        text-align: center;
+        overflow: scroll;
+        min-height: 1rem;
+        max-height: 60%;
+        box-sizing: border-box;
+        padding: 0 1rem;
+    }
+    & .valor-dato::-webkit-scrollbar{
+        width: 0;
+    }
 }

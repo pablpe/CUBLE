@@ -1,7 +1,10 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/no-unescaped-entities */
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import "../assets/Cronometro.css"
 function Cronometro() {
+    const [solveSeleccionado,setSolveSeleccionado] = useState(null)
     useEffect(()=>{
         document.getElementById("cubo").style.left = "65%"
         document.getElementById("cubo").style.top = "50%"
@@ -11,12 +14,13 @@ function Cronometro() {
             <div id="seccion-izquierda">
                 <Logo/>
                 <HeaderTiempos/>
-                <Tiempos/>
+                <Tiempos setSolveSeleccionado={setSolveSeleccionado}/>
             </div>
             <div id="seccion-derecha">
                 <DisplayScramble/>
                 <DatosSesion/>
             </div>
+            {solveSeleccionado && <PopUpTiempo setSolveSeleccionado={setSolveSeleccionado}/>}
         </div>
     )
 }
@@ -42,25 +46,25 @@ function HeaderTiempos() {
         </div>
     )
 }
-function Tiempos() {
+function Tiempos({setSolveSeleccionado}) {
     
     return(
         <div id="tiempos">
-            <Tiempo/>
-            <Tiempo/>
-            <Tiempo/>
-            <Tiempo/>
-            <Tiempo/>
-            <Tiempo/>
-            <Tiempo/>
-            <Tiempo/>
-            <Tiempo/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
         </div>
     )
 }
-function Tiempo() {
+function Tiempo({setSolveSeleccionado}) {
     return(
-        <div className="tiempo">
+        <div className="tiempo" onClick={()=>{setSolveSeleccionado(1)}}>
             <i className="fa-solid fa-xmark eliminar-tiempo" style={{color : "#C00000",scale : "1.7"}}></i>
             <span className="valor-tiempo">17.7s</span>
             <span className="valor-media">17.5s</span>
@@ -70,7 +74,7 @@ function Tiempo() {
 function DisplayScramble() {
     return(
         <div id="displayScramble">
-
+            U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2
         </div>
     )
 }
@@ -81,6 +85,56 @@ function DatosSesion() {
             <div id="datos-sesion">
                 <span>media de movimientos : 58</span>
                 <span>media TPS : 3.32</span>
+            </div>
+        </div>
+    )
+}
+function PopUpTiempo({setSolveSeleccionado}) {
+    return (
+        <div id="fondo-popup-tiempo" onClick={()=>{setSolveSeleccionado(null)}}>
+            <TiempoYDatos/>
+            <ContenedorGrafico/>
+            <ContenedorMovimientosYScramble/>
+        </div>
+    )
+}
+function TiempoYDatos() {
+    return(
+        <div id="tiempo-y-datos" onClick={(e)=>{e.stopPropagation()}}>
+            <div className="dato">
+                <p className="nombre-dato">Tiempo</p>
+                <p className="valor-dato">12.54</p>
+            </div>
+            <div className="dato">
+                <p className="nombre-dato">Nºmovimientos</p>
+                <p className="valor-dato">72</p>
+            </div>
+            <div className="dato">
+                <p className="nombre-dato">TPS</p>
+                <p className="valor-dato">3.43</p>
+            </div>
+        </div>
+    )
+}
+function ContenedorGrafico() {
+    return(
+        <div id="contenedor-grafico" onClick={(e)=>{e.stopPropagation()}}>
+            <div id="grafico">
+
+            </div>
+        </div>
+    )
+}
+function ContenedorMovimientosYScramble() {
+    return(
+        <div id="contenedor-movimientos-scramble" onClick={(e)=>{e.stopPropagation()}}>
+            <div className="dato">
+                <p className="nombre-dato">Scramble</p>
+                <p className="valor-dato">U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2</p>
+            </div>
+            <div className="dato">
+                <p className="nombre-dato">Movimientos</p>
+                <p className="valor-dato">U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2</p>
             </div>
         </div>
     )
