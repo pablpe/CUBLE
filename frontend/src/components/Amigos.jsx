@@ -9,9 +9,9 @@ function Amigos({setPopUpActivo}) {
         <div className="fondo-popup amigos" onClick={()=>{setPopUpActivo("");}}>
                 <div id="contenedorAmigos" onClick={(e)=>{e.stopPropagation()}}>
                     <nav>
-                    <i className="fa-solid fa-users icono-amigos" tabindex="0" role="button" autoFocus></i>
+                    <i className="fa-solid fa-users icono-amigos" onClick={()=>{setMenuAmigos("lista-amigos")}} style={{borderBottom: (menuAmigos === "lista-amigos" ? "3px solid #FCAF58" : "")}}></i>
                     <h1 className="h1Amigos">Amigos</h1>
-                    <i className="fa-solid fa-plus icono-amigos" tabindex="0" role="button"></i>
+                    <i className="fa-solid fa-plus icono-amigos" onClick={()=>{setMenuAmigos("buscador-amigos")}} style={{borderBottom: (menuAmigos === "buscador-amigos" ? "3px solid #FCAF58" : "")}}></i>
                     </nav>
                     {menuAmigos === "buscador-amigos" && <BuscadorAmigos/>}
                     {menuAmigos === "lista-amigos" && <ListadoAmigos/>}
@@ -65,22 +65,41 @@ function Amigos({setPopUpActivo}) {
 function ListadoAmigos() {
     return(
         <div id="listado-amigos">
-            <Amigo img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+            <Amigo esAmigo={true} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
         </div>
     )
 }
-function Amigo({img, nombre}) {
+function Amigo({img, nombre, esAmigo}) {
     return(
         <div className="info-amigo">
             <img src={img} alt="" />
             <h3 style={{fontWeight : "200", fontSize : "larger"}}>{nombre}</h3>
-            <button className="botonEditarPerfil">Perfil</button>
+            {esAmigo && <button className="botonEditarPerfil">Perfil</button>}
+            {!esAmigo && <button className="botonEditarPerfil">Añadir</button>}
         </div>
     )
 }
 function BuscadorAmigos() {
+    let estiloBuscador = {
+        position : "sticky",
+        top : "0.5rem",
+        borderRadius : "20px",
+        padding : "0.5rem",
+        border : "none",
+        transition : "all 0.4s"
+    }
     return(
-        <></>
+        <div id="listado-amigos">
+            <input type="text" id="buscador-amigos" style={estiloBuscador} placeholder="Buscar . . ."/>
+            <Amigo esAmigo={false} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+            <Amigo esAmigo={false} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+            <Amigo esAmigo={false} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+            <Amigo esAmigo={false} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+            <Amigo esAmigo={false} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+            <Amigo esAmigo={false} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+            <Amigo esAmigo={false} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+            <Amigo esAmigo={false} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
+        </div>
     )
 }
 export default Amigos
