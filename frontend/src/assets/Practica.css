@@ -3,4 +3,71 @@
     width: 100vw;
     height: 100vh;
     background-image: linear-gradient(to bottom right, #2c0129, #040007);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+}
+#contenedor-opciones-algset{
+    position: relative;
+    height: 60%;
+    width: 50%;
+    align-self: center;
+    justify-self: center;
+    display: grid;
+    grid-template-rows: 15% 85%;
+    transform: translateY(-10%);
+}
+#tipos-algset{
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0.2rem;
+}
+.tipo-algset{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgb(255, 220, 153,0.3);
+    color: rgb(0, 0, 0,0.2);
+    width: 9cqh;
+    height: 9cqh;
+    font-size: 80%;
+    transition: background-color outline 0.2s;
+}
+.tipo-algset.activo{
+    background-color: rgb(255, 220, 153,0.9);
+    color: rgb(0, 0, 0,1);
+    outline: #FFA800 1px solid;
+    outline-offset: 4px;
+}
+#contenedor-casos{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    position: relative;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 5%;
+    gap: 5%;
+    background-color: rgb(255, 220, 153,0.9);
+    border-radius: 10px;
+    overflow: auto;
+    &::-webkit-scrollbar{
+        width: 0;
+    }
+}
+#contenedor-casos > *{
+    position: relative;
+    width: calc(25% - 5%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: gray;
 }

@@ -4,6 +4,9 @@ function Practica() {
     useEffect(()=>{
         document.getElementById("cubo").style.left = "50%"
         document.getElementById("cubo").style.top = "120%"
+        setTimeout(() => {
+            document.getElementById("cubo").style.display = "none"
+        }, 1000);
     },[])
     return (
         <div id="pantalla-practica">
@@ -16,11 +19,22 @@ function ContenedorAlgsets(){
     return (
         <div id="contenedor-opciones-algset">
             <div id="tipos-algset">
-                <div className="tipo-algset">CMLL</div>
+                <div className="tipo-algset activo">CMLL</div>
                 <div className="tipo-algset">OLL</div>
                 <div className="tipo-algset">PLL</div>
             </div>
             <div id="contenedor-casos">
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
+                <div className="caso"><Cubo2D/></div>
                 <div className="caso"><Cubo2D/></div>
                 <div className="caso"><Cubo2D/></div>
                 <div className="caso"><Cubo2D/></div>
