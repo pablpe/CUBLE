@@ -3,6 +3,8 @@
 
 import { useEffect, useState } from "react"
 import "../assets/Cronometro.css"
+import * as d3 from "d3";
+
 function Cronometro() {
     const [solveSeleccionado,setSolveSeleccionado] = useState(null)
     useEffect(()=>{
@@ -116,15 +118,7 @@ function TiempoYDatos() {
         </div>
     )
 }
-function ContenedorGrafico() {
-    return(
-        <div id="contenedor-grafico" onClick={(e)=>{e.stopPropagation()}}>
-            <div id="grafico">
 
-            </div>
-        </div>
-    )
-}
 function ContenedorMovimientosYScramble() {
     return(
         <div id="contenedor-movimientos-scramble" onClick={(e)=>{e.stopPropagation()}}>
@@ -139,4 +133,74 @@ function ContenedorMovimientosYScramble() {
         </div>
     )
 }
+
+function ContenedorGrafico() {
+    useEffect(() => {
+        const data = [
+            { name: 'Cruz', score: 12 },
+            { name: 'F2L', score: 26 },
+            { name: 'OLL', score: 14 },
+            { name: 'PLL', score: 18 }
+        ];
+
+        const width = 900;
+        const height = 450;
+        const margin = { top: 50, bottom: 50, left: 50, right: 50 };
+
+        const svg = d3.select('#contenedor-grafico')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr("viewBox", [0, 0, width, height]);
+
+        const x = d3.scaleBand()
+            .domain(d3.range(data.length))
+            .range([margin.left, width - margin.right])
+            .padding(0.1)
+
+        const y = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.score)])
+            .range([height - margin.bottom, margin.top])
+
+        svg
+            .append("g")
+            .attr("fill", 'royalblue')
+            .selectAll("rect")
+            .data(data)
+            .join("rect")
+            .attr("x", (d, i) => x(i))
+            .attr("y", height - margin.bottom) // Start the bars from the bottom
+            .attr('title', (d) => d.score)
+            .attr("class", "rect")
+            .attr("height", 0) // Set initial height to 0
+            .attr("width", x.bandwidth())
+            .transition() // Apply transition to the bars
+            .duration(1000) // Set duration of the transition
+            .delay((d, i) => i * 100) // Delay each bar based on its position
+            .attr("y", d => y(d.score))
+            .attr("height", d => height - margin.bottom - y(d.score)); // Animate the height of the bars
+
+        function yAxis(g) {
+            g.attr("transform", `translate(${margin.left}, 0)`)
+                .call(d3.axisLeft(y).ticks(null, data.format))
+                .attr("font-size", '20px')
+        }
+
+        function xAxis(g) {
+            g.attr("transform", `translate(0,${height - margin.bottom})`)
+                .call(d3.axisBottom(x).tickFormat(i => data[i].name))
+                .attr("font-size", '20px')
+        }
+
+        svg.append("g").call(xAxis);
+        svg.append("g").call(yAxis);
+    }, [])
+    return (
+        <div id="contenedor-grafico" onClick={(e) => { e.stopPropagation() }}>
+            {/* No necesitas un div adicional para el gráfico */}
+        </div>
+    )
+}
+
+
 export default Cronometro

@@ -40,6 +40,7 @@ body::-webkit-scrollbar{
     height: 100%;
     display: flex;
     align-items: center;
+    transform: translateX(-20%);
 }
 #tiempos{
     height: calc(100vh - 10.3rem);
@@ -150,7 +151,7 @@ body::-webkit-scrollbar{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5,1fr);
-    box-shadow: inset rgba(0, 0, 255, 0.3) 0 0 100px 1000px;
+    box-shadow: inset rgba(0, 0, 255, 0.067) 0 0 100px 1000px;
 }
 #fondo-popup-tiempo > *{
     background-color: #E6B0C8;

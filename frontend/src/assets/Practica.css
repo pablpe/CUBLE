@@ -4,18 +4,18 @@
     height: 100vh;
     background-image: linear-gradient(to bottom right, #2c0129, #040007);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 40% 60%;
     position: relative;
 }
 #contenedor-opciones-algset{
     position: relative;
-    height: 60%;
-    width: 50%;
+    height: 80%;
+    width: 60%;
     align-self: center;
     justify-self: center;
     display: grid;
     grid-template-rows: 15% 85%;
-    transform: translateY(-10%);
+    gap: 0.5rem;
 }
 #tipos-algset{
     position: relative;
@@ -35,14 +35,15 @@
     color: rgb(0, 0, 0,0.2);
     width: 9cqh;
     height: 9cqh;
-    font-size: 80%;
-    transition: background-color outline 0.2s;
+    font-size: 100%;
+    transition: background-color 0.2s, outline 0.2s;
 }
 .tipo-algset.activo{
     background-color: rgb(255, 220, 153,0.9);
     color: rgb(0, 0, 0,1);
     outline: #FFA800 1px solid;
     outline-offset: 4px;
+    font-size: 110%;
 }
 #contenedor-casos{
     display: flex;
@@ -62,12 +63,42 @@
         width: 0;
     }
 }
-#contenedor-casos > *{
+.caso{
     position: relative;
     width: calc(25% - 5%);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 5px;
+    background-color: rgb(0, 0, 0);
+    cursor: pointer;
+    &.activo{
+        background-color: rgb(77, 134, 181);
+    }
+}
+
+/* cubo-y-tiempos */
+#cubo-y-tiempos{
+    position: relative;
+    height: 70%;
+    width: 40%;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-color: gray;
+    border-radius: 20px;
+    gap: 3%;
+    transform: translateX(-25%);
+}
+#caso-actual{
+    width: 100%;
+}
+#tiempo-actual{
+    font-size: 170%;
+}
+#media-sesion{
+    font-size: 150%;
 }
