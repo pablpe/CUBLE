@@ -286,7 +286,7 @@
     align-items: center;
 }
 #contenedorAmigos i{
-    transition: border .1s;
+    transition: border .5s;
     padding: 5px;
 }
 .icono-amigos{
