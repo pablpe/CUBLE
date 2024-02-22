@@ -19,7 +19,7 @@ function Principal() {
     return (
         <div id="pantalla-principal">
             <Nav setPopUpActivo={setPopUpActivo}/>
-            <div id="burbuja"></div>
+            <div id="burbuja" onClick={()=>{window.setColorines();}}></div>
             <BotonPractica ultimoHover={ultimoHover} setUltimoHover={setUltimoHover}/>
             <BotonCronometro ultimoHover={ultimoHover} setUltimoHover={setUltimoHover}/>
             <Boton1vs1 ultimoHover={ultimoHover} setUltimoHover={setUltimoHover}/>

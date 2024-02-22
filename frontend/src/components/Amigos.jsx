@@ -65,6 +65,7 @@ function Amigos({setPopUpActivo}) {
 function ListadoAmigos() {
     return(
         <div id="listado-amigos">
+            <SolicitudAmigo img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
             <Amigo esAmigo={true} img={"https://i.pinimg.com/originals/f3/14/42/f31442167086a53453feafa6d64492e3.jpg"} nombre={"Josito"}/>
         </div>
     )
@@ -76,6 +77,19 @@ function Amigo({img, nombre, esAmigo}) {
             <h3 style={{fontWeight : "200", fontSize : "larger"}}>{nombre}</h3>
             {esAmigo && <button className="botonEditarPerfil">Perfil</button>}
             {!esAmigo && <button className="botonEditarPerfil">Añadir</button>}
+        </div>
+    )
+}
+function SolicitudAmigo({img, nombre}) {
+    return(
+        <div className="info-amigo">
+            <img src={img} alt="" />
+            <h3 style={{fontWeight : "200", fontSize : "larger"}}>{nombre}</h3>
+            {/* <button className="botonEditarPerfil">Perfil</button> */}
+            <div className="contenedor-botones-solicitud">
+                <button className="botonEditarPerfil" style={{backgroundColor : "#2292A4"}}>Aceptar</button>
+                <button className="botonEditarPerfil" style={{backgroundColor : "#922D50"}}>Denegar</button>
+            </div>
         </div>
     )
 }

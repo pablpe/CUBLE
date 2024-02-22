@@ -67,7 +67,7 @@ function Tiempos({setSolveSeleccionado}) {
 function Tiempo({setSolveSeleccionado}) {
     return(
         <div className="tiempo" onClick={()=>{setSolveSeleccionado(1)}}>
-            <i className="fa-solid fa-xmark eliminar-tiempo" style={{color : "#C00000",scale : "1.7"}}></i>
+            <i className="fa-solid fa-circle-info eliminar-tiempo" style={{color : "rgba(255,255,255,0.2)",scale : "1.7"}}></i>
             <span className="valor-tiempo">17.7s</span>
             <span className="valor-media">17.5s</span>
         </div>

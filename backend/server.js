@@ -40,6 +40,17 @@ app.post("/usuarioBaja",(req,res)=>{
         return res.send("Usuario eliminado");
     })
 })
+app.post("/loginValido", (req, res) => {
+    let sql = "SELECT * FROM usuario WHERE nick = ? and contrasena = ?";
+    const { nick,contrasena } = req.body;
+    db.query(sql, [nick,contrasena], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json(data);
+    });
+});
 app.post("/usarioModNick",(req,res)=>{
     let sql = "UPDATE `usuario` SET `nick`= ? WHERE `id_usuario` = ?"
     let { id, nick } = req.body
@@ -88,6 +99,54 @@ app.get("/getUsuarioNick", (req, res) => {
     });
 });
 
+//parte amigos
+
+// enviar solicitud de amistad
+app.post("/enviarSolicitudAmistad",(req,res)=>{
+    let sql = "INSERT INTO `solicitudes_amistad`(`id_solicitante`, `id_solicitado`) VALUES (?,?)"
+    let { id_solicitante, id_solicitado } = req.body
+    let values = [id_solicitante,id_solicitado]
+    db.query(sql,values,(err,data)=>{
+        if (err) return res.json(err)
+        return res.send("Solicitud enviada")
+    })
+})
+//buscar usuarios no amigos
+app.get("/buscarPersonas", (req, res) => {
+    let sql = "SELECT * FROM usuario  WHERE nick LIKE CONCAT('%', ?, '%') and not((`id_usuario` in (SELECT `id_usuario1` FROM `amigos` WHERE `id_usuario2` = ?)) or (`id_usuario` in (SELECT `id_usuario2` FROM `amigos` WHERE `id_usuario1` = ?))) and not(id_usuario = ?);";
+    const { nick,id_u1 } = req.query;
+    db.query(sql, [nick,id_u1,id_u1,id_u1], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json(data);
+    });
+});
+//buscar las solicitudes pendientes de un usuario
+app.get("/getSolicitudesPendientes",(req,res)=>{
+    let sql = "SELECT imagen, nick FROM usuario WHERE id_usuario in (SELECT id_solicitante FROM solicitudes_amistad WHERE id_solicitado = ?)"
+    const { id } = req.query
+    let values = [id]
+    db.query(sql,values,(err,data)=>{
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json(data)
+    })
+})
+//eliminar solicitud
+app.post("/eliminarSolicitudAmistad",(req,res)=>{
+    let sql = "DELETE FROM `solicitudes_amistad` WHERE `id_solicitud` = ?"
+    let { id_solicitud } = req.body
+    let values = [id_solicitud]
+    db.query(sql,values,(err,data)=>{
+        if (err) return res.json(err)
+        return res.send("Solicitud eliminada")
+    })
+})
+//buscar amigos de un usario
 app.get("/getAmigosId",(req,res)=>{
     let sql = "SELECT id_usuario,imagen,nick FROM `usuario` WHERE (`id_usuario` in (SELECT `id_usuario1` FROM `amigos` WHERE `id_usuario2` = ?)) or (`id_usuario` in (SELECT `id_usuario2` FROM `amigos` WHERE `id_usuario1` = ?));"
     const { id } = req.query

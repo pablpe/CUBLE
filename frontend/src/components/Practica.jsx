@@ -98,7 +98,7 @@ function Cubo2D() {
 function Cubo2DCaso() {
     const [pulsado, setPulsado] = useState(false)
     return (
-        <div className={"caso " + (pulsado ? "activo" : "")} onClick={()=>{setPulsado(!pulsado)}}>
+        <div className={"caso " + (pulsado ? "activo" : "")} onClick={()=>{setPulsado(!pulsado);}}>
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" style={{width : "100%",height : "100%"}} viewBox="-0.9 -0.9 1.8 1.8">
                 <rect fill="transparent" x="-0.9" y="-0.9" width="1.8" height="1.8"></rect>
                 <g style={{ strokeWidth: 0.1, strokeLinejoin: "round", opacity: 1 }}>

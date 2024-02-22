@@ -17,7 +17,23 @@ p.setup = () => {
 
 }
 let colorines = ["white","yellow","green","blue","red","orange"]
-
+function setColorines() {
+  function colorRGBAleatorio() {
+    const r = Math.floor(Math.random() * 256); // Valor entre 0 y 255 para rojo
+    const g = Math.floor(Math.random() * 256); // Valor entre 0 y 255 para verde
+    const b = Math.floor(Math.random() * 256); // Valor entre 0 y 255 para azul
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+  colorines = [
+    colorRGBAleatorio(),
+    colorRGBAleatorio(),
+    colorRGBAleatorio(),
+    colorRGBAleatorio(),
+    colorRGBAleatorio(),
+    colorRGBAleatorio()
+  ]
+}
+window.setColorines = setColorines
 class Cubito {
   white = p.createVector(0,1,0)
   yellow = p.createVector(0,-1,0)
