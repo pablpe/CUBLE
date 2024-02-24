@@ -31,6 +31,13 @@ function Principal() {
     )
 }
 function Nav({setPopUpActivo}) {
+    const [urlImagen,setUrlImagen] = useState("")
+    useEffect(()=>{
+        let id = window.sessionStorage.getItem("id_usuario")
+        fetch("http://localhost:8081/getUsuarioId?id_usuario="+id)
+        .then(res => res.json())
+        .then(data => setUrlImagen(data[0].imagen))
+    },[])
     return(
         <nav id="navPrincipal">
             <Logo/>
@@ -38,7 +45,7 @@ function Nav({setPopUpActivo}) {
                 <span onClick={()=>{setPopUpActivo("amigos")}}>Amigos</span>
                 <span onClick={()=>{setPopUpActivo("rankings")}}>Rankings</span>
                 <span onClick={()=>{setPopUpActivo("misRecords")}}>Mis records</span>
-                <img onClick={()=>{setPopUpActivo("perfil")}} src="https://64.media.tumblr.com/abc53e11a41ec4d895cb9f41712b595e/3cf5d0bf006b077a-41/s540x810/dedf82d88c9b79291f063feaded278673a3c8d25.jpg" alt="" />
+                <img onClick={()=>{setPopUpActivo("perfil")}} src={"../../public/imagenesPerfil/"+ urlImagen +".jpg"} alt="" />
             </div>
         </nav>
     )

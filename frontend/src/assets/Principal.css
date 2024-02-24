@@ -44,12 +44,13 @@
     color: white;
 }
 #contenedor-opciones-nav img{
-    height: 80%;
+    height: 6.7cqw;
+    width: 6.7cqw;
     border-radius: 50%;
 }
 #contenedor-opciones-nav > *{
     cursor: pointer;
-    transition: scale 0.6;
+    transition: scale 0.3s;
     &:hover{
         scale: 1.05;
     }
@@ -270,7 +271,23 @@
     left: 70%;
     top: calc(50% - 8cqw);
 }
-
+.input-editable {
+    border: none;
+    outline: none;
+    background: none;
+    font-size: inherit; /* Mantener el mismo tamaño de fuente que el texto */
+    font-family: inherit; /* Mantener la misma familia de fuente que el texto */
+    color: inherit; /* Mantener el mismo color de texto que el texto */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el input */
+    font-size: 1.15rem;
+    border-bottom: 2px gray solid;
+  }
+  
+  .input-editable:focus {
+    border: none; /* Eliminar el borde al hacer foco en el input */
+    outline: none; /* Eliminar el outline al hacer foco en el input */
+    border-bottom: 2px gray solid;
+  }
 /* amigos css */
 
 /* solicitudes */

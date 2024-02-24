@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import "../assets/Login.css"
 import sketch from "../assets/cubosRotando"
 import p5 from "p5"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 
 
@@ -31,20 +31,83 @@ function Logo() {
 
 }
 function FormRegistro({ setEnlogin }) {
-    function mailUsado() {
-        return false
+    const history = useNavigate()
+    async function mailUsado() {
+        return new Promise((resolve,reject)=>{
+            const datos = {
+                email: document.getElementById("inputCorreo").value
+            }
+            const configuracion = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(datos),
+            };
+            fetch("http://localhost:8081/mailValido", configuracion)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.length > 0 || document.getElementById("inputCorreo").value.length == 0) resolve(true)
+                    else {resolve(false)}
+                })
+                .catch(error => console.error('Error:', error));
+        })
     }
-    function nickUsado() {
-        return false
+    async function nickUsado() {
+        return new Promise((resolve,reject)=>{
+            const datos = {
+                nick : document.getElementById("inputNick").value
+            }
+            const configuracion = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(datos),
+            };
+            fetch("http://localhost:8081/nickValido", configuracion)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.length > 0 || document.getElementById("inputNick").value.length == 0) resolve(true)
+                    else {resolve(false)}
+                })
+                .catch(error => console.error('Error:', error));
+        })
     }
-    function nuevoUsuarioValido() {
-        if (!mailUsado() && !nickUsado()) {
+    function inputsValidos() {
+        return true
+    }
+    async function datosEnSessionStorage(nick) {
+        let b = "http://localhost:8081/getUsuarioNick?nick="+nick
+        fetch(b)
+        .then(res => res.json())
+        .then(data =>{
+            window.sessionStorage.setItem("id_usuario",data[0].id_usuario)
+            window.sessionStorage.setItem("img",data[0].imagen)
+        })
+        .catch(err => console.error(err))
+    }
+    async function nuevoUsuarioValido() {
+        let nick = document.getElementById("inputNick").value
+        let mailUdo = await mailUsado()
+        let nickUdo = await nickUsado()
+        if (!mailUdo && !nickUdo && inputsValidos()) {
             const datos = {
                 nombre: document.getElementById("inputNombre").value,
                 apellido1: document.getElementById("inputApellido1").value,
                 apellido2: document.getElementById("inputApellido2").value,
                 email: document.getElementById("inputCorreo").value,
-                nick: document.getElementById("inputNick").value,
+                nick: nick,
                 contrasena: document.getElementById("inputPwd").value
             }
             const configuracion = {
@@ -61,16 +124,16 @@ function FormRegistro({ setEnlogin }) {
                     }
                     return response.text();
                 })
-                .then(data => console.log(data))
+                .then(async (data) => {
+                    await datosEnSessionStorage(nick)
+                    window.localStorage.setItem("nick", nick)
+                })
                 .catch(error => console.error('Error:', error));
-            window.localStorage.setItem("nick", document.getElementById("inputNick").value)
             return true
         }
+        console.log("registro de usuario no valido")
         return false
     }
-    useEffect(() => {
-        window.localStorage.setItem("nick", "hola")
-    }, [])
     return (
         <div className="contenedorForm">
             <form className="contenedorInputs">
@@ -83,21 +146,50 @@ function FormRegistro({ setEnlogin }) {
             </form>
             <div className="opcionesForm">
                 <p className="mensajeOpcion">¿Ya tienes cuenta? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => { setEnlogin(true) }}>Inicia sesión</span></p>
-                <Link to={"/principal"} className="botonEnvio" onClick={(e) => {
-                    if (!nuevoUsuarioValido()) e.preventDefault()
+                <Link to={"/principal"} className="botonEnvio" onClick={async(e) => {
+                    e.preventDefault();
+                    if(await nuevoUsuarioValido()) history("/principal")
                 }}>Registrarme</Link>
             </div>
         </div>
     )
 }
+
+
+
+
 function FormLogin({ setEnlogin }) {
     const [nick, setNick] = useState('');
-
-    function handleNickChange(event) {
-        console.log(event.target.value);
+    const history = useNavigate()
+    useEffect(() => {
+        if (window.localStorage.getItem("nick")) {
+            setNick(window.localStorage.getItem("nick"))
+        }
+    }, [])
+    async function datosEnSessionStorage() {
+        let b = "http://localhost:8081/getUsuarioNick?nick="+document.getElementById("inputNick").value
+        fetch(b)
+        .then(res => res.json())
+        .then(data =>{
+            window.sessionStorage.setItem("id_usuario",data[0].id_usuario)
+            window.sessionStorage.setItem("img",data[0].imagen)
+        })
+        .catch(err => console.error(err))
+    }
+    const handleNickChange = (event) => {
         setNick(event.target.value);
     }
-    function datosValidos() {
+
+    const handleFormSubmit = async (e) => {
+        const isValid = await datosValidos();
+        if (!isValid) e.preventDefault();
+        else {
+            await datosEnSessionStorage()
+            history("/principal")
+        }
+    }
+
+    const datosValidos = () => {
         return new Promise((resolve, reject) => {
             const datos = {
                 nick: document.getElementById("inputNick").value,
@@ -115,7 +207,7 @@ function FormLogin({ setEnlogin }) {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
-                    return response.text();
+                    return response.json();
                 })
                 .then(data => {
                     if (data.length > 0) {
@@ -130,14 +222,10 @@ function FormLogin({ setEnlogin }) {
                 });
         });
     }
-    useEffect(() => {
-        if (window.localStorage.getItem("nick")) {
-            setNick(window.localStorage.getItem("nick"))
-        }
-    }, [])
+
     return (
         <div className="contenedorForm">
-            <form className="contenedorInputs">
+            <form className="contenedorInputs" onSubmit={handleFormSubmit}>
                 <input
                     placeholder="Nick"
                     type="text"
@@ -149,7 +237,7 @@ function FormLogin({ setEnlogin }) {
             </form>
             <div className="opcionesForm">
                 <p className="mensajeOpcion">¿No tienes cuenta? <span style={{ color: "blue", cursor: "pointer" }} onClick={() => { setEnlogin(false) }}>Registrate</span></p>
-                <Link to={"/principal"} className="botonEnvio" onClick={(e) => { if (!datosValidos()) e.preventDefault() }}>Iniciar sesión</Link>
+                <Link to={"/principal"} className="botonEnvio" onClick={(e)=>{e.preventDefault();handleFormSubmit(e)}}>Iniciar sesión</Link>
             </div>
         </div>
     )
