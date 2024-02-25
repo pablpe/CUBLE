@@ -6,9 +6,9 @@ function Perfil({ setPopUpActivo }) {
     const [edicionPrimerApellido, setEdicionPrimerApellido] = useState(false);
     const [edicionSegundoApellido, setEdicionSegundoApellido] = useState(false);
     const [edicionNick, setEdicionNick] = useState(false);
+    let id = window.sessionStorage.getItem("id_usuario");
 
     useEffect(() => {
-        let id = window.sessionStorage.getItem("id_usuario");
         fetch("http://localhost:8081/getUsuarioId?id_usuario=" + id)
             .then(res => res.json())
             .then(data => {
@@ -32,13 +32,40 @@ function Perfil({ setPopUpActivo }) {
     const handleNickEdit = () => {
         setEdicionNick(!edicionNick);
     };
-
+    function handleEditarImagen(event) {
+        const file = event.target.files[0];
+        const nombreArchivo = id; // El nombre deseado para el archivo
+        
+        // Crear un objeto FormData y agregar la imagen
+        const formData = new FormData();
+        formData.append('imagen', file);
+        
+        // Enviar la imagen al servidor
+        fetch('http://localhost:8081/subir-imagen', { // Ruta en el servidor para manejar la subida de imágenes
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al subir la imagen');
+            }
+            console.log('Imagen subida correctamente.');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    
+  
     return (
         <div className="fondo-popup" onClick={() => { setPopUpActivo(""); }}>
             <div className="contenido-perfil" onClick={(e) => { e.stopPropagation(); }}>
                 <div id="contenedorIMGperfil">
                     <img id="imgPerfil" src={"../../public/imagenesPerfil/" + datosUsuario.imagen + ".jpg"} alt="" />
-                    <button id="boton-editar-imagen"><i className="fa-solid fa-pen" style={{ color: "white" }}></i></button>
+                    <label htmlFor="input-imagen" style={{ cursor: 'pointer' }} id="label-imagen">
+                        <input id="input-imagen" type="file" style={{ display: 'none' }} accept="image/*" onChange={handleEditarImagen}/>
+                        <i className="fas fa-pen" style={{ color: 'white' }}></i>
+                    </label>
                 </div>
                 <div id="contenedorInfoPerfil">
                     <div className="elementoPerfil">

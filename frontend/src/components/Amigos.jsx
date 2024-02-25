@@ -191,8 +191,28 @@ function SolicitudAmigo({img, nick,id, solicitudes, setSolicitudes, amigos, setA
         });
     }
     function denegarAmistad() {
-        
+        let id_usuarioMain = window.sessionStorage.getItem("id_usuario")
+        let datos = {
+            id_solicitado :  id_usuarioMain,
+            id_solicitante : id
+        }
+        const configuracion = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datos),
+        };
+        fetch("http://localhost:8081/eliminarSolicitudAmistad", configuracion)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            setSolicitudes(solicitudes.filter(solicitud => solicitud.id_usuario !== id));
+            return response.text();
+        })
     }
+      //eEroMucho:)
     return(
         <div className="info-amigo">
             <img src={img} alt="" />

@@ -211,9 +211,23 @@
     position: relative;
 }
 #imgPerfil{
-    width: 100%;
-    height: auto;
+    width: 15cqw;
+    height: 15cqw;
     border-radius: 50%;
+}
+#label-imagen{
+    background-color: #FCAF58;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: none;
+    height: 8vh;
+    width: 8vh;
+    position: absolute;
+    left: 70%;
+    top: calc(50% - 8cqw);
 }
 #contenedorInfoPerfil{
     display: flex;

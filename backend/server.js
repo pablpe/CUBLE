@@ -1,9 +1,12 @@
 const express = require("express")
+const multer  = require('multer');
 const mysql = require("mysql")
 const cors = require("cors")
 const bodyParser = require("body-parser");
 
+
 const app = express()
+const upload = multer({ dest: '../../frontend/public/imagenesPerfil/' });
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,10 +19,18 @@ const db = mysql.createConnection({
 })
 db.query("SET autocommit = 1");
 
+app.post('/subir-imagen', upload.single('imagen'), (req, res) => {
+    // `req.file` contiene la información sobre el archivo subido
+    console.log('Archivo subido:', req.file);
+
+    // Devolver una respuesta al cliente
+    res.send('Archivo subido correctamente.');
+});
+
+
 app.get("/",(req, res)=>{
     return res.json("From backend side")
 })
-
 app.post("/usuarioAlta", (req, res) => {
     let sql = "INSERT INTO `usuario`(`nombre`, `primer_apellido`, `segundo_apellido`, `email`, `nick`, `contrasena`) VALUES (?,?,?,?,?,?)";
 
