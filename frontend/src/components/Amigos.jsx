@@ -35,7 +35,7 @@ function Perfil({id_perfil}) {
     return (
         <>
         {datosPerfil?.nick && <div className="contenido-mis-records" onClick={(e) => {e.stopPropagation()}}>
-            <img id="imgRecords" src={"../../public/imagenesPerfil/"+ datosPerfil?.imagen +".jpg"} alt="" />
+            <img id="imgRecords" src={"../../public/imagenesPerfil/"+ datosPerfil?.imagen} alt="" />
             <h1 id="nick">{datosPerfil?.nick}</h1>
             <div id="statsRecords">
                 <div className="stat">
@@ -133,7 +133,7 @@ function Amigo({img, nick, esAmigo,id,setIdPerfil,usuarios,setUsuarios}) {
     }
     return(
         <div className="info-amigo">
-            <img src={img} alt="" />
+            <img src={"../../public/imagenesPerfil/"+img} alt="" />
             <h3 style={{fontWeight : "200", fontSize : "larger"}}>{nick}</h3>
             {esAmigo == true ? <button onClick={verPerfil} className="botonEditarPerfil">Perfil</button> : <button onClick={anadirUsuario} className="botonEditarPerfil">Añadir</button>}
         </div>
@@ -215,7 +215,7 @@ function SolicitudAmigo({img, nick,id, solicitudes, setSolicitudes, amigos, setA
       //eEroMucho:)
     return(
         <div className="info-amigo">
-            <img src={img} alt="" />
+            <img src={"../../public/imagenesPerfil/"+img} alt="" />
             <h3 style={{fontWeight : "200", fontSize : "larger"}}>{nick}</h3>
             <div className="contenedor-botones-solicitud">
                 <button onClick={anadirAmistad} className="botonEditarPerfil" style={{backgroundColor : "#2292A4"}}>Aceptar</button>

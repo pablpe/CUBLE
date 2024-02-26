@@ -36,7 +36,8 @@ function Nav({setPopUpActivo}) {
         let id = window.sessionStorage.getItem("id_usuario")
         fetch("http://localhost:8081/getUsuarioId?id_usuario="+id)
         .then(res => res.json())
-        .then(data => setUrlImagen(data[0].imagen))
+        .then(data => {setUrlImagen(data[0].imagen)})
+        
     },[])
     return(
         <nav id="navPrincipal">
@@ -45,7 +46,7 @@ function Nav({setPopUpActivo}) {
                 <span onClick={()=>{setPopUpActivo("amigos")}}>Amigos</span>
                 <span onClick={()=>{setPopUpActivo("rankings")}}>Rankings</span>
                 <span onClick={()=>{setPopUpActivo("misRecords")}}>Mis records</span>
-                <img onClick={()=>{setPopUpActivo("perfil")}} src={"../../public/imagenesPerfil/"+ urlImagen +".jpg"} alt="" />
+                <img onClick={()=>{setPopUpActivo("perfil")}} src={"../../public/imagenesPerfil/"+ urlImagen} alt="" />
             </div>
         </nav>
     )

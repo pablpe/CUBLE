@@ -11,9 +11,10 @@ function MisRecords({setPopUpActivo}) {
         })
     },[])
     return(
-        <div className="fondo-popup" onClick={()=>{setPopUpActivo("");}}>
+        <>
+        {datosUsuario?.nick && <div className="fondo-popup" onClick={()=>{setPopUpActivo("");}}>
             <div className="contenido-mis-records" onClick={(e)=>{e.stopPropagation()}}>
-                <img id="imgRecords" src={"../../public/imagenesPerfil/"+ datosUsuario.imagen +".jpg"} alt="" />
+                <img id="imgRecords" src={"../../public/imagenesPerfil/"+ datosUsuario.imagen} alt="" />
                 <h1 id="nick">{datosUsuario.nick}</h1>
                 <div id="statsRecords">
                     <div className="stat">
@@ -54,7 +55,8 @@ function MisRecords({setPopUpActivo}) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>}
+        </>
     )
 }
 export default MisRecords

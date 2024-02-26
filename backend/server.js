@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const app = express()
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-      cb(null, '../../frontend/public/imagenesPerfil/')
+      cb(null, '../frontend/public/imagenesPerfil/')
     },
     filename: function(req, file, cb) {
       cb(null, file.originalname)
@@ -94,6 +94,15 @@ app.post("/loginValido", (req, res) => {
         return res.json(data);
     });
 });
+app.post("/usarioModImg", (req, res) => {
+    let sql = "UPDATE `usuario` SET `imagen`= ? WHERE `id_usuario` = ?"
+    let { imagen, id } = req.body
+    let values = [imagen, id]
+    db.query(sql, values, (err, data) => {
+        if (err) return res.status(500).send("Error al modificar la imagen")
+        return res.send("Imagen modificada")
+    })
+})
 app.post("/usarioModNick",(req,res)=>{
     let sql = "UPDATE `usuario` SET `nick`= ? WHERE `id_usuario` = ?"
     let { id, nick } = req.body
