@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 
 function Perfil({ setPopUpActivo }) {
@@ -6,7 +7,6 @@ function Perfil({ setPopUpActivo }) {
     const [edicionPrimerApellido, setEdicionPrimerApellido] = useState(false);
     const [edicionSegundoApellido, setEdicionSegundoApellido] = useState(false);
     const [edicionNick, setEdicionNick] = useState(false);
-    let id = window.sessionStorage.getItem("id_usuario");
 
     useEffect(() => {
         fetch("http://localhost:8081/getUsuarioId?id_usuario=" + id)
@@ -32,13 +32,16 @@ function Perfil({ setPopUpActivo }) {
     const handleNickEdit = () => {
         setEdicionNick(!edicionNick);
     };
+    let id = window.sessionStorage.getItem("id_usuario");
     function handleEditarImagen(event) {
-        const file = event.target.files[0];
-        const nombreArchivo = id; // El nombre deseado para el archivo
+        const file = event.currentTarget.files[0]; // Obtener el archivo seleccionado
         
-        // Crear un objeto FormData y agregar la imagen
-        const formData = new FormData();
-        formData.append('imagen', file);
+        const fileParts = file.name.split('.');
+    const fileExtension = fileParts[fileParts.length - 1];
+        console.log(fileExtension);
+    // Crear un objeto FormData y agregar la imagen con la extensión
+    const formData = new FormData();
+    formData.append('imagen', file, `${id}.${fileExtension}`);//`imagen.${fileExtension}`
         
         // Enviar la imagen al servidor
         fetch('http://localhost:8081/subir-imagen', { // Ruta en el servidor para manejar la subida de imágenes
@@ -56,12 +59,15 @@ function Perfil({ setPopUpActivo }) {
         });
     }
     
+    
+    
   
     return (
-        <div className="fondo-popup" onClick={() => { setPopUpActivo(""); }}>
+        <>
+        {datosUsuario?.id_usuario && <div className="fondo-popup" onClick={() => { setPopUpActivo(""); }}>
             <div className="contenido-perfil" onClick={(e) => { e.stopPropagation(); }}>
                 <div id="contenedorIMGperfil">
-                    <img id="imgPerfil" src={"../../public/imagenesPerfil/" + datosUsuario.imagen + ".jpg"} alt="" />
+                    <img id="imgPerfil" src={"../../public/imagenesPerfil/" + datosUsuario.id_usuario + ".png"} alt="" />
                     <label htmlFor="input-imagen" style={{ cursor: 'pointer' }} id="label-imagen">
                         <input id="input-imagen" type="file" style={{ display: 'none' }} accept="image/*" onChange={handleEditarImagen}/>
                         <i className="fas fa-pen" style={{ color: 'white' }}></i>
@@ -128,7 +134,8 @@ function Perfil({ setPopUpActivo }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>}
+        </>
     );
 }
 

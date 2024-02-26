@@ -6,7 +6,15 @@ const bodyParser = require("body-parser");
 
 
 const app = express()
-const upload = multer({ dest: '../../frontend/public/imagenesPerfil/' });
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, '../../frontend/public/imagenesPerfil/')
+    },
+    filename: function(req, file, cb) {
+      cb(null, file.originalname)
+    }
+  })
+const upload = multer({ storage : storage });
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
