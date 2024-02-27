@@ -34,48 +34,48 @@ function Perfil({id_perfil}) {
 
     return (
         <>
-        {datosPerfil?.nick && <div className="contenido-mis-records" onClick={(e) => {e.stopPropagation()}}>
-            <img id="imgRecords" src={"../../public/imagenesPerfil/"+ datosPerfil?.imagen} alt="" />
-            <h1 id="nick">{datosPerfil?.nick}</h1>
-            <div id="statsRecords">
-                <div className="stat">
-                    <div className="contTituloRango">
-                        <h2 className="titulo">Mejor tiempo</h2>
-                        <span className="rango">#{datosPerfil?.rank_tiempo}</span>
+        {datosPerfil?.nick && <div className="contenido-mis-records" onClick={(e)=>{e.stopPropagation()}}>
+                <img id="imgRecords" src={"../../public/imagenesPerfil/"+ datosPerfil.imagen} alt="" />
+                <h1 id="nick">{datosPerfil.nick}</h1>
+                <div id="statsRecords">
+                    <div className="stat">
+                        <div className="contTituloRango">
+                            <h2 className="titulo">Mejor tiempo</h2>
+                            <span className="rango">#{datosPerfil.mejor_tiempo == null ? "?" : datosPerfil.rank_tiempo + 1}</span>
+                        </div>
+                        <p className="valor">
+                            {datosPerfil.mejor_tiempo == null ? "?" : datosPerfil.mejor_tiempo + "s"}
+                        </p>
                     </div>
-                    <p className="valor">
-                        {datosPerfil?.mejor_tiempo}s
-                    </p>
-                </div>
-                <div className="stat">
-                    <div className="contTituloRango">
-                        <h2 className="titulo">Mejor media de 5</h2>
-                        <span className="rango">#{datosPerfil?.rank_media}</span>
+                    <div className="stat">
+                        <div className="contTituloRango">
+                            <h2 className="titulo">Mejor media de 5</h2>
+                            <span className="rango">#{datosPerfil.mejor_media == 0 ? "?" : datosPerfil.rank_media + 1}</span>
+                        </div>
+                        <p className="valor">
+                            {datosPerfil.mejor_media == 0 ? "?" : datosPerfil.mejor_media + "s"}
+                        </p>
                     </div>
-                    <p className="valor">
-                        {datosPerfil?.mejor_media}s
-                    </p>
-                </div>
-                <div className="stat">
-                    <div className="contTituloRango">
-                        <h2 className="titulo">Victorias</h2>
-                        <span className="rango">#{datosPerfil?.rank_victorias}</span>
+                    <div className="stat">
+                        <div className="contTituloRango">
+                            <h2 className="titulo">Victorias</h2>
+                            <span className="rango">#{datosPerfil.rank_victorias + 1}</span>
+                        </div>
+                        <p className="valor">
+                            {datosPerfil.victorias}
+                        </p>
                     </div>
-                    <p className="valor">
-                        {datosPerfil?.victorias}
-                    </p>
-                </div>
-                <div className="stat">
-                    <div className="contTituloRango">
-                        <h2 className="titulo">Derrotas</h2>
-                        <span className="rango">#{datosPerfil?.rank_derrotas}</span>
+                    <div className="stat">
+                        <div className="contTituloRango">
+                            <h2 className="titulo">Derrotas</h2>
+                            {/* <span className="rango">#{datosPerfil.rank_derrotas}</span> */}
+                        </div>
+                        <p className="valor">
+                            {datosPerfil.derrotas}
+                        </p>
                     </div>
-                    <p className="valor">
-                        {datosPerfil?.derrotas}
-                    </p>
                 </div>
-            </div>
-        </div>}
+            </div>}
         </>
     );
 }

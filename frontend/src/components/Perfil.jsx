@@ -31,6 +31,7 @@ function Perfil({ setPopUpActivo }) {
     const handleNickEdit = () => {
         setEdicionNick(!edicionNick);
     };
+
     let id = window.sessionStorage.getItem("id_usuario");
     function handleEditarImagen(event) {
         const file = event.currentTarget.files[0]; // Obtener el archivo seleccionado
@@ -80,6 +81,26 @@ function Perfil({ setPopUpActivo }) {
         });
     }
     
+    function modificarDato(peticion,dato) {
+        let data = {
+            dato : dato,
+            id : id
+        }
+        fetch('http://localhost:8081/'+peticion, { // Ruta en el servidor para manejar la subida de imágenes
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al modificar dato');
+                }
+                return response.text()
+            })
+            .catch(err => console.error(err))
+    }
     return (
         <>
         {datosUsuario?.id_usuario && <div className="fondo-popup" onClick={() => { setPopUpActivo(""); }}>
@@ -101,9 +122,10 @@ function Perfil({ setPopUpActivo }) {
                                 <p className="valorElementoPerfil">{datosUsuario.nombre}</p>
                             )}
                         </div>
-                        <button className="botonEditarPerfil" onClick={handleNombreEdit}>
-                            {edicionNombre ? "Guardar" : "Editar"}
-                        </button>
+                        {edicionNombre ? 
+                            <button className="botonEditarPerfil" onClick={()=>{modificarDato("usarioModNombre", datosUsuario.nombre);handleNombreEdit()}}> Guardar </button> :
+                            <button className="botonEditarPerfil" onClick={handleNombreEdit}> Editar </button>
+                        }
                     </div>
                     <div className="elementoPerfil">
                         <div className="infoElementoPerfil">
@@ -114,9 +136,10 @@ function Perfil({ setPopUpActivo }) {
                                 <p className="valorElementoPerfil">{datosUsuario.primer_apellido}</p>
                             )}
                         </div>
-                        <button className="botonEditarPerfil" onClick={handlePrimerApellidoEdit}>
-                            {edicionPrimerApellido ? "Guardar" : "Editar"}
-                        </button>
+                        {edicionPrimerApellido ? 
+                            <button className="botonEditarPerfil" onClick={()=>{modificarDato("usarioModApellido1", datosUsuario.primer_apellido);handlePrimerApellidoEdit()}}> Guardar </button> :
+                            <button className="botonEditarPerfil" onClick={handlePrimerApellidoEdit}> Editar </button>
+                        }
                     </div>
                     <div className="elementoPerfil">
                         <div className="infoElementoPerfil">
@@ -127,9 +150,10 @@ function Perfil({ setPopUpActivo }) {
                                 <p className="valorElementoPerfil">{datosUsuario.segundo_apellido}</p>
                             )}
                         </div>
-                        <button className="botonEditarPerfil" onClick={handleSegundoApellidoEdit}>
-                            {edicionSegundoApellido ? "Guardar" : "Editar"}
-                        </button>
+                        {edicionSegundoApellido ? 
+                            <button className="botonEditarPerfil" onClick={()=>{modificarDato("usarioModApellido2", datosUsuario.segundo_apellido);handleSegundoApellidoEdit()}}> Guardar </button> :
+                            <button className="botonEditarPerfil" onClick={handleSegundoApellidoEdit}> Editar </button>
+                        }
                     </div>
                     <div className="elementoPerfil">
                         <div className="infoElementoPerfil">
@@ -146,9 +170,10 @@ function Perfil({ setPopUpActivo }) {
                                 <p className="valorElementoPerfil">{datosUsuario.nick}</p>
                             )}
                         </div>
-                        <button className="botonEditarPerfil" onClick={handleNickEdit}>
-                            {edicionNick ? "Guardar" : "Editar"}
-                        </button>
+                        {edicionNick ? 
+                            <button className="botonEditarPerfil" onClick={()=>{modificarDato("usarioModNick", datosUsuario.nick);handleNickEdit()}}> Guardar </button> :
+                            <button className="botonEditarPerfil" onClick={handleNickEdit}> Editar </button>
+                        }
                     </div>
                 </div>
             </div>

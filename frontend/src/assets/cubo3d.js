@@ -395,7 +395,7 @@ window.move = move
 let bgColor = "steelblue"
 p.draw = () => {
   p.background(0,0);
-  p.orbitControl();
+  p.orbitControl()
   p.rotateX(-0.4)
   p.rotateY(-0.5)
 
@@ -403,6 +403,7 @@ p.draw = () => {
     cubos[i].draw()
   }
 }
+
 
 function isSolved() {
   let cubeRef = cubos[0]
