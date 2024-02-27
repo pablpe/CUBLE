@@ -52,7 +52,7 @@ class Cubito {
   rotateVector2(vector, axis, prime) {
     let result = p.createVector();
   
-    let angle = (prime) ? -p.p.HALF_PI : p.p.HALF_PI;
+    let angle = (prime) ? -p.HALF_PI : p.HALF_PI;
     //console.log(vector.x,vector.y,vector.z);
     switch (axis) {
       case "x":
@@ -415,10 +415,7 @@ function isSolved() {
       break;
     }
   }
-  if (allMatch) {
-    //console.log("resuelto")
-    window.showTime()
-  }
+  return allMatch
 }
 window.isSolved = isSolved
 

@@ -101,7 +101,8 @@ function Boton1vs1({ultimoHover, setUltimoHover}) {
             else burbuja.style.transform = "rotateZ(133deg)"
             setUltimoHover("1vs1")
             }} 
-            onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}>
+            onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}
+            onClick={window.connect}>
             1 <span style={{fontSize : "15px"}}>vs</span> 1
         </Link>
     )
