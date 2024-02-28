@@ -102,6 +102,12 @@ body::-webkit-scrollbar{
     align-items: center;
     font-size: 150%;
 }
+.letraScramble{
+    margin-right: 1rem;
+    &.resuelta{
+        background-color: lime;
+    }
+}
 #contenedor-datos-sesion{
     transform: translate(-50%,-50%);
     left: 50%;

@@ -128,25 +128,21 @@ function Perfil({ setPopUpActivo }) {
                             <button className="botonEditarPerfil" onClick={handleNombreEdit}> Editar </button>
                         }
                     </div>
-                    <div id="contenedorInfoPerfil">
                         <div className="elementoPerfil">
                             <div className="infoElementoPerfil">
-                                <p className="nombreElementoPerfil">Nombre:</p>
-                                {edicionNombre ? (
-                                    <input type="text" className="input-editable" value={datosUsuario.nombre} onChange={(e) => { setDatosUsuario({ ...datosUsuario, nombre: e.target.value }) }} />
+                                <p className="nombreElementoPerfil">Primer apellido:</p>
+                                {edicionPrimerApellido ? (
+                                    <input type="text" className="input-editable" value={datosUsuario.primer_apellido} onChange={(e) => { setDatosUsuario({ ...datosUsuario, primer_apellido: e.target.value }) }} />
                                 ) : (
-                                    <p className="valorElementoPerfil">{datosUsuario.nombre}</p>
+                                    <p className="valorElementoPerfil">{datosUsuario.primer_apellido}</p>
                                 )}
                             </div>
-                            <button className="botonEditarPerfil" onClick={handleNombreEdit}>
-                                {edicionNombre ? "Guardar" : "Editar"}
-                            </button>
+                            {edicionPrimerApellido ? 
+                                <button className="botonEditarPerfil" onClick={()=>{modificarDato("usarioModApellido1", datosUsuario.primer_apellido);handlePrimerApellidoEdit()}}> Guardar </button> :
+                                <button className="botonEditarPerfil" onClick={handlePrimerApellidoEdit}> Editar </button>
+                            }
                         </div>
-                        {edicionPrimerApellido ? 
-                            <button className="botonEditarPerfil" onClick={()=>{modificarDato("usarioModApellido1", datosUsuario.primer_apellido);handlePrimerApellidoEdit()}}> Guardar </button> :
-                            <button className="botonEditarPerfil" onClick={handlePrimerApellidoEdit}> Editar </button>
-                        }
-                    </div>
+                        
                     <div className="elementoPerfil">
                         <div className="infoElementoPerfil">
                             <p className="nombreElementoPerfil">Segundo Apellido:</p>
@@ -161,11 +157,7 @@ function Perfil({ setPopUpActivo }) {
                             <button className="botonEditarPerfil" onClick={handleSegundoApellidoEdit}> Editar </button>
                         }
                     </div>
-                    <div className="elementoPerfil">
-                        <div className="infoElementoPerfil">
-                            <p className="nombreElementoPerfil">Email:</p>
-                            <p className="valorElementoPerfil">{datosUsuario.email}</p>
-                        </div>
+                
                         <div className="elementoPerfil">
                             <div className="infoElementoPerfil">
                                 <p className="nombreElementoPerfil">Email:</p>
@@ -181,18 +173,14 @@ function Perfil({ setPopUpActivo }) {
                                     <p className="valorElementoPerfil">{datosUsuario.nick}</p>
                                 )}
                             </div>
-                            <button className="botonEditarPerfil" onClick={handleNickEdit}>
-                                {edicionNick ? "Guardar" : "Editar"}
-                            </button>
-                        </div>
-                        {edicionNick ? 
+                            {edicionNick ? 
                             <button className="botonEditarPerfil" onClick={()=>{modificarDato("usarioModNick", datosUsuario.nick);handleNickEdit()}}> Guardar </button> :
                             <button className="botonEditarPerfil" onClick={handleNickEdit}> Editar </button>
                         }
+                        </div>
                     </div>
                 </div>
-                </div>
-            </div>}
+                </div>}
         </>
     );
 }

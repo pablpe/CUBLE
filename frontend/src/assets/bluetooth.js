@@ -78,17 +78,20 @@ var BtCube = (function () {
     };
 })();
 window.connect = BtCube.connect
-const button = document.querySelector('button');
-button.addEventListener("click",()=>{
-    BtCube.connect();
-})
 function saluda() {
     console.log("hola");
 }
 window.saluda = saluda
+let enCronometro = false
+function setEncronometro(valor) {
+    enCronometro = valor
+}
+window.setEncronometro = setEncronometro
 function moveCalls(move) {
-    console.log(move)
     window.move(move)
+    if (enCronometro) {
+        console.log(move);
+    }
     // window.scrambleTime(move)
     // window.isSolved()
 }

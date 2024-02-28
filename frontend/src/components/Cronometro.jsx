@@ -10,7 +10,89 @@ function Cronometro() {
     useEffect(()=>{
         document.getElementById("cubo").style.left = "65%"
         document.getElementById("cubo").style.top = "50%"
+        window.setEncronometro(true)
+        return ()=>{
+            window.setEncronometro(false)
+        }
     },[])
+    
+
+
+
+    const [scramble, setScramble] = useState([])
+    const [wrongMoves, setWrongMoves] = useState([])
+    const [solutionMoves,setSolutionMoves] = useState([])
+
+    let inScrambleTime = true
+    const [indexScramble, setIndexScramble] = useState(3)
+    const [timeStarted, setTimeStarted] = useState(false)
+    let timeStart
+
+    let movements = ["U","D","F","B","L","R"]
+    let moveSpec = ["","'"]
+    function genScramble() { //version provisional, no tiene que devolver valores opuestos
+        let scr = []
+        for (let i = 0; i < 10; i++) {
+            scr.push(movements[Math.floor(Math.random() * movements.length)] + moveSpec[Math.floor(Math.random()*moveSpec.length)])
+        }
+        return scr
+    }
+    function getReverseMove(move) {
+        if (move.includes("'")) {
+            return move[0]
+        }else{
+            return `${move}'`
+        }
+    }
+    function gestionMovimientosCronometro(move) {
+        if(inScrambleTime){
+            if (wrongMoves.length == 0) {
+                if (scramble.length == indexScramble + 1) { //ya está todo el scramble hecho
+                    setSolutionMoves([])
+                    inScrambleTime = false
+                }else{
+                    if(move === scramble[indexScramble]){
+                        setIndexScramble(indexScramble + 1)
+                        //falta display scramble aqui
+                    }else{
+                        setWrongMoves([...wrongMoves, move])
+                        //falta display wrong moves aqui
+                    }
+                }
+            }else{
+                if(move === getReverseMove(wrongMoves[wrongMoves.length-1])){
+                    const arrMenosUltimo = wrongMoves.slice(0,-1)
+                    setWrongMoves(arrMenosUltimo)
+                }else setWrongMoves([...wrongMoves,move])
+                // faltaria display sramble o wrongmoves
+            }
+        }else{
+            if (!timeStarted) {
+                timeStart = new Date()
+                setTimeStarted(true)
+            }
+            setSolutionMoves([...solutionMoves,move])
+            if(window.isSolved()) showTime()
+        }
+    }
+    window.gestionMovimientosCronometro = gestionMovimientosCronometro
+    function showTime() {
+        if (inScrambleTime == false) {
+            console.log(solutionMoves);
+            let timeAct = new Date()
+            console.log(`${Math.abs(timeAct.getTime() - timeStart.getTime())/1000}s`);
+            //resetear todo para que sea un nuevo scramble
+            setScramble(genScramble())
+            inScrambleTime = true
+            setTimeStarted(false)
+            setIndexScramble(0)
+            //aqui faltaria un displayScramble
+        }
+    }
+    
+    useEffect(() => {
+        setScramble(genScramble());
+    }, []);
     return (
         <div id="pantalla-cronometro">
             <div id="seccion-izquierda">
@@ -19,7 +101,7 @@ function Cronometro() {
                 <Tiempos setSolveSeleccionado={setSolveSeleccionado}/>
             </div>
             <div id="seccion-derecha">
-                <DisplayScramble/>
+                <DisplayScramble scramble={scramble} wrongMoves={wrongMoves} indexScramble={indexScramble} timeStarted={timeStarted}/>
                 <DatosSesion/>
             </div>
             {solveSeleccionado && <PopUpTiempo setSolveSeleccionado={setSolveSeleccionado}/>}
@@ -73,10 +155,23 @@ function Tiempo({setSolveSeleccionado}) {
         </div>
     )
 }
-function DisplayScramble() {
+function DisplayScramble({scramble,wrongMoves,indexScramble,timeStarted}) {
+    
     return(
         <div id="displayScramble">
-            U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2
+            {/* U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2 */}
+            {!timeStarted &&  wrongMoves.length == 0 ? 
+                scramble.map((letra,index) =>{
+                    return <span key={index} className={"letraScramble " + (indexScramble >= index ? "resuelta" : "")}>{letra}</span>
+                })
+            :
+                wrongMoves.map((letra,index) =>{
+                    return <span key={index} className="letraScramble">{letra}</span>
+                })
+            }
+            {
+                timeStarted && "hola"
+            }
         </div>
     )
 }
