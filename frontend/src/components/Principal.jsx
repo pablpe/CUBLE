@@ -45,7 +45,7 @@ function Nav({setPopUpActivo}) {
                 <span onClick={()=>{setPopUpActivo("amigos")}}>Amigos</span>
                 <span onClick={()=>{setPopUpActivo("rankings")}}>Rankings</span>
                 <span onClick={()=>{setPopUpActivo("misRecords")}}>Mis records</span>
-                <img onClick={()=>{setPopUpActivo("perfil")}} src={"../../public/imagenesPerfil/"+ urlImagen +".jpg"} alt="" />
+                <img onClick={()=>{setPopUpActivo("perfil")}} src={"../../public/imagenesPerfil/"+ urlImagen +".png"} alt="" />
             </div>
         </nav>
     )

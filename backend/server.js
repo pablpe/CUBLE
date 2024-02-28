@@ -6,9 +6,13 @@ const bodyParser = require("body-parser");
 
 
 const app = express()
+const path = require('path');
+
+const directorioImagenes = path.resolve(__dirname, '../frontend/public/imagenesPerfil/');
+
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-      cb(null, '../../frontend/public/imagenesPerfil/')
+      cb(null, directorioImagenes)
     },
     filename: function(req, file, cb) {
       cb(null, file.originalname)
