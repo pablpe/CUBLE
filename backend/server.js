@@ -12,7 +12,8 @@ const directorioImagenes = path.resolve(__dirname, '../frontend/public/imagenesP
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-      cb(null, directorioImagenes)
+
+      cb(null, '../frontend/public/imagenesPerfil/')
     },
     filename: function(req, file, cb) {
       cb(null, file.originalname)
@@ -44,7 +45,7 @@ app.get("/",(req, res)=>{
     return res.json("From backend side")
 })
 app.post("/usuarioAlta", (req, res) => {
-    let sql = "INSERT INTO `usuario`(`nombre`, `primer_apellido`, `segundo_apellido`, `email`, `nick`, `contrasena`) VALUES (?,?,?,?,?,?)";
+    let sql = "INSERT INTO `usuario`(`nombre`, `primer_apellido`, `segundo_apellido`, `email`, `nick`, `contrasena`, imagen) VALUES (?,?,?,?,?,?, 'default.jpg')";
 
     const { nombre, apellido1, apellido2, email, nick, contrasena } = req.body;
     let values = [nombre, apellido1, apellido2, email, nick, contrasena]
@@ -98,10 +99,30 @@ app.post("/loginValido", (req, res) => {
         return res.json(data);
     });
 });
+app.post("/creaPerfil",(req,res)=>{
+    let sql = "INSERT INTO `perfil`(`id_usuario`) VALUES (?)"
+    const { id_usuario } = req.body
+    db.query(sql, [id_usuario], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json(data);
+    });
+})
+app.post("/usarioModImg", (req, res) => {
+    let sql = "UPDATE `usuario` SET `imagen`= ? WHERE `id_usuario` = ?"
+    let { imagen, id } = req.body
+    let values = [imagen, id]
+    db.query(sql, values, (err, data) => {
+        if (err) return res.status(500).send("Error al modificar la imagen")
+        return res.send("Imagen modificada")
+    })
+})
 app.post("/usarioModNick",(req,res)=>{
     let sql = "UPDATE `usuario` SET `nick`= ? WHERE `id_usuario` = ?"
-    let { id, nick } = req.body
-    let values = [nick,id]
+    let { id, dato } = req.body
+    let values = [dato,id]
     db.query(sql,values,(err,data)=>{
         if (err) return res.json(err)
         return res.send("Usuario modificado")
@@ -109,8 +130,8 @@ app.post("/usarioModNick",(req,res)=>{
 })
 app.post("/usarioModNombre",(req,res)=>{
     let sql = "UPDATE `usuario` SET `nombre`= ? WHERE `id_usuario` = ?"
-    let { id, nombre } = req.body
-    let values = [nombre,id]
+    let { id, dato } = req.body
+    let values = [dato,id]
     db.query(sql,values,(err,data)=>{
         if (err) return res.json(err)
         return res.send("Usuario modificado")
@@ -118,8 +139,8 @@ app.post("/usarioModNombre",(req,res)=>{
 })
 app.post("/usarioModApellido1",(req,res)=>{
     let sql = "UPDATE `usuario` SET `primer_apellido`= ? WHERE `id_usuario` = ?"
-    let { id, apellido1 } = req.body
-    let values = [apellido1,id]
+    let { id, dato } = req.body
+    let values = [dato,id]
     db.query(sql,values,(err,data)=>{
         if (err) return res.json(err)
         return res.send("Usuario modificado")
@@ -127,8 +148,8 @@ app.post("/usarioModApellido1",(req,res)=>{
 })
 app.post("/usarioModApellido2",(req,res)=>{
     let sql = "UPDATE `usuario` SET `segundo_apellido`= ? WHERE `id_usuario` = ?"
-    let { id, apellido2 } = req.body
-    let values = [apellido2,id]
+    let { id, dato } = req.body
+    let values = [dato,id]
     db.query(sql,values,(err,data)=>{
         if (err) return res.json(err)
         return res.send("Usuario modificado")
@@ -240,7 +261,7 @@ app.get("/getAmigosId",(req,res)=>{
 })
 
 app.get("/getPerfilID",(req,res)=>{
-    let sql = "SELECT usuario.imagen, usuario.nick, (SELECT solves.tiempo FROM solves WHERE solves.id_solve in (SELECT id_mejor_tiempo FROM perfil WHERE id_usuario = ?)) as mejor_tiempo,perfil.mejor_media, perfil.victorias, perfil.derrotas,(SELECT count(*) FROM solves WHERE tiempo <= (SELECT tiempo from solves where id_solve = id_mejor_tiempo) ) as rank_tiempo, (SELECT COUNT(*) FROM perfil where mejor_media <= (SELECT mejor_media FROM perfil WHERE id_usuario = ?)) as rank_media, (SELECT COUNT(*) FROM perfil where victorias >= (SELECT victorias FROM perfil WHERE id_usuario = ?)) as rank_victorias, (SELECT COUNT(*) FROM perfil where derrotas <= (SELECT derrotas FROM perfil WHERE id_usuario = ?)) as rank_derrotas FROM perfil,solves,usuario WHERE perfil.id_mejor_tiempo = solves.id_solve and usuario.id_usuario = perfil.id_usuario and perfil.id_usuario = ?;"
+    let sql = "SELECT usuario.imagen, usuario.nick, (SELECT solves.tiempo FROM solves WHERE solves.id_solve in (SELECT id_mejor_tiempo FROM perfil WHERE id_usuario = ?)) as mejor_tiempo,perfil.mejor_media, perfil.victorias, perfil.derrotas,(SELECT count(*) FROM solves WHERE tiempo <= (SELECT tiempo from solves where id_solve = id_mejor_tiempo) ) as rank_tiempo, (SELECT COUNT(*) FROM perfil where mejor_media <= (SELECT mejor_media FROM perfil WHERE id_usuario = ?)) as rank_media, (SELECT COUNT(*) FROM perfil where victorias >= (SELECT victorias FROM perfil WHERE id_usuario = ?)) as rank_victorias, (SELECT COUNT(*) FROM perfil where derrotas <= (SELECT derrotas FROM perfil WHERE id_usuario = ?)) as rank_derrotas FROM perfil,usuario WHERE usuario.id_usuario = perfil.id_usuario and perfil.id_usuario = ?;"
     const { id } = req.query
     let values = [id,id,id,id,id]
     db.query(sql,values,(err,data)=>{
@@ -287,7 +308,7 @@ app.get("/mejoresTiempos",(req,res)=>{
     })
 })
 app.get("/mejoresMedias",(req,res)=>{
-    let sql = "SELECT usuario.id_usuario, usuario.nick, perfil.mejor_media FROM perfil, usuario WHERE perfil.id_usuario = usuario.id_usuario ORDER BY perfil.mejor_media LIMIT 5;"
+    let sql = "SELECT usuario.id_usuario, usuario.nick, perfil.mejor_media FROM perfil, usuario WHERE perfil.id_usuario = usuario.id_usuario and perfil.mejor_media > 0 ORDER BY perfil.mejor_media LIMIT 5;"
     db.query(sql,[],(err,data)=>{
         if (err) {
             console.error(err);

@@ -36,7 +36,8 @@ function Nav({setPopUpActivo}) {
         let id = window.sessionStorage.getItem("id_usuario")
         fetch("http://localhost:8081/getUsuarioId?id_usuario="+id)
         .then(res => res.json())
-        .then(data => setUrlImagen(data[0].imagen))
+        .then(data => {setUrlImagen(data[0].imagen)})
+        
     },[])
     return(
         <nav id="navPrincipal">
@@ -45,7 +46,7 @@ function Nav({setPopUpActivo}) {
                 <span onClick={()=>{setPopUpActivo("amigos")}}>Amigos</span>
                 <span onClick={()=>{setPopUpActivo("rankings")}}>Rankings</span>
                 <span onClick={()=>{setPopUpActivo("misRecords")}}>Mis records</span>
-                <img onClick={()=>{setPopUpActivo("perfil")}} src={"../../public/imagenesPerfil/"+ urlImagen +".png"} alt="" />
+                <img onClick={()=>{setPopUpActivo("perfil")}} src={"../../public/imagenesPerfil/"+ urlImagen} alt="" />
             </div>
         </nav>
     )
@@ -100,7 +101,8 @@ function Boton1vs1({ultimoHover, setUltimoHover}) {
             else burbuja.style.transform = "rotateZ(133deg)"
             setUltimoHover("1vs1")
             }} 
-            onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}>
+            onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}
+            onClick={window.connect}>
             1 <span style={{fontSize : "15px"}}>vs</span> 1
         </Link>
     )

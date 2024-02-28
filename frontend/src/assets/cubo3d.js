@@ -52,7 +52,7 @@ class Cubito {
   rotateVector2(vector, axis, prime) {
     let result = p.createVector();
   
-    let angle = (prime) ? -p.p.HALF_PI : p.p.HALF_PI;
+    let angle = (prime) ? -p.HALF_PI : p.HALF_PI;
     //console.log(vector.x,vector.y,vector.z);
     switch (axis) {
       case "x":
@@ -395,7 +395,7 @@ window.move = move
 let bgColor = "steelblue"
 p.draw = () => {
   p.background(0,0);
-  p.orbitControl();
+  p.orbitControl()
   p.rotateX(-0.4)
   p.rotateY(-0.5)
 
@@ -403,6 +403,7 @@ p.draw = () => {
     cubos[i].draw()
   }
 }
+
 
 function isSolved() {
   let cubeRef = cubos[0]
@@ -414,10 +415,7 @@ function isSolved() {
       break;
     }
   }
-  if (allMatch) {
-    //console.log("resuelto")
-    window.showTime()
-  }
+  return allMatch
 }
 window.isSolved = isSolved
 

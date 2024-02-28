@@ -5,7 +5,7 @@ import "../assets/Login.css"
 import sketch from "../assets/cubosRotando"
 import p5 from "p5"
 import { Link, useNavigate } from "react-router-dom"
-
+import axios from 'axios';
 
 
 export default function Login() {
@@ -126,6 +126,14 @@ function FormRegistro({ setEnlogin }) {
                 })
                 .then(async (data) => {
                     await datosEnSessionStorage(nick)
+                    axios.get("http://localhost:8081/getUsuarioNick?nick="+nick).then(res =>{
+                        axios.post("http://localhost:8081/creaPerfil",{id_usuario : res.data[0].id_usuario}).then(response => {
+                            console.log('Respuesta del servidor:', response.data);
+                          })
+                          .catch(error => {
+                            console.error('Error al hacer la solicitud:', error);
+                          });
+                    })
                     window.localStorage.setItem("nick", nick)
                 })
                 .catch(error => console.error('Error:', error));
