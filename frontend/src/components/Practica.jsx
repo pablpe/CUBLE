@@ -25,7 +25,7 @@ function ContenedorAlgsets({casosActuales, setCasosActuales}){
     useEffect(()=>{
         fetch("http://localhost:8081/algset?alg_set="+algsetSeleccionado)
         .then(res => res.json())
-        .then(data => setAlgset(data))
+        .then(data => {setAlgset(data)})
         document.getElementById("marcarTodas").checked = false
     },[algsetSeleccionado])
     useEffect(()=>{

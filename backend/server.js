@@ -337,6 +337,48 @@ app.get("/solves",(req,res)=>{ // devuelve los 50 solves del usuario con ID, a p
         return res.json(data)
     })
 })
+app.get("/getUltimoSolve",(req,res)=>{
+    let sql = "SELECT *  FROM `solves`  WHERE `id_usuario` = ?  AND `id_solve` = (SELECT MAX(`id_solve`) FROM `solves` WHERE `id_usuario` = ?);"
+    let { id } = req.query
+    db.query(sql,[id,id],(err,data)=>{
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json(data)
+    })
+})
+app.get("/getSolve", (req, res) => {
+    const id_solve = parseInt(req.query.id_solve);
+
+    if (!id_solve || isNaN(id_solve)) {
+        return res.status(400).json({ error: "ID solve inválido" });
+    }
+
+    let sql = "SELECT * FROM `solves` WHERE `id_solve` = ?";
+    db.query(sql, [id_solve], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        if (data.length === 0) {
+            return res.status(404).json({ error: "Solve no encontrado" });
+        }
+        return res.json(data[0]);
+    });
+});
+app.post("/anadirSolve",(req,res)=>{
+    let sql = "INSERT INTO `solves`(`id_usuario`, `tiempo`, `scramble`, `slucion`, `n_movimientos`, `tps`) VALUES (?,?,?,?,?,?)"
+    let {id_usuario,tiempo,scramble,solucion,n_movimientos,tps} = req.body
+    let values = [id_usuario,tiempo,scramble,solucion,n_movimientos,tps]
+    db.query(sql,values,(err,data)=>{
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.send("insertado el tiempo")
+    })
+})
 app.get("/algset",(req,res)=>{
     let sql = "SELECT * FROM algoritmos WHERE alg_set = ?"
     const {alg_set} = req.query

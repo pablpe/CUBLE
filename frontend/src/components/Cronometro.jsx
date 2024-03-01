@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react"
 import "../assets/Cronometro.css"
 import * as d3 from "d3";
+import axios from 'axios';
 
 function Cronometro() {
     const [solveSeleccionado,setSolveSeleccionado] = useState(null)
@@ -68,7 +69,6 @@ function Cronometro() {
                 // faltaria display sramble o wrongmoves
             }
         }else{
-            console.log("en solucion")
             if (!timeStarted) {
                 setTimeStart(new Date())
                 setTimeStarted(true)
@@ -78,12 +78,10 @@ function Cronometro() {
         }
     }
     window.gestionMovimientosCronometro = gestionMovimientosCronometro
-    function showTime() {
-        console.log("asdf")
+    async function showTime() {
         if (inScrambleTime == false) {
-            console.log(solutionMoves);
-            let timeAct = new Date()
-            console.log(`${Math.abs(timeAct.getTime() - timeStart.getTime())/1000}s`);
+            await loadYUnloadTiempo(new Date())
+            //console.log(solutionMoves);
             //resetear todo para que sea un nuevo scramble
             setScramble(genScramble())
             setInScrambleTime(true)
@@ -92,7 +90,25 @@ function Cronometro() {
             //aqui faltaria un displayScramble
         }
     }
-    
+    async function loadYUnloadTiempo(timeAct) { // id_usuario,tiempo,scramble,solucion,n_movimientos,tps
+        let id = window.sessionStorage.getItem("id_usuario");
+        let datosSolve = {
+            id_usuario : id,
+            tiempo : (Math.abs(timeAct.getTime() - timeStart.getTime())/1000),
+            scramble : JSON.stringify(scramble),
+            solucion : JSON.stringify(solutionMoves),
+            n_movimientos : solutionMoves.length,
+            tps : solutionMoves.length / (Math.abs(timeAct.getTime() - timeStart.getTime())/1000)
+        }
+        axios.post("http://localhost:8081/anadirSolve",datosSolve)
+        .then(res =>{
+            axios.get("http://localhost:8081/getUltimoSolve?id="+id)
+            .then(data => {
+                console.log(data.data[0])
+                setTiempos([data.data[0],...tiempos])
+            })
+        })
+    }
     useEffect(() => {
         setScramble(genScramble());
     }, []);
@@ -107,7 +123,7 @@ function Cronometro() {
                 <DisplayScramble scramble={scramble} wrongMoves={wrongMoves} indexScramble={indexScramble} timeStarted={timeStarted}/>
                 <DatosSesion/>
             </div>
-            {solveSeleccionado && <PopUpTiempo setSolveSeleccionado={setSolveSeleccionado}/>}
+            {solveSeleccionado && <PopUpTiempo solveSeleccionado={solveSeleccionado} setSolveSeleccionado={setSolveSeleccionado}/>}
         </div>
     )
 }
@@ -147,7 +163,7 @@ function Tiempos({ setSolveSeleccionado, tiempos, setTiempos }) {
 
     return (
         <div id="tiempos">
-            {tiempos.map((tmp, index) => (
+            {tiempos.reverse().map((tmp, index) => (
                 <Tiempo key={index} setSolveSeleccionado={setSolveSeleccionado} tiempo={tmp.tiempo} id_solve={tmp.id_solve}/>
             ))}
         </div>
@@ -156,9 +172,9 @@ function Tiempos({ setSolveSeleccionado, tiempos, setTiempos }) {
 
 function Tiempo({setSolveSeleccionado,tiempo,id_solve}) {
     return(
-        <div className="tiempo" onClick={()=>{setSolveSeleccionado(1)}}>
+        <div className="tiempo" onClick={()=>{setSolveSeleccionado(id_solve)}}>
             <i className="fa-solid fa-circle-info eliminar-tiempo" style={{color : "rgba(255,255,255,0.2)",scale : "1.7"}}></i>
-            <span className="valor-tiempo">{tiempo}</span>
+            <span className="valor-tiempo">{tiempo ? tiempo : 'No disponible'}</span>
             <span className="valor-media">17.5s</span>
         </div>
     )
@@ -194,50 +210,60 @@ function DatosSesion() {
         </div>
     )
 }
-function PopUpTiempo({setSolveSeleccionado}) {
+function PopUpTiempo({solveSeleccionado,setSolveSeleccionado}) {
+    const [datosSolve, setDatosSolve] = useState({})
+    useEffect(()=>{
+        fetch("http://localhost:8081/getSolve?id_solve="+solveSeleccionado)
+        .then(res => res.json())
+        .then(data => {
+            data.scramble = JSON.parse(data.scramble)
+            data.solucion = JSON.parse(data.solucion)
+            setDatosSolve(data)
+        })
+    },[])
     return (
         <div id="fondo-popup-tiempo" onClick={()=>{setSolveSeleccionado(null)}}>
-            <TiempoYDatos/>
-            <ContenedorGrafico/>
-            <ContenedorMovimientosYScramble/>
+            <TiempoYDatos datosSolve={datosSolve}/>
+            <ContenedorGrafico datosSolve={datosSolve}/>
+            <ContenedorMovimientosYScramble datosSolve={datosSolve}/>
         </div>
     )
 }
-function TiempoYDatos() {
+function TiempoYDatos({datosSolve}) {
     return(
         <div id="tiempo-y-datos" onClick={(e)=>{e.stopPropagation()}}>
             <div className="dato">
                 <p className="nombre-dato">Tiempo</p>
-                <p className="valor-dato">12.54</p>
+                <p className="valor-dato">{datosSolve?.tiempo}</p>
             </div>
             <div className="dato">
                 <p className="nombre-dato">Nºmovimientos</p>
-                <p className="valor-dato">72</p>
+                <p className="valor-dato">{datosSolve?.n_movimientos}</p>
             </div>
             <div className="dato">
                 <p className="nombre-dato">TPS</p>
-                <p className="valor-dato">3.43</p>
+                <p className="valor-dato">{datosSolve?.tps}</p>
             </div>
         </div>
     )
 }
 
-function ContenedorMovimientosYScramble() {
+function ContenedorMovimientosYScramble({datosSolve}) {
     return(
         <div id="contenedor-movimientos-scramble" onClick={(e)=>{e.stopPropagation()}}>
             <div className="dato">
                 <p className="nombre-dato">Scramble</p>
-                <p className="valor-dato">U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2</p>
+                <p className="valor-dato">{datosSolve.scramble}</p>
             </div>
             <div className="dato">
                 <p className="nombre-dato">Movimientos</p>
-                <p className="valor-dato">U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2</p>
+                <p className="valor-dato">{datosSolve.solucion}</p>
             </div>
         </div>
     )
 }
 
-function ContenedorGrafico() {
+function ContenedorGrafico({datosSolve}) {
     useEffect(() => {
         const data = [
             { name: 'Cruz', score: 12 },
