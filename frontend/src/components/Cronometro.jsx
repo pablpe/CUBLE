@@ -7,6 +7,7 @@ import * as d3 from "d3";
 
 function Cronometro() {
     const [solveSeleccionado,setSolveSeleccionado] = useState(null)
+    const [tiempos, setTiempos] = useState([]);
     useEffect(()=>{
         document.getElementById("cubo").style.left = "65%"
         document.getElementById("cubo").style.top = "50%"
@@ -23,10 +24,10 @@ function Cronometro() {
     const [wrongMoves, setWrongMoves] = useState([])
     const [solutionMoves,setSolutionMoves] = useState([])
 
-    let inScrambleTime = true
-    const [indexScramble, setIndexScramble] = useState(3)
+    const [inScrambleTime, setInScrambleTime] = useState(true);
+    const [indexScramble, setIndexScramble] = useState(0)
     const [timeStarted, setTimeStarted] = useState(false)
-    let timeStart
+    let [timeStart,setTimeStart] = useState(null)
 
     let movements = ["U","D","F","B","L","R"]
     let moveSpec = ["","'"]
@@ -49,7 +50,7 @@ function Cronometro() {
             if (wrongMoves.length == 0) {
                 if (scramble.length == indexScramble + 1) { //ya está todo el scramble hecho
                     setSolutionMoves([])
-                    inScrambleTime = false
+                    setInScrambleTime(false)
                 }else{
                     if(move === scramble[indexScramble]){
                         setIndexScramble(indexScramble + 1)
@@ -67,8 +68,9 @@ function Cronometro() {
                 // faltaria display sramble o wrongmoves
             }
         }else{
+            console.log("en solucion")
             if (!timeStarted) {
-                timeStart = new Date()
+                setTimeStart(new Date())
                 setTimeStarted(true)
             }
             setSolutionMoves([...solutionMoves,move])
@@ -77,13 +79,14 @@ function Cronometro() {
     }
     window.gestionMovimientosCronometro = gestionMovimientosCronometro
     function showTime() {
+        console.log("asdf")
         if (inScrambleTime == false) {
             console.log(solutionMoves);
             let timeAct = new Date()
             console.log(`${Math.abs(timeAct.getTime() - timeStart.getTime())/1000}s`);
             //resetear todo para que sea un nuevo scramble
             setScramble(genScramble())
-            inScrambleTime = true
+            setInScrambleTime(true)
             setTimeStarted(false)
             setIndexScramble(0)
             //aqui faltaria un displayScramble
@@ -98,7 +101,7 @@ function Cronometro() {
             <div id="seccion-izquierda">
                 <Logo/>
                 <HeaderTiempos/>
-                <Tiempos setSolveSeleccionado={setSolveSeleccionado}/>
+                <Tiempos setSolveSeleccionado={setSolveSeleccionado} tiempos={tiempos} setTiempos={setTiempos}/>
             </div>
             <div id="seccion-derecha">
                 <DisplayScramble scramble={scramble} wrongMoves={wrongMoves} indexScramble={indexScramble} timeStarted={timeStarted}/>
@@ -130,27 +133,32 @@ function HeaderTiempos() {
         </div>
     )
 }
-function Tiempos({setSolveSeleccionado}) {
+function Tiempos({ setSolveSeleccionado, tiempos, setTiempos }) {
     
-    return(
+    let id = window.sessionStorage.getItem("id_usuario");
+
+    useEffect(() => {
+        fetch("http://localhost:8081/solves?id=" + id + "&actual=0")
+            .then(res => res.json())
+            .then(data => {
+                setTiempos([...data]);
+            });
+    }, []);
+
+    return (
         <div id="tiempos">
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
-            <Tiempo setSolveSeleccionado={setSolveSeleccionado}/>
+            {tiempos.map((tmp, index) => (
+                <Tiempo key={index} setSolveSeleccionado={setSolveSeleccionado} tiempo={tmp.tiempo} id_solve={tmp.id_solve}/>
+            ))}
         </div>
-    )
+    );
 }
-function Tiempo({setSolveSeleccionado}) {
+
+function Tiempo({setSolveSeleccionado,tiempo,id_solve}) {
     return(
         <div className="tiempo" onClick={()=>{setSolveSeleccionado(1)}}>
             <i className="fa-solid fa-circle-info eliminar-tiempo" style={{color : "rgba(255,255,255,0.2)",scale : "1.7"}}></i>
-            <span className="valor-tiempo">17.7s</span>
+            <span className="valor-tiempo">{tiempo}</span>
             <span className="valor-media">17.5s</span>
         </div>
     )
@@ -162,7 +170,7 @@ function DisplayScramble({scramble,wrongMoves,indexScramble,timeStarted}) {
             {/* U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2 */}
             {!timeStarted &&  wrongMoves.length == 0 ? 
                 scramble.map((letra,index) =>{
-                    return <span key={index} className={"letraScramble " + (indexScramble >= index ? "resuelta" : "")}>{letra}</span>
+                    return <span key={index} className={"letraScramble " + (indexScramble > index ? "resuelta" : "")}>{letra}</span>
                 })
             :
                 wrongMoves.map((letra,index) =>{
@@ -233,7 +241,7 @@ function ContenedorGrafico() {
     useEffect(() => {
         const data = [
             { name: 'Cruz', score: 12 },
-            { name: 'F2L', score: 26 },
+            { name: 'F2L', score: 80 },
             { name: 'OLL', score: 14 },
             { name: 'PLL', score: 18 }
         ];

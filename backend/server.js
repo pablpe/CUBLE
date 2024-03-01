@@ -330,7 +330,7 @@ app.get("/masVictorias",(req,res)=>{
 app.get("/solves",(req,res)=>{ // devuelve los 50 solves del usuario con ID, a partir de el registro numero ACTUAL 
     let sql = "SELECT * FROM solves WHERE id_usuario = ? LIMIT ?,50"
     const {id,actual} = req.query
-    db.query(sql,[id,actual],(err,data)=>{
+    db.query(sql,[id,parseInt(actual)],(err,data)=>{
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });

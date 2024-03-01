@@ -90,7 +90,7 @@ window.setEncronometro = setEncronometro
 function moveCalls(move) {
     window.move(move)
     if (enCronometro) {
-        console.log(move);
+        window.gestionMovimientosCronometro(move)
     }
     // window.scrambleTime(move)
     // window.isSolved()
