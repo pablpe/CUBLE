@@ -51,7 +51,7 @@
     align-items: start;
     position: relative;
     flex-wrap: wrap;
-    width: 100%;
+    max-height: 70cqh;
     height: 100%;
     box-sizing: border-box;
     padding: 5%;
@@ -63,6 +63,24 @@
         width: 0;
     }
 }
+#contenedor-marcar-todos {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+#contenedor-marcar-todos > * {
+    cursor: pointer;
+    margin: 0;
+    height: fit-content;
+}
+
+#contenedor-marcar-todos input[type="checkbox"] {
+    vertical-align: middle; /* Alineación vertical */
+}
+
 .caso{
     position: relative;
     width: calc(25% - 5%);

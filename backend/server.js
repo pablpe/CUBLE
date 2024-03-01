@@ -12,7 +12,6 @@ const directorioImagenes = path.resolve(__dirname, '../frontend/public/imagenesP
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-
       cb(null, '../frontend/public/imagenesPerfil/')
     },
     filename: function(req, file, cb) {
