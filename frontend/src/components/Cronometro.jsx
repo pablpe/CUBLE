@@ -249,15 +249,33 @@ function TiempoYDatos({datosSolve}) {
 }
 
 function ContenedorMovimientosYScramble({datosSolve}) {
+    const [strScramble,setStrScramble] = useState("")
+    const [strSolucion, setStrSolucion] = useState("")
+    useEffect(() => {
+        if (datosSolve.solucion) {
+            let newStrScramble = '';
+            for (let i = 0; i < datosSolve.scramble.length; i++) {
+                newStrScramble += datosSolve.scramble[i];
+            }
+            setStrScramble(newStrScramble);
+        
+            let newStrSolucion = '';
+            for (let i = 0; i < datosSolve.solucion.length; i++) {
+                newStrSolucion += datosSolve.solucion[i];
+            }
+            setStrSolucion(newStrSolucion);
+        }
+    }, [datosSolve]);
+    
     return(
         <div id="contenedor-movimientos-scramble" onClick={(e)=>{e.stopPropagation()}}>
             <div className="dato">
                 <p className="nombre-dato">Scramble</p>
-                <p className="valor-dato">{datosSolve.scramble}</p>
+                <p className="valor-dato">{strScramble}</p>
             </div>
             <div className="dato">
                 <p className="nombre-dato">Movimientos</p>
-                <p className="valor-dato">{datosSolve.solucion}</p>
+                <p className="valor-dato">{strSolucion}</p>
             </div>
         </div>
     )
@@ -265,13 +283,20 @@ function ContenedorMovimientosYScramble({datosSolve}) {
 
 function ContenedorGrafico({datosSolve}) {
     useEffect(() => {
+        if(!Array.isArray(datosSolve.solucion) || !Array.isArray(datosSolve.scramble)) return
         const data = [
             { name: 'Cruz', score: 12 },
             { name: 'F2L', score: 80 },
             { name: 'OLL', score: 14 },
             { name: 'PLL', score: 18 }
         ];
-
+        console.log(datosSolve.scramble,datosSolve.solucion);
+        const infoSolve = window.analyzeROUX(datosSolve.scramble,datosSolve.solucion)
+        console.log(infoSolve);
+        data[0].score = infoSolve.cross
+        data[1].score = infoSolve.f2l
+        data[2].score = infoSolve.oll
+        data[3].score = infoSolve.pll
         const width = 900;
         const height = 450;
         const margin = { top: 50, bottom: 50, left: 50, right: 50 };
@@ -323,7 +348,7 @@ function ContenedorGrafico({datosSolve}) {
 
         svg.append("g").call(xAxis);
         svg.append("g").call(yAxis);
-    }, [])
+    }, [datosSolve])
     return (
         <div id="contenedor-grafico" onClick={(e) => { e.stopPropagation() }}>
             {/* No necesitas un div adicional para el gráfico */}

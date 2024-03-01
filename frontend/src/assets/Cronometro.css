@@ -221,12 +221,15 @@ body::-webkit-scrollbar{
     }
     & .valor-dato{
         text-align: center;
-        overflow: scroll;
+        overflow: auto; /* Cambiado a "hidden" para que no muestre barras de desplazamiento */
+        word-wrap: break-word; /* Esto hará que el texto haga salto de línea si es más ancho que el contenedor */
         min-height: 1rem;
         max-height: 60%;
         box-sizing: border-box;
         padding: 0 1rem;
+        width: 100%;
     }
+    
     & .valor-dato::-webkit-scrollbar{
         width: 0;
     }
