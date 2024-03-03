@@ -12,12 +12,30 @@ function setup() {
     }
   }
     //console.log("Solución :");
-    //console.log(analyzeROUX(["B'","F'","B","D'","U'","U'","F","L'","L'","U'"],["U'","U'","U'","R'","R'","B","D'","D'","R","R","L","L","F'","D","F","D'","D'","B","D","B'","D","D'","D'","F","D","F'","B'","D","B","B","D","B'","D'","D'","D'","B'","D","B","D'","D'","D'","B","B'","B","D'","D","D","B'","D","B","D","B'","D'","D'","D","B","D","B'","D","B","D'","D'","B'","B'","F","B'","F","U","B'","F","R'","R'","F'","B","U'","B'","F","B'","F","D'","B'","F","B'","F","U'","U'","B'","F","B'","F"]))
+    //moveArr(["B'","F'","B","D'","U'","U'","F","L'","L'","U'"])
+    //moveArrn(122,["U'","U'","U'","R'","R'","B","D'","D'","R","R","L","L","F'","D","F","D'","D'","B","D","B'","D","D'","D'","F","D","F'","B'","D","B","B","D","B'","D'","D'","D'","B'","D","B","D'","D'","D'","B","B'","B","D'","D","D","B'","D","B","D","B'","D'","D'","D","B","D","B'","D","B","D'","D'","B'","B'","F","B'","F","U","B'","F","R'","R'","F'","B","U'","B'","F","B'","F","D'","B'","F","B'","F","U'","U'","B'","F","B'","F"])
+    //console.log(analyzeCFOP(["B'","F'","B","D'","U'","U'","F","L'","L'","U'"],["U'","U'","U'","R'","R'","B","D'","D'","R","R","L","L","F'","D","F","D'","D'","B","D","B'","D","D'","D'","F","D","F'","B'","D","B","B","D","B'","D'","D'","D'","B'","D","B","D'","D'","D'","B","B'","B","D'","D","D","B'","D","B","D","B'","D'","D'","D","B","D","B'","D","B","D'","D'","B'","B'","F","B'","F","U","B'","F","R'","R'","F'","B","U'","B'","F","B'","F","D'","B'","F","B'","F","U'","U'","B'","F","B'","F"]))
   }
-  function moveArr(arrMoves) {
+   function moveArr(arrMoves) {
     for (let i = 0; i < arrMoves.length; i++) {
       moveAN(arrMoves[i])
     }
+  }
+  async function moveArrn(n,arrMoves) {
+    for (let i = 0; i < n; i++) {
+        if(arrMoves.length <= i) return
+        await espera300ms();
+        moveAN(arrMoves[i])
+    }
+  }
+  function espera300ms() {
+    return new Promise(resolve => {
+      setTimeout(function() {
+        // Este código se ejecutará después de 300ms
+        console.log("Han pasado 300ms");
+        resolve(); // Resuelve la promesa después de 300ms
+      }, 300); // El segundo argumento es el tiempo en milisegundos (en este caso, 300ms)
+    });
   }
 let colorines = ["white","yellow","green","blue","red","orange"]
 
@@ -177,10 +195,30 @@ class Cubito {
     }
   }
   draw() {
-    push();
-    translate(this.x * len - len, this.y * len - len, this.z * len - len);
-    this.drawFaces()
-    pop();
+    let pieces = [
+      { x: 0, y: 1, z: 0 },
+      { x: 0, y: 2, z: 0 },
+      { x: 0, y: 2, z: 1 },
+      { x: 0, y: 1, z: 2 },
+      { x: 0, y: 2, z: 2 },
+      { x: 2, y: 1, z: 0 },
+      { x: 2, y: 2, z: 0 },
+      { x: 2, y: 2, z: 1 },
+      { x: 2, y: 1, z: 2 },
+      { x: 2, y: 2, z: 2 }
+    ];
+    let valido = true
+    for (let index = 0; index < pieces.length; index++) {
+      if(this.x == pieces[index].x && this.y == pieces[index].y && this.z == pieces[index].z){
+        valido = true
+      }
+    }
+    if (valido) {
+      push();
+      translate(this.x * len - len, this.y * len - len, this.z * len - len);
+      this.drawFaces()
+      pop();
+    }
   }
   drawFaces() {
     for (let i = 0; i < this.vectorsColor.length; i++) {
@@ -300,14 +338,13 @@ window.moveAN = moveAN
 
 let bgColor = "steelblue"
 function draw() {
-//    background(bgColor);
-//    orbitControl();
-//    rotateX(-0.4)
-//    rotateY(-0.5)
-
-//   for (let i = 0; i < cubos.length; i++) {
-//     cubos[i].draw()
-//   }
+  //   background(bgColor);
+  //   orbitControl();
+  //   rotateX(-0.4)
+  //   rotateY(-0.5)
+  //  for (let i = 0; i < cubos.length; i++) {
+  //    cubos[i].draw()
+  //  }
 }
 
 function isSolved() {
@@ -408,14 +445,63 @@ function isSolved() {
             }
           }
       ]
+      let spins = [
+        {
+          spin : () => {
+            
+          },
+          respin : () => {
+            
+          }
+        },
+        {
+          spin : () => {
+            for (let i = 0; i < cubos.length; i++) {
+              cubos[i].rotateFF(true)
+            }
+          },
+          respin : () => {
+            for (let i = 0; i < cubos.length; i++) {
+              cubos[i].rotateFF(false)
+            }
+          }
+        },
+        {
+          spin : () => {
+            for (let i = 0; i < cubos.length; i++) {
+              cubos[i].rotateFF(false)
+            }
+          },
+          respin : () => {
+            for (let i = 0; i < cubos.length; i++) {
+              cubos[i].rotateFF(true)
+            }
+          }
+        },
+        {
+          spin : () => {
+            for (let i = 0; i < cubos.length; i++) {
+              cubos[i].rotateFF(true)
+              cubos[i].rotateFF(true)
+            }
+          },
+          respin : () => {
+            for (let i = 0; i < cubos.length; i++) {
+              cubos[i].rotateFF(false)
+              cubos[i].rotateFF(false)
+            }
+          }
+        }
+      ]
       function cross() {
-        moveAN(movements[moveIndex]);
         findCross();
-        if (infoSolve.cross !== 0 && moveIndex < movements.length) {moveIndex++;cross();};
+        if (infoSolve.cross == 0 && moveIndex < movements.length) {moveAN(movements[moveIndex++]);cross();};
       }
       function findCross() {
         for (let j = 0; j < rotations.length; j++) {
           rotations[j].rotate();
+          for (let k = 0; k < spins.length; k++) {
+            spins[k].spin()
           let pieces = [
             { x: 1, y: 2, z: 2 },
             { x: 1, y: 2, z: 0 },
@@ -433,21 +519,26 @@ function isSolved() {
               }
           }
           if (validCross) {
-              infoSolve.cross = moveIndex
+              infoSolve.cross = moveIndex + 1
               rotationPosition = rotations[j]
+              spins[k].respin()
               rotations[j].rerotate()
               return
           }
-          rotations[j].rerotate()
+          spins[k].respin()
           }
+          rotations[j].rerotate()
+        }
       }
       function f2l() {
-        moveAN(movements[moveIndex]);
         findF2l()
-        if (infoSolve.f2l !== 0 && moveIndex < movements.length) {moveIndex++;f2l();};
+        if (infoSolve.f2l == 0 && moveIndex < movements.length) {moveAN(movements[moveIndex++]);f2l();};
       }
       function findF2l() {
-        rotationPosition.rotate()
+        for (let j = 0; j < rotations.length; j++) {
+          rotations[j].rotate();
+          for (let k = 0; k < spins.length; k++) {
+            spins[k].spin()
         let pieces = [
           { x: 1, y: 2, z: 2 },
           { x: 1, y: 2, z: 0 },
@@ -477,19 +568,25 @@ function isSolved() {
             }
         }
         if (validF2l) {
-            infoSolve.f2l = moveIndex
-            rotationPosition.rerotate()
+            infoSolve.f2l = moveIndex - infoSolve.cross
+            rotations[j].rerotate()
+            spins[k].respin()
             return
         }
-        rotationPosition.rerotate()
+        spins[k].respin()
+          }
+          rotations[j].rerotate()
+        }
       }
       function oll() {
-        moveAN(movements[moveIndex]);
         findOll();
-        if (moveIndex < movements.length) {moveIndex++;oll()}
+        if (infoSolve.oll == 0 && moveIndex < movements.length) {moveAN(movements[moveIndex++]);oll()}
       }
       function findOll() {
-        rotationPosition.rotate()
+        for (let j = 0; j < rotations.length; j++) {
+          rotations[j].rotate();
+          for (let k = 0; k < spins.length; k++) {
+            spins[k].spin()
         let pieces = [
           { x: 0, y: 0, z: 0 },
           { x: 0, y: 0, z: 1 },
@@ -499,6 +596,15 @@ function isSolved() {
           { x: 2, y: 0, z: 0 },
           { x: 2, y: 0, z: 1 },
           { x: 2, y: 0, z: 2 },
+          
+          { x: 0, y: 2, z: 0 },
+          { x: 0, y: 2, z: 1 },
+          { x: 0, y: 2, z: 2 },
+          { x: 1, y: 2, z: 0 },
+          { x: 1, y: 2, z: 2 },
+          { x: 2, y: 2, z: 0 },
+          { x: 2, y: 2, z: 1 },
+          { x: 2, y: 2, z: 2 },
         ];
         let validOll = true
         let pieceCenterTop = cubos.find((cubo) => cubo.x === 1 && cubo.y === 0 && cubo.z === 1);
@@ -515,16 +621,22 @@ function isSolved() {
             }
         }
         if (validOll) {
-            infoSolve.oll = moveIndex
-            rotationPosition.rerotate()
+            infoSolve.oll = moveIndex - infoSolve.f2l - infoSolve.cross
+            spins[k].respin()
+            rotations[j].rerotate()
             return
         }
-        rotationPosition.rerotate()
+        spins[k].respin()
+          }
+          rotations[j].rerotate()
+        } 
       }
       cross()
       f2l()
       oll()
-      infoSolve.pll = movements.length-1
+      infoSolve.pll = movements.length - infoSolve.oll - infoSolve.f2l - infoSolve.cross
+      //console.log(movements.length, infoSolve.cross, infoSolve.f2l ,infoSolve.oll, infoSolve.pll, infoSolve.cross+infoSolve.f2l+infoSolve.oll+infoSolve.pll);
+      resetCube()
       return infoSolve
   }
 
@@ -663,8 +775,7 @@ function isSolved() {
       ]
       function fb() {
         findFb();
-        moveAN(movements[moveIndex]);
-        if (infoSolve.fb == 0 && moveIndex < movements.length) {moveIndex++;fb();}
+        if (infoSolve.fb == 0 && moveIndex < movements.length) {moveAN(movements[moveIndex++]);fb();}
       }
       function findFb() {
         for (let j = 0; j < rotations.length; j++) {
@@ -689,7 +800,7 @@ function isSolved() {
                 }
             }
             if (validFb) {
-                infoSolve.fb = moveIndex
+                infoSolve.fb = moveIndex + 1
                 rotationPosition = rotations[j]
                 spinPosition = spins[k]
                 spins[k].respin()
@@ -703,13 +814,19 @@ function isSolved() {
       }
       function sb() {
         findSb();
-        moveAN(movements[moveIndex]);
-        if (infoSolve.sb == 0 && moveIndex < movements.length) {moveIndex++;sb()}
+        if (infoSolve.sb == 0 && moveIndex < movements.length) {moveAN(movements[moveIndex++]);sb()}
       }
       function findSb() {
-        rotationPosition.rotate()
-        spinPosition.spin()
+        for (let j = 0; j < rotations.length; j++) {
+          rotations[j].rotate();
+          for (let k = 0; k < spins.length; k++) {
+            spins[k].spin()
         let pieces = [
+          { x: 0, y: 1, z: 0 },
+          { x: 0, y: 2, z: 0 },
+          { x: 0, y: 2, z: 1 },
+          { x: 0, y: 1, z: 2 },
+          { x: 0, y: 2, z: 2 },
           { x: 2, y: 1, z: 0 },
           { x: 2, y: 2, z: 0 },
           { x: 2, y: 2, z: 1 },
@@ -727,24 +844,34 @@ function isSolved() {
             }
         }
         if (validSb) {
-          infoSolve.sb = moveIndex
+          infoSolve.sb = moveIndex - infoSolve.fb 
+          spins[k].respin()
+          rotations[j].rerotate()
+          return
         }
-        spinPosition.respin()
-        rotationPosition.rerotate()
+        spins[k].respin()
+          }
+          rotations[j].rerotate()
+        }
       }
       function cmll() {
         findCMLL();
-        moveAN(movements[moveIndex]);
-        if (infoSolve.cmll == 0 && moveIndex < movements.length) {moveIndex++;cmll();}
+        if (infoSolve.cmll == 0 && moveIndex < movements.length) {moveAN(movements[moveIndex++]);cmll();}
       }
       function findCMLL() {
-        rotationPosition.rotate()
-        spinPosition.spin()
+        for (let j = 0; j < rotations.length; j++) {
+          rotations[j].rotate();
+          for (let k = 0; k < spins.length; k++) {
+            spins[k].spin()
         let pieces = [
           { x: 0, y: 0, z: 0 },
           { x: 0, y: 0, z: 2 },
           { x: 2, y: 0, z: 0 },
           { x: 2, y: 0, z: 2 },
+          { x: 0, y: 2, z: 0 },
+          { x: 0, y: 2, z: 2 },
+          { x: 2, y: 2, z: 0 },
+          { x: 2, y: 2, z: 2 },
         ];
   
         let validCmll = true
@@ -757,14 +884,32 @@ function isSolved() {
             }
         }
         if (validCmll) {
-          infoSolve.cmll = moveIndex
+          infoSolve.cmll = moveIndex - infoSolve.sb - infoSolve.fb 
+          spins[k].respin()
+          rotations[j].rerotate()
+          return
         }
-        spinPosition.respin()
-        rotationPosition.rerotate()
+        spins[k].respin()
+          }
+          rotations[j].rerotate()
+        }
       }
       fb()
       sb()
       cmll()
-      infoSolve.lse = movements.length-1
+      infoSolve.lse = movements.length  - infoSolve.cmll - infoSolve.sb - infoSolve.fb 
+      console.log(movements.length, infoSolve.fb, infoSolve.sb ,infoSolve.cmll, infoSolve.lse, infoSolve.fb+infoSolve.sb+infoSolve.cmll+infoSolve.lse);
+      resetCube()
       return infoSolve
+  }
+  function resetCube() {
+    let white = createVector(0,1,0)
+    let yellow = createVector(0,-1,0)
+    let green = createVector(0,0,1)
+    let blue = createVector(0,0,-1)
+    let red = createVector(1,0,0)
+    let orange = createVector(-1,0,0)
+    for (let index = 0; index < cubos.length; index++) {
+      cubos[index].vectorsColor = [white,yellow,green,blue,red,orange]
+    }
   }

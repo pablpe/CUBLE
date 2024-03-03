@@ -260,7 +260,7 @@ app.get("/getAmigosId",(req,res)=>{
 })
 
 app.get("/getPerfilID",(req,res)=>{
-    let sql = "SELECT usuario.imagen, usuario.nick, (SELECT solves.tiempo FROM solves WHERE solves.id_solve in (SELECT id_mejor_tiempo FROM perfil WHERE id_usuario = ?)) as mejor_tiempo,perfil.mejor_media, perfil.victorias, perfil.derrotas,(SELECT count(*) FROM solves WHERE tiempo <= (SELECT tiempo from solves where id_solve = id_mejor_tiempo) ) as rank_tiempo, (SELECT COUNT(*) FROM perfil where mejor_media <= (SELECT mejor_media FROM perfil WHERE id_usuario = ?)) as rank_media, (SELECT COUNT(*) FROM perfil where victorias >= (SELECT victorias FROM perfil WHERE id_usuario = ?)) as rank_victorias, (SELECT COUNT(*) FROM perfil where derrotas <= (SELECT derrotas FROM perfil WHERE id_usuario = ?)) as rank_derrotas FROM perfil,usuario WHERE usuario.id_usuario = perfil.id_usuario and perfil.id_usuario = ?;"
+    let sql = "SELECT usuario.imagen, usuario.nick, (SELECT tiempo FROM solves WHERE id_usuario = ? ORDER BY tiempo ASC LIMIT 1) as mejor_tiempo,perfil.mejor_media, perfil.victorias, perfil.derrotas,(SELECT count(*) FROM solves WHERE tiempo <= (SELECT tiempo from solves where id_solve = id_mejor_tiempo) ) as rank_tiempo, (SELECT COUNT(*) FROM perfil where mejor_media <= (SELECT mejor_media FROM perfil WHERE id_usuario = ?)) as rank_media, (SELECT COUNT(*) FROM perfil where victorias >= (SELECT victorias FROM perfil WHERE id_usuario = ?)) as rank_victorias, (SELECT COUNT(*) FROM perfil where derrotas <= (SELECT derrotas FROM perfil WHERE id_usuario = ?)) as rank_derrotas FROM perfil,usuario WHERE usuario.id_usuario = perfil.id_usuario and perfil.id_usuario = ?;"
     const { id } = req.query
     let values = [id,id,id,id,id]
     db.query(sql,values,(err,data)=>{
@@ -297,7 +297,7 @@ app.post("/actualizaDatoPerfil",(req,res)=>{
     })
 })
 app.get("/mejoresTiempos",(req,res)=>{
-    let sql = "SELECT usuario.id_usuario, usuario.nick, solves.tiempo FROM perfil JOIN usuario ON perfil.id_usuario = usuario.id_usuario JOIN solves on perfil.id_mejor_tiempo = solves.id_solve ORDER by solves.tiempo LIMIT 5"
+    let sql = "SELECT usuario.id_usuario, usuario.nick, solves.tiempo FROM usuario, solves WHERE usuario.id_usuario = solves.id_usuario ORDER by solves.tiempo LIMIT 5"
     db.query(sql,[],(err,data)=>{
         if (err) {
             console.error(err);
@@ -368,7 +368,7 @@ app.get("/getSolve", (req, res) => {
     });
 });
 app.post("/anadirSolve",(req,res)=>{
-    let sql = "INSERT INTO `solves`(`id_usuario`, `tiempo`, `scramble`, `slucion`, `n_movimientos`, `tps`) VALUES (?,?,?,?,?,?)"
+    let sql = "INSERT INTO `solves`(`id_usuario`, `tiempo`, `scramble`, `solucion`, `n_movimientos`, `tps`) VALUES (?,?,?,?,?,?)"
     let {id_usuario,tiempo,scramble,solucion,n_movimientos,tps} = req.body
     let values = [id_usuario,tiempo,scramble,solucion,n_movimientos,tps]
     db.query(sql,values,(err,data)=>{

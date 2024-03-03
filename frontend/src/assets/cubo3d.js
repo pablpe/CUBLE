@@ -191,9 +191,11 @@ class Cubito {
   }
   draw() {
     p.push();
-    p.translate(this.x * len - len, this.y * len - len, this.z * len - len);
-    this.drawFaces()
-    //box()
+    //if ((this.x = 2 && this.y == 2 && this.z == 0) || (this.x = 2 && this.y == 2 && this.z == 2)) {
+      p.translate(this.x * len - len, this.y * len - len, this.z * len - len);
+      this.drawFaces()
+      //box()
+    //}
     p.pop();
   }
   drawFaces() {

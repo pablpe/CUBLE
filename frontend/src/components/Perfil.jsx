@@ -178,6 +178,7 @@ function Perfil({ setPopUpActivo }) {
                             <button className="botonEditarPerfil" onClick={handleNickEdit}> Editar </button>
                         }
                         </div>
+                        
                     </div>
                 </div>
                 </div>}

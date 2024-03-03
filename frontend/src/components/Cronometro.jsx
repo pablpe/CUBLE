@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import "../assets/Cronometro.css"
 import * as d3 from "d3";
 import axios from 'axios';
+import useStore from "../stateManager";
 
 function Cronometro() {
     const [solveSeleccionado,setSolveSeleccionado] = useState(null)
@@ -28,17 +29,58 @@ function Cronometro() {
     const [inScrambleTime, setInScrambleTime] = useState(true);
     const [indexScramble, setIndexScramble] = useState(0)
     const [timeStarted, setTimeStarted] = useState(false)
+    const[scrambleFin, setScrambleFin] = useState(false)
     let [timeStart,setTimeStart] = useState(null)
 
     let movements = ["U","D","F","B","L","R"]
     let moveSpec = ["","'"]
-    function genScramble() { //version provisional, no tiene que devolver valores opuestos
-        let scr = []
-        for (let i = 0; i < 10; i++) {
-            scr.push(movements[Math.floor(Math.random() * movements.length)] + moveSpec[Math.floor(Math.random()*moveSpec.length)])
+    function genScramble() {
+        let scr = [];
+        let lastMove = "";
+        let consecutiveMoves = 0;
+    
+        for (let i = 0; i < 20; i++) {
+            let move = movements[Math.floor(Math.random() * movements.length)];
+            let spec = moveSpec[Math.floor(Math.random() * moveSpec.length)];
+            let currentMove = move + spec;
+    
+            // Verificar si el movimiento es opuesto al anterior
+            if (
+                (lastMove === "U" && move === "U") ||
+                (lastMove === "D" && move === "D") ||
+                (lastMove === "F" && move === "F") ||
+                (lastMove === "B" && move === "B") ||
+                (lastMove === "L" && move === "L") ||
+                (lastMove === "R" && move === "R")
+            ) {
+                // Cambiar el movimiento actual
+                move = movements[Math.floor(Math.random() * movements.length)];
+                spec = moveSpec[Math.floor(Math.random() * moveSpec.length)];
+                currentMove = move + spec;
+            }
+    
+            // Verificar si hay más de 3 movimientos consecutivos en la misma dirección
+            if (currentMove === lastMove) {
+                consecutiveMoves++;
+            } else {
+                consecutiveMoves = 0;
+            }
+    
+            if (consecutiveMoves >= 3) {
+                // Cambiar el movimiento actual si hay más de 3 movimientos consecutivos en la misma dirección
+                move = movements[Math.floor(Math.random() * movements.length)];
+                spec = moveSpec[Math.floor(Math.random() * moveSpec.length)];
+                currentMove = move + spec;
+                consecutiveMoves = 0;
+            }
+    
+            scr.push(currentMove);
+            lastMove = move;
         }
-        return scr
+        console.log(scr)
+        return scr;
     }
+    
     function getReverseMove(move) {
         if (move.includes("'")) {
             return move[0]
@@ -46,12 +88,18 @@ function Cronometro() {
             return `${move}'`
         }
     }
-    function gestionMovimientosCronometro(move) {
+    async function gestionMovimientosCronometro(move) {
         if(inScrambleTime){
             if (wrongMoves.length == 0) {
                 if (scramble.length == indexScramble + 1) { //ya está todo el scramble hecho
-                    setSolutionMoves([])
-                    setInScrambleTime(false)
+                    if(move === scramble[indexScramble]){
+                        setSolutionMoves([])
+                        setInScrambleTime(false)
+                        setScrambleFin(true)
+                    }else{
+                        setWrongMoves([...wrongMoves, move])
+                        //falta display wrong moves aqui
+                    }
                 }else{
                     if(move === scramble[indexScramble]){
                         setIndexScramble(indexScramble + 1)
@@ -74,7 +122,7 @@ function Cronometro() {
                 setTimeStarted(true)
             }
             setSolutionMoves([...solutionMoves,move])
-            if(window.isSolved()) showTime()
+            if(window.isSolved()) await showTime()
         }
     }
     window.gestionMovimientosCronometro = gestionMovimientosCronometro
@@ -87,9 +135,11 @@ function Cronometro() {
             setInScrambleTime(true)
             setTimeStarted(false)
             setIndexScramble(0)
+            setScrambleFin(false)
             //aqui faltaria un displayScramble
         }
     }
+    const {setArrNumMovimientos, setArrTps} = useStore()
     async function loadYUnloadTiempo(timeAct) { // id_usuario,tiempo,scramble,solucion,n_movimientos,tps
         let id = window.sessionStorage.getItem("id_usuario");
         let datosSolve = {
@@ -104,14 +154,17 @@ function Cronometro() {
         .then(res =>{
             axios.get("http://localhost:8081/getUltimoSolve?id="+id)
             .then(data => {
-                console.log(data.data[0])
+                //console.log(data.data[0])
                 setTiempos([data.data[0],...tiempos])
             })
         })
+        setArrNumMovimientos(solutionMoves.length)
+        setArrTps(solutionMoves.length / (Math.abs(timeAct.getTime() - timeStart.getTime())/1000))
     }
     useEffect(() => {
         setScramble(genScramble());
     }, []);
+    const {method, setMethod} = useStore()
     return (
         <div id="pantalla-cronometro">
             <div id="seccion-izquierda">
@@ -120,8 +173,16 @@ function Cronometro() {
                 <Tiempos setSolveSeleccionado={setSolveSeleccionado} tiempos={tiempos} setTiempos={setTiempos}/>
             </div>
             <div id="seccion-derecha">
-                <DisplayScramble scramble={scramble} wrongMoves={wrongMoves} indexScramble={indexScramble} timeStarted={timeStarted}/>
+                <DisplayScramble scramble={scramble} wrongMoves={wrongMoves} indexScramble={indexScramble} timeStarted={timeStarted} scrambleFin={scrambleFin}/>
                 <DatosSesion/>
+                <div id="contenedor-switch">
+                    <span className={"metodo " + (method === "roux" ? "seleccionado" : "")}>Roux</span>
+                    <label className="switch">
+                        <input type="checkbox" onInput={(e)=>{if(e.target.checked)setMethod("cfop"); else setMethod("roux");}}/>
+                        <span className="slider round"></span>
+                    </label>
+                    <span className={"metodo " + (method === "cfop" ? "seleccionado" : "")}>CFOP</span>
+                </div>
             </div>
             {solveSeleccionado && <PopUpTiempo solveSeleccionado={solveSeleccionado} setSolveSeleccionado={setSolveSeleccionado}/>}
         </div>
@@ -157,13 +218,13 @@ function Tiempos({ setSolveSeleccionado, tiempos, setTiempos }) {
         fetch("http://localhost:8081/solves?id=" + id + "&actual=0")
             .then(res => res.json())
             .then(data => {
-                setTiempos([...data]);
+                setTiempos([...data.reverse()]);
             });
     }, []);
 
     return (
         <div id="tiempos">
-            {tiempos.reverse().map((tmp, index) => (
+            {tiempos.map((tmp, index) => (
                 <Tiempo key={index} setSolveSeleccionado={setSolveSeleccionado} tiempo={tmp.tiempo} id_solve={tmp.id_solve}/>
             ))}
         </div>
@@ -179,12 +240,12 @@ function Tiempo({setSolveSeleccionado,tiempo,id_solve}) {
         </div>
     )
 }
-function DisplayScramble({scramble,wrongMoves,indexScramble,timeStarted}) {
+function DisplayScramble({scramble,wrongMoves,indexScramble,timeStarted,scrambleFin}) {
     
     return(
         <div id="displayScramble">
             {/* U2 L2 R2 U' L B2 D2 R D2 U2 R2 L U L2 F' D B' F' U2 */}
-            {!timeStarted &&  wrongMoves.length == 0 ? 
+            {!scrambleFin && !timeStarted &&  wrongMoves.length == 0 ? 
                 scramble.map((letra,index) =>{
                     return <span key={index} className={"letraScramble " + (indexScramble > index ? "resuelta" : "")}>{letra}</span>
                 })
@@ -193,19 +254,33 @@ function DisplayScramble({scramble,wrongMoves,indexScramble,timeStarted}) {
                     return <span key={index} className="letraScramble">{letra}</span>
                 })
             }
-            {
-                timeStarted && "hola"
-            }
+            {scrambleFin && !timeStarted && "Listo"}
+            {timeStarted && "Resolviendo . . ."}
         </div>
     )
 }
 function DatosSesion() {
+    const {arrNumMovimientos, arrTps} = useStore()
+    const [mediaMovimientos, setMediaMovimientos] = useState(0)
+    const [mediaTps, setMediaTps] = useState(0)
+    useEffect(()=>{
+        let sumMov = 0
+        for (let i = 0; i < arrNumMovimientos.length; i++) {
+            sumMov += arrNumMovimientos[i]
+        }
+        setMediaMovimientos(sumMov/arrNumMovimientos.length)
+        let sumTps = 0
+        for (let i = 0; i < arrTps.length; i++) {
+            sumTps += arrTps[i]
+        }
+        setMediaTps(sumTps/arrTps.length)
+    },[arrTps])
     return(
         <div id="contenedor-datos-sesion">
             <h1 id="titulo-datos-sesion">Datos de la sesión</h1>
             <div id="datos-sesion">
-                <span>media de movimientos : 58</span>
-                <span>media TPS : 3.32</span>
+                <span>media de movimientos : {mediaMovimientos || ""}</span>
+                <span>media TPS : {mediaTps.toFixed(2) || ""}</span>
             </div>
         </div>
     )
@@ -282,21 +357,24 @@ function ContenedorMovimientosYScramble({datosSolve}) {
 }
 
 function ContenedorGrafico({datosSolve}) {
+    const { method } = useStore(); // Usa useStore dentro del useEffect
     useEffect(() => {
+
+        //console.log(method);
         if(!Array.isArray(datosSolve.solucion) || !Array.isArray(datosSolve.scramble)) return
         const data = [
-            { name: 'Cruz', score: 12 },
-            { name: 'F2L', score: 80 },
-            { name: 'OLL', score: 14 },
-            { name: 'PLL', score: 18 }
+            { name: (method === "roux" ? "FB" : "CROSS"), score: 12 },
+            { name: (method === "roux" ? "SB" : "F2L"), score: 80 },
+            { name: (method === "roux" ? "CMLL" : "OLL"), score: 14 },
+            { name: (method === "roux" ? "LSE" : "PLL"), score: 18 }
         ];
-        console.log(datosSolve.scramble,datosSolve.solucion);
-        const infoSolve = window.analyzeROUX(datosSolve.scramble,datosSolve.solucion)
-        console.log(infoSolve);
-        data[0].score = infoSolve.cross
-        data[1].score = infoSolve.f2l
-        data[2].score = infoSolve.oll
-        data[3].score = infoSolve.pll
+        //console.log(datosSolve.scramble,datosSolve.solucion); window.analyzeROUX(datosSolve.scramble,datosSolve.solucion)
+        const infoSolve = (method === "roux" ? window.analyzeROUX(datosSolve.scramble,datosSolve.solucion) : window.analyzeCFOP(datosSolve.scramble,datosSolve.solucion))
+        //console.log(infoSolve);
+        data[0].score = (method === "roux" ? infoSolve.fb : infoSolve.cross)
+        data[1].score = (method === "roux" ? infoSolve.sb : infoSolve.f2l)
+        data[2].score = (method === "roux" ? infoSolve.cmll : infoSolve.oll)
+        data[3].score = (method === "roux" ? infoSolve.lse : infoSolve.pll)
         const width = 900;
         const height = 450;
         const margin = { top: 50, bottom: 50, left: 50, right: 50 };
