@@ -15,6 +15,7 @@ var BtCube = (function () {
             ]
             });
             var server = await device.gatt.connect();
+            window.resetCube()
             if (server.device.name.startsWith("G")) {
                 var cubeService = await server.getPrimaryService(GIIKER_SERVICE_UUID);
                 var cubeCharacteristic = await cubeService.getCharacteristic(GIIKER_CHARACTERISTIC_UUID);
@@ -78,19 +79,23 @@ var BtCube = (function () {
     };
 })();
 window.connect = BtCube.connect
-function saluda() {
-    console.log("hola");
-}
-window.saluda = saluda
 let enCronometro = false
 function setEncronometro(valor) {
     enCronometro = valor
 }
+let enPractica = false
+function setEnPractica(valor) {
+    enPractica = valor
+}
+window.setEnPractica = setEnPractica
 window.setEncronometro = setEncronometro
 function moveCalls(move) {
     window.move(move)
     if (enCronometro) {
         window.gestionMovimientosCronometro(move)
+    }
+    if (enPractica) {
+        window.movePr(move)
     }
     // window.scrambleTime(move)
     // window.isSolved()

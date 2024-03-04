@@ -109,6 +109,26 @@ app.post("/creaPerfil",(req,res)=>{
         return res.json(data);
     });
 })
+app.get("/getMejorMediaId", (req, res) => {
+    let sql = "SELECT mejor_media FROM perfil WHERE id_usuario = ?";
+    const { id } = req.query;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        return res.json(data);
+    });
+});
+app.post("/usarioModMedia", (req, res) => {
+    let sql = "UPDATE `perfil` SET mejor_media = ? WHERE `id_usuario` = ?"
+    let { media, id } = req.body
+    let values = [media, id]
+    db.query(sql, values, (err, data) => {
+        if (err) return res.status(500).send("Error al modificar la media")
+        return res.send("Imagen modificada")
+    })
+})
 app.post("/usarioModImg", (req, res) => {
     let sql = "UPDATE `usuario` SET `imagen`= ? WHERE `id_usuario` = ?"
     let { imagen, id } = req.body
@@ -327,9 +347,9 @@ app.get("/masVictorias",(req,res)=>{
     })
 })
 app.get("/solves",(req,res)=>{ // devuelve los 50 solves del usuario con ID, a partir de el registro numero ACTUAL 
-    let sql = "SELECT * FROM solves WHERE id_usuario = ? LIMIT ?,50"
+    let sql = "SELECT * FROM solves WHERE id_usuario = ?" // LIMIT ?,50
     const {id,actual} = req.query
-    db.query(sql,[id,parseInt(actual)],(err,data)=>{
+    db.query(sql,[id/*,parseInt(actual)*/],(err,data)=>{
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Internal Server Error' });

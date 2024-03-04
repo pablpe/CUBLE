@@ -16,7 +16,19 @@ p.setup = () => {
   
 
 }
-let colorines = ["white","yellow","green","blue","red","orange"]
+let colorines = [
+  "RGB(255, 255, 255)",    // blanco
+  "RGB(255, 204, 0)",      // amarillo pastel
+  "RGB(0, 255, 0)",        // verde más llamativo
+  "RGB(173, 216, 230)",    // azul cielo
+  "RGB(255, 105, 97)",     // rosa más rojo
+  "RGB(255, 140, 0)"       // naranja más llamativo
+];
+
+
+
+
+
 function setColorines() {
   function colorRGBAleatorio() {
     const r = Math.floor(Math.random() * 256); // Valor entre 0 y 255 para rojo

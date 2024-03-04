@@ -21,6 +21,7 @@ function setup() {
       moveAN(arrMoves[i])
     }
   }
+  window.moveArr = moveArr
   async function moveArrn(n,arrMoves) {
     for (let i = 0; i < n; i++) {
         if(arrMoves.length <= i) return
@@ -913,3 +914,4 @@ function isSolved() {
       cubos[index].vectorsColor = [white,yellow,green,blue,red,orange]
     }
   }
+  window.resetCube = resetCube

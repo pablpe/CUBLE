@@ -77,7 +77,6 @@ function Cronometro() {
             scr.push(currentMove);
             lastMove = move;
         }
-        console.log(scr)
         return scr;
     }
     
@@ -225,18 +224,38 @@ function Tiempos({ setSolveSeleccionado, tiempos, setTiempos }) {
     return (
         <div id="tiempos">
             {tiempos.map((tmp, index) => (
-                <Tiempo key={index} setSolveSeleccionado={setSolveSeleccionado} tiempo={tmp.tiempo} id_solve={tmp.id_solve}/>
+                <Tiempo key={index} index={index} setSolveSeleccionado={setSolveSeleccionado} tiempo={tmp.tiempo} id_solve={tmp.id_solve} tiempos={tiempos}/>
             ))}
         </div>
     );
 }
 
-function Tiempo({setSolveSeleccionado,tiempo,id_solve}) {
+function Tiempo({setSolveSeleccionado,tiempo,id_solve,index,tiempos}) {
+    const [media, setMedia] = useState(0);
+    useEffect(() => {
+        let id = window.sessionStorage.getItem("id_usuario");
+        if (index + 4 < tiempos.length) {
+            let sumatoria = 0;
+            for (let i = 0; i < 5; i++) {
+                sumatoria += tiempos[index + i].tiempo;
+            }
+            const nuevaMedia = sumatoria / 5;
+            setMedia(nuevaMedia);
+            axios.get("http://localhost:8081/getMejorMediaId?id="+id)
+            .then(mejorMedia => {
+                let mejMedia = mejorMedia.data[0].mejor_media
+                if (nuevaMedia < mejMedia || mejMedia == 0) {
+                    axios.post("http://localhost:8081/usarioModMedia",{id : id, media : nuevaMedia})
+                }
+            })
+        }
+    }, []);
+
     return(
         <div className="tiempo" onClick={()=>{setSolveSeleccionado(id_solve)}}>
             <i className="fa-solid fa-circle-info eliminar-tiempo" style={{color : "rgba(255,255,255,0.2)",scale : "1.7"}}></i>
             <span className="valor-tiempo">{tiempo ? tiempo : 'No disponible'}</span>
-            <span className="valor-media">17.5s</span>
+            <span className="valor-media">{media == 0 ? "" : media.toFixed(2) + "s"}</span>
         </div>
     )
 }
@@ -280,7 +299,7 @@ function DatosSesion() {
             <h1 id="titulo-datos-sesion">Datos de la sesión</h1>
             <div id="datos-sesion">
                 <span>media de movimientos : {mediaMovimientos || ""}</span>
-                <span>media TPS : {mediaTps.toFixed(2) || ""}</span>
+                <span>media TPS : {mediaTps ? mediaTps.toFixed(2) : ""}</span>
             </div>
         </div>
     )

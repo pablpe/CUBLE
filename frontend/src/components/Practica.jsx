@@ -5,9 +5,36 @@ function Practica() {
     useEffect(()=>{
         document.getElementById("cubo").style.left = "50%"
         document.getElementById("cubo").style.top = "120%"
+        window.setEnPractica(true)
         setTimeout(() => {
             document.getElementById("cubo").style.display = "none"
         }, 500);
+        return(()=>{
+            window.setEnPractica(false)
+            casoBase = {
+                Ulb: 'white',
+                Ub: 'white',
+                Urb: 'white',
+                Ul: 'white',
+                U: 'white',
+                Ur: 'white',
+                Ulf: 'white',
+                Uf: 'white',
+                Urf: 'white',
+                Bl: 'blue',
+                B: 'blue',
+                Br: 'blue',
+                Lb: 'orange',
+                L: 'orange',
+                Lf: 'orange',
+                Rb: 'red',
+                R: 'red',
+                Rf: 'red',
+                Fl: 'green',
+                F: 'green',
+                Fr: 'green'
+            }
+        })
     },[])
     const [casosActuales, setCasosActuales] = useState([])
     //useEffect(()=>{console.log(casosActuales)},[casosActuales])
@@ -27,6 +54,29 @@ function ContenedorAlgsets({casosActuales, setCasosActuales}){
         .then(res => res.json())
         .then(data => {setAlgset(data)})
         document.getElementById("marcarTodas").checked = false
+        casoBase = {
+            Ulb: 'white',
+            Ub: 'white',
+            Urb: 'white',
+            Ul: 'white',
+            U: 'white',
+            Ur: 'white',
+            Ulf: 'white',
+            Uf: 'white',
+            Urf: 'white',
+            Bl: 'blue',
+            B: 'blue',
+            Br: 'blue',
+            Lb: 'orange',
+            L: 'orange',
+            Lf: 'orange',
+            Rb: 'red',
+            R: 'red',
+            Rf: 'red',
+            Fl: 'green',
+            F: 'green',
+            Fr: 'green'
+        }
     },[algsetSeleccionado])
     useEffect(()=>{
         if(todosPulsados) setCasosActuales(algset)
@@ -55,9 +105,13 @@ function ContenedorAlgsets({casosActuales, setCasosActuales}){
 }
 
 function ContenedorCuboYTiempos({casosActuales, setCasosActuales}) {
+    const [cuboBas, setCuboBas] = useState(casoBase)
+    useEffect(()=>{
+        if(casosActuales.length > 0) setCuboBas(casosActuales[Math.floor(Math.random() * casosActuales.length)])
+    },[casosActuales])
     return(
         <div id="cubo-y-tiempos">
-            <div id="caso-actual"><Cubo2D caso={casoBase}/></div>
+            <div id="caso-actual"><Cubo2D caso={cuboBas}/></div>
             <div id="tiempo-actual">Tiempo : 2.75s</div>
             <div id="media-sesion">Media : 3.21s</div>
         </div>
@@ -88,6 +142,13 @@ let casoBase = {
 }
 
 function Cubo2D({caso}) {
+    useEffect(()=>{
+        
+        if (caso) {
+            //let movimientos = JSON.parse(caso.movimientos)
+            //console.log(movimientos)
+        }
+    },[caso])
     return (
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" style={{width : "100%",height : "100%"}} viewBox="-0.9 -0.9 1.8 1.8">
             <rect fill="transparent" x="-0.9" y="-0.9" width="1.8" height="1.8"></rect>
