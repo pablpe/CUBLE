@@ -246,7 +246,7 @@ body::-webkit-scrollbar{
     gap: 0.5rem;
     left: 50%;
     transform: translate(-50%);
-    top: 1rem;
+    top: 0.1rem;
 }
 .metodo{
     transition: 0.5s;

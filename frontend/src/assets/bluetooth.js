@@ -95,7 +95,7 @@ function moveCalls(move) {
         window.gestionMovimientosCronometro(move)
     }
     if (enPractica) {
-        window.movePr(move)
+        window.movimientoPractica(move)
     }
     // window.scrambleTime(move)
     // window.isSolved()

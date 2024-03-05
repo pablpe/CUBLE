@@ -419,7 +419,7 @@ p.draw = () => {
 }
 
 
-function isSolved() {
+function isSolvedC() {
   let cubeRef = cubos[0]
   let allMatch = true
   for (let i = 0; i < cubos.length; i++) {
@@ -431,7 +431,7 @@ function isSolved() {
   }
   return allMatch
 }
-window.isSolved = isSolved
+window.isSolvedC = isSolvedC
 
 
 

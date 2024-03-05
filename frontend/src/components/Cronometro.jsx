@@ -121,7 +121,7 @@ function Cronometro() {
                 setTimeStarted(true)
             }
             setSolutionMoves([...solutionMoves,move])
-            if(window.isSolved()) await showTime()
+            if(window.isSolvedC()) await showTime()
         }
     }
     window.gestionMovimientosCronometro = gestionMovimientosCronometro

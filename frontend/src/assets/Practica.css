@@ -6,6 +6,16 @@
     display: grid;
     grid-template-columns: 40% 60%;
     position: relative;
+    &.enResolucion > * > *:not(#caso-actual){
+        filter: blur(10px);
+    };
+    &.enResolucion > * > #caso-actual{
+        scale: 1.1;
+        position: absolute;
+    };
+}
+#caso-actual{
+    transition: scale 0.2s;
 }
 #contenedor-opciones-algset{
     position: relative;

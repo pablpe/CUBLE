@@ -362,6 +362,7 @@ function isSolved() {
     console.log("resuelto");
   }
 }
+window.isSolved = isSolved
 
     window.analyzeCFOP = analyzeCFOP
   function analyzeCFOP(scramble,movements) {

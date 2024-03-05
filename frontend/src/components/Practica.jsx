@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react"
 import "../assets/Practica.css"
+import useStore from "../stateManager";
 function Practica() {
     useEffect(()=>{
         document.getElementById("cubo").style.left = "50%"
@@ -39,7 +40,7 @@ function Practica() {
     const [casosActuales, setCasosActuales] = useState([])
     //useEffect(()=>{console.log(casosActuales)},[casosActuales])
     return (
-        <div id="pantalla-practica">
+        <div id="pantalla-practica" className={""/*"enResolucion"*/}>
             <ContenedorAlgsets casosActuales={casosActuales} setCasosActuales={setCasosActuales}/>
             <ContenedorCuboYTiempos casosActuales={casosActuales} setCasosActuales={setCasosActuales}/>
         </div>
@@ -104,11 +105,67 @@ function ContenedorAlgsets({casosActuales, setCasosActuales}){
     )
 }
 
-function ContenedorCuboYTiempos({casosActuales, setCasosActuales}) {
+function ContenedorCuboYTiempos({casosActuales}) {
+    const {resolviendoAlg, setResolviendoAlg,inicioTiempoAlg, tiemposAlg,setinicioTiempoAlg, setTiemposAlg} = useStore()
     const [cuboBas, setCuboBas] = useState(casoBase)
+    function movimientoPractica(move) {
+        window.moveAN(move)
+        if(!resolviendoAlg){
+            setResolviendoAlg(true)
+            setinicioTiempoAlg(new Date())
+            document.getElementById("pantalla-practica").classList.add("enResolucion")
+        }
+        if(window.isSolved()){
+            setResolviendoAlg(false)
+            document.getElementById("pantalla-practica").classList.remove("enResolucion")
+            // mostrar tiempo
+            let tiempoAct = (Math.abs(new Date().getTime() - inicioTiempoAlg.getTime())/1000)
+            document.getElementById("tiempo-actual").innerHTML = `Tiempo : ${tiempoAct}s`
+            // recalcular media
+            let arrTiempos = [...tiemposAlg, tiempoAct]
+            setTiemposAlg(arrTiempos)
+            let sumaTiempos = 0
+            for (let i = 0; i < arrTiempos.length; i++) {
+                sumaTiempos += arrTiempos[i]
+            }
+            document.getElementById("media-sesion").innerHTML = `Media : ${sumaTiempos/arrTiempos.length}`
+        }
+    }
+    window.movimientoPractica = movimientoPractica
+    useEffect(()=>{
+        function handleKeyDown(e){
+            if (e.code === "Space") {
+                //  resetear cubo
+                window.resetCube()
+                // rehacer scramble
+                let movimientos = JSON.parse(cuboBas.movimientos).reverse()
+                window.moveArr(movimientos)
+                // tiempo a 0
+                setResolviendoAlg(false)
+            }
+            if(e.code === "Enter"){
+                // resolver cubo
+                window.resetCube()
+                // tiempo a 0
+                setResolviendoAlg(false)
+                // nuevo alg random
+                let nuevoAlg = casosActuales[Math.floor(Math.random() * casosActuales.length)]
+                setCuboBas(nuevoAlg)
+                // rehacer scramble
+                let movimientos = JSON.parse(nuevoAlg.movimientos).reverse()
+                window.moveArr(movimientos)
+                
+            }
+        }
+        document.addEventListener("keydown",handleKeyDown)
+        return(()=>{
+            document.removeEventListener("keydown",handleKeyDown)
+        })
+    },[cuboBas])
     useEffect(()=>{
         if(casosActuales.length > 0) setCuboBas(casosActuales[Math.floor(Math.random() * casosActuales.length)])
     },[casosActuales])
+
     return(
         <div id="cubo-y-tiempos">
             <div id="caso-actual"><Cubo2D caso={cuboBas}/></div>
@@ -150,7 +207,7 @@ function Cubo2D({caso}) {
         }
     },[caso])
     return (
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" style={{width : "100%",height : "100%"}} viewBox="-0.9 -0.9 1.8 1.8">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" style={{width : "100%",height : "100%"}} viewBox="-0.9 -0.9 1.8 1.8" id="caso-principal">
             <rect fill="transparent" x="-0.9" y="-0.9" width="1.8" height="1.8"></rect>
             <g style={{ strokeWidth: 0.1, strokeLinejoin: "round", opacity: 1 }}>
                 <polygon fill="#000000" stroke="#000000" points="-0.522222222222,-0.522222222222 0.522222222222,-0.522222222222 0.522222222222,0.522222222222 -0.522222222222,0.522222222222"></polygon>
