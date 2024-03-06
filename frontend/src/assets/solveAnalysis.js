@@ -2,7 +2,7 @@
 let cubos = [];
 let len = 50;
 function setup() {
-  //createCanvas(windowWidth, windowHeight, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   let a = 0
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
@@ -18,6 +18,7 @@ function setup() {
   }
    function moveArr(arrMoves) {
     for (let i = 0; i < arrMoves.length; i++) {
+      console.log(arrMoves[i])
       moveAN(arrMoves[i])
     }
   }
@@ -339,13 +340,13 @@ window.moveAN = moveAN
 
 let bgColor = "steelblue"
 function draw() {
-  //   background(bgColor);
-  //   orbitControl();
-  //   rotateX(-0.4)
-  //   rotateY(-0.5)
-  //  for (let i = 0; i < cubos.length; i++) {
-  //    cubos[i].draw()
-  //  }
+   background(bgColor);
+   orbitControl();
+   rotateX(-0.4)
+   rotateY(-0.5)
+  for (let i = 0; i < cubos.length; i++) {
+    cubos[i].draw()
+  }
 }
 
 function isSolved() {

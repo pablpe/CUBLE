@@ -54,6 +54,7 @@ function ContenedorAlgsets({casosActuales, setCasosActuales}){
         fetch("http://localhost:8081/algset?alg_set="+algsetSeleccionado)
         .then(res => res.json())
         .then(data => {setAlgset(data)})
+        setCasosActuales([])
         document.getElementById("marcarTodas").checked = false
         casoBase = {
             Ulb: 'white',
@@ -116,6 +117,7 @@ function ContenedorCuboYTiempos({casosActuales}) {
             document.getElementById("pantalla-practica").classList.add("enResolucion")
         }
         if(window.isSolved()){
+            console.log("tooma")
             setResolviendoAlg(false)
             document.getElementById("pantalla-practica").classList.remove("enResolucion")
             // mostrar tiempo
@@ -133,6 +135,15 @@ function ContenedorCuboYTiempos({casosActuales}) {
     }
     window.movimientoPractica = movimientoPractica
     useEffect(()=>{
+        if(cuboBas.movimientos){
+            window.resetCube()
+        // rehacer scramble
+        let movimientos = JSON.parse(cuboBas.movimientos).reverse()
+        window.moveArr(movimientos)
+        // tiempo a 0
+        setResolviendoAlg(false)
+        document.getElementById("pantalla-practica").classList.remove("enResolucion")
+        }
         function handleKeyDown(e){
             if (e.code === "Space") {
                 //  resetear cubo
@@ -142,6 +153,7 @@ function ContenedorCuboYTiempos({casosActuales}) {
                 window.moveArr(movimientos)
                 // tiempo a 0
                 setResolviendoAlg(false)
+                document.getElementById("pantalla-practica").classList.remove("enResolucion")
             }
             if(e.code === "Enter"){
                 // resolver cubo
@@ -161,7 +173,7 @@ function ContenedorCuboYTiempos({casosActuales}) {
         return(()=>{
             document.removeEventListener("keydown",handleKeyDown)
         })
-    },[cuboBas])
+    },[cuboBas,casosActuales])
     useEffect(()=>{
         if(casosActuales.length > 0) setCuboBas(casosActuales[Math.floor(Math.random() * casosActuales.length)])
     },[casosActuales])

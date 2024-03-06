@@ -4,9 +4,9 @@
     font-family: "Plus Jakarta Sans";
     user-select: none;
 }
-main{
+/* main{
     display: none;
-}
+} */
 #pantalla-principal{
     width: 100vw;
     height: 100vh;
