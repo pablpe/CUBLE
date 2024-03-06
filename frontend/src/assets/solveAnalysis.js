@@ -15,6 +15,7 @@ function setup() {
     //moveArr(["B'","F'","B","D'","U'","U'","F","L'","L'","U'"])
     //moveArrn(122,["U'","U'","U'","R'","R'","B","D'","D'","R","R","L","L","F'","D","F","D'","D'","B","D","B'","D","D'","D'","F","D","F'","B'","D","B","B","D","B'","D'","D'","D'","B'","D","B","D'","D'","D'","B","B'","B","D'","D","D","B'","D","B","D","B'","D'","D'","D","B","D","B'","D","B","D'","D'","B'","B'","F","B'","F","U","B'","F","R'","R'","F'","B","U'","B'","F","B'","F","D'","B'","F","B'","F","U'","U'","B'","F","B'","F"])
     //console.log(analyzeCFOP(["B'","F'","B","D'","U'","U'","F","L'","L'","U'"],["U'","U'","U'","R'","R'","B","D'","D'","R","R","L","L","F'","D","F","D'","D'","B","D","B'","D","D'","D'","F","D","F'","B'","D","B","B","D","B'","D'","D'","D'","B'","D","B","D'","D'","D'","B","B'","B","D'","D","D","B'","D","B","D","B'","D'","D'","D","B","D","B'","D","B","D'","D'","B'","B'","F","B'","F","U","B'","F","R'","R'","F'","B","U'","B'","F","B'","F","D'","B'","F","B'","F","U'","U'","B'","F","B'","F"]))
+    
   }
    function moveArr(arrMoves) {
     for (let i = 0; i < arrMoves.length; i++) {
@@ -23,11 +24,25 @@ function setup() {
     }
   }
   window.moveArr = moveArr
+
+  function moveOpp(key) {
+    if(key.includes("'")) moveAN(key[0])
+    else moveAN(key+"'")
+  }
+   function moveArrOpp(arrMoves) {
+    for (let i = 0; i < arrMoves.length; i++) {
+      console.log(arrMoves[i])
+      moveOpp(arrMoves[i])
+    }
+  }
+  window.moveArrOpp = moveArrOpp
+  
   async function moveArrn(n,arrMoves) {
     for (let i = 0; i < n; i++) {
         if(arrMoves.length <= i) return
         await espera300ms();
         moveAN(arrMoves[i])
+        console.log(arrMoves[i]);
     }
   }
   function espera300ms() {
@@ -36,7 +51,7 @@ function setup() {
         // Este código se ejecutará después de 300ms
         console.log("Han pasado 300ms");
         resolve(); // Resuelve la promesa después de 300ms
-      }, 300); // El segundo argumento es el tiempo en milisegundos (en este caso, 300ms)
+      }, 1500); // El segundo argumento es el tiempo en milisegundos (en este caso, 300ms)
     });
   }
 let colorines = ["white","yellow","green","blue","red","orange"]
@@ -266,6 +281,30 @@ class Cubito {
 function moveAN(key) {
   //console.log(key);
   // Rotate R
+  if (key === 'y') {
+    for (let i = 0; i < cubos.length; i++) {
+      cubos[i].rotateUU(true)
+    }
+  }
+  else if(key === "y'"){
+    for (let i = 0; i < cubos.length; i++) {
+      cubos[i].rotateUU(false)
+    }
+    return
+  }
+  //rotate r
+  if (key === 'r') {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].x == 2 || cubos[i].x == 1)cubos[i].rotateRR(false)
+    }
+  }
+  else if(key === "r'"){
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].x == 2 || cubos[i].x == 1)cubos[i].rotateRR(true)
+    }
+    return
+  }
+  // Rotate R
   if (key === 'R') {
     for (let i = 0; i < cubos.length; i++) {
       if(cubos[i].x == 2)cubos[i].rotateRR(false)
@@ -274,6 +313,17 @@ function moveAN(key) {
   else if(key === "R'"){
     for (let i = 0; i < cubos.length; i++) {
       if(cubos[i].x == 2)cubos[i].rotateRR(true)
+    }
+    return
+  }
+  if (key === 'x') {
+    for (let i = 0; i < cubos.length; i++) {
+      cubos[i].rotateRR(false)
+    }
+  }
+  else if(key === "x'"){
+    for (let i = 0; i < cubos.length; i++) {
+      cubos[i].rotateRR(true)
     }
     return
   }
@@ -290,6 +340,18 @@ function moveAN(key) {
     }
     return
   }
+  else if (key === 'l') {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].x == 0 || cubos[i].x == 1)cubos[i].rotateLL(false)
+    }
+    return
+  }
+  else if (key === "l'") {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].x == 0 || cubos[i].x == 1)cubos[i].rotateLL(true)
+    }
+    return
+  }
   // Rotate U
   else if (key === 'U') {
     for (let i = 0; i < cubos.length; i++) {
@@ -301,6 +363,16 @@ function moveAN(key) {
       if(cubos[i].y == 0)cubos[i].rotateUU(false)
     }
   }
+  else if (key === 'u') {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].y == 0 || cubos[i].y == 1)cubos[i].rotateUU(true)
+    }
+  }
+  else if (key === "u'") {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].y == 0 || cubos[i].y == 1)cubos[i].rotateUU(false)
+    }
+  }
   // Rotate D
   else if (key === 'D') {
     for (let i = 0; i < cubos.length; i++) {
@@ -310,6 +382,16 @@ function moveAN(key) {
   else if (key === "D'") {
     for (let i = 0; i < cubos.length; i++) {
       if(cubos[i].y == 2)cubos[i].rotateDD(false)
+    }
+  }
+  else if (key === 'd') {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].y == 2 || cubos[i].y == 1)cubos[i].rotateDD(true)
+    }
+  }
+  else if (key === "d'") {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].y == 2 || cubos[i].y == 1)cubos[i].rotateDD(false)
     }
   }
   // Rotate B
@@ -332,6 +414,16 @@ function moveAN(key) {
   else if (key === "F'") {
     for (let i = 0; i < cubos.length; i++) {
       if(cubos[i].z == 2)cubos[i].rotateFF(true)
+    }
+  }
+  else if (key === 'f') {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].z == 2 || cubos[i].z == 1)cubos[i].rotateFF(false)
+    }
+  }
+  else if (key === "f'") {
+    for (let i = 0; i < cubos.length; i++) {
+      if(cubos[i].z == 2 || cubos[i].z == 1)cubos[i].rotateFF(true)
     }
   }
 }
@@ -912,8 +1004,33 @@ window.isSolved = isSolved
     let blue = createVector(0,0,-1)
     let red = createVector(1,0,0)
     let orange = createVector(-1,0,0)
+    
     for (let index = 0; index < cubos.length; index++) {
       cubos[index].vectorsColor = [white,yellow,green,blue,red,orange]
     }
   }
+  // function resetCube() {
+  //   // let white = createVector(0,1,0)
+  //   // let yellow = createVector(0,-1,0)
+  //   // let green = createVector(0,0,1)
+  //   // let blue = createVector(0,0,-1)
+  //   // let red = createVector(1,0,0)
+  //   // let orange = createVector(-1,0,0)
+  //   let pos = [
+  //     [0,1,0],
+  //     [0,-1,0],
+  //     [0,0,1],
+  //     [0,0,-1],
+  //     [1,0,0],
+  //     [-1,0,0]
+  //   ]
+  //   for (let index = 0; index < cubos.length; index++) {
+  //     //cubos[index].vectorsColor = [white,yellow,green,blue,red,orange]
+  //     for (let i = 0; i <= 5; i++) {
+  //       cubos[index].vectorsColor[i].x = pos[i][0]
+  //       cubos[index].vectorsColor[i].y = pos[i][1]
+  //       cubos[index].vectorsColor[i].z = pos[i][2]
+  //     }
+  //   }
+  // }
   window.resetCube = resetCube

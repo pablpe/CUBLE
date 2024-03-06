@@ -139,7 +139,8 @@ function ContenedorCuboYTiempos({casosActuales}) {
             window.resetCube()
         // rehacer scramble
         let movimientos = JSON.parse(cuboBas.movimientos).reverse()
-        window.moveArr(movimientos)
+        window.moveArrOpp(movimientos)
+        console.log(cuboBas.id_alg);
         // tiempo a 0
         setResolviendoAlg(false)
         document.getElementById("pantalla-practica").classList.remove("enResolucion")
@@ -150,7 +151,7 @@ function ContenedorCuboYTiempos({casosActuales}) {
                 window.resetCube()
                 // rehacer scramble
                 let movimientos = JSON.parse(cuboBas.movimientos).reverse()
-                window.moveArr(movimientos)
+                window.moveArrOpp(movimientos)
                 // tiempo a 0
                 setResolviendoAlg(false)
                 document.getElementById("pantalla-practica").classList.remove("enResolucion")
@@ -165,7 +166,7 @@ function ContenedorCuboYTiempos({casosActuales}) {
                 setCuboBas(nuevoAlg)
                 // rehacer scramble
                 let movimientos = JSON.parse(nuevoAlg.movimientos).reverse()
-                window.moveArr(movimientos)
+                window.moveArrOpp(movimientos)
                 
             }
         }
