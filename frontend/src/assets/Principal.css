@@ -4,9 +4,9 @@
     font-family: "Plus Jakarta Sans";
     user-select: none;
 }
-/* main{
+main{
     display: none;
-} */
+}
 #pantalla-principal{
     width: 100vw;
     height: 100vh;
@@ -111,6 +111,25 @@
 }
 #defaultCanvas0{
     background-color: rgba(red, green, blue, 0) !important;
+}
+.error-cronometro{
+    background-image: radial-gradient(#040007,#04000700, transparent);
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 6rem;
+    font-size: 3rem;
+    color: red;
+    z-index: 100;
+    animation: moverErrorCronometro 1s forwards linear;
+}
+@keyframes moverErrorCronometro {
+    0% {
+    }100% {
+        transform: translateY(-120%);
+        opacity: 0;
+    }
 }
 
 /* records */

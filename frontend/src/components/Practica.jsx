@@ -3,60 +3,9 @@ import { useEffect, useState } from "react"
 import "../assets/Practica.css"
 import useStore from "../stateManager";
 function Practica() {
-    useEffect(()=>{
-        document.getElementById("cubo").style.left = "50%"
-        document.getElementById("cubo").style.top = "120%"
-        window.setEnPractica(true)
-        setTimeout(() => {
-            document.getElementById("cubo").style.display = "none"
-        }, 500);
-        return(()=>{
-            window.setEnPractica(false)
-            casoBase = {
-                Ulb: 'white',
-                Ub: 'white',
-                Urb: 'white',
-                Ul: 'white',
-                U: 'white',
-                Ur: 'white',
-                Ulf: 'white',
-                Uf: 'white',
-                Urf: 'white',
-                Bl: 'blue',
-                B: 'blue',
-                Br: 'blue',
-                Lb: 'orange',
-                L: 'orange',
-                Lf: 'orange',
-                Rb: 'red',
-                R: 'red',
-                Rf: 'red',
-                Fl: 'green',
-                F: 'green',
-                Fr: 'green'
-            }
-        })
-    },[])
-    const [casosActuales, setCasosActuales] = useState([])
-    //useEffect(()=>{console.log(casosActuales)},[casosActuales])
-    return (
-        <div id="pantalla-practica" className={""/*"enResolucion"*/}>
-            <ContenedorAlgsets casosActuales={casosActuales} setCasosActuales={setCasosActuales}/>
-            <ContenedorCuboYTiempos casosActuales={casosActuales} setCasosActuales={setCasosActuales}/>
-        </div>
-    )
-}
-function ContenedorAlgsets({casosActuales, setCasosActuales}){
-    const [algsetSeleccionado,setAlgsetSeleccionado] = useState("CMLL")
-    const [algset,setAlgset] = useState([])
-    const [todosPulsados,setTodosPulsados] = useState(false)
-    useEffect(()=>{
-        fetch("http://localhost:8081/algset?alg_set="+algsetSeleccionado)
-        .then(res => res.json())
-        .then(data => {setAlgset(data)})
-        setCasosActuales([])
-        document.getElementById("marcarTodas").checked = false
-        casoBase = {
+    const [cuboBas, setCuboBas] = useState(casoBase)
+    function resetCuboBas() {
+        setCuboBas({
             Ulb: 'white',
             Ub: 'white',
             Urb: 'white',
@@ -78,7 +27,43 @@ function ContenedorAlgsets({casosActuales, setCasosActuales}){
             Fl: 'green',
             F: 'green',
             Fr: 'green'
-        }
+        })
+    }
+    useEffect(()=>{
+        document.getElementById("cubo").style.left = "50%"
+        document.getElementById("cubo").style.top = "120%"
+        window.setEnPractica(true)
+        setTimeout(() => {
+            document.getElementById("cubo").style.display = "none"
+        }, 500);
+        return(()=>{
+            window.setEnPractica(false)
+            resetCuboBas()
+        })
+    },[])
+    const [casosActuales, setCasosActuales] = useState([])
+    useEffect(()=>{
+        if(casosActuales.length == 0)resetCuboBas()
+    },[casosActuales])
+    //useEffect(()=>{console.log(casosActuales)},[casosActuales])
+    return (
+        <div id="pantalla-practica" className={""/*"enResolucion"*/}>
+            <ContenedorAlgsets casosActuales={casosActuales} setCasosActuales={setCasosActuales} resetCuboBas={resetCuboBas}/>
+            <ContenedorCuboYTiempos casosActuales={casosActuales} setCasosActuales={setCasosActuales} cuboBas={cuboBas} setCuboBas={setCuboBas}/>
+        </div>
+    )
+}
+function ContenedorAlgsets({casosActuales, setCasosActuales, resetCuboBas}){
+    const [algsetSeleccionado,setAlgsetSeleccionado] = useState("CMLL")
+    const [algset,setAlgset] = useState([])
+    const [todosPulsados,setTodosPulsados] = useState(false)
+    useEffect(()=>{
+        fetch("http://localhost:8081/algset?alg_set="+algsetSeleccionado)
+        .then(res => res.json())
+        .then(data => {setAlgset(data)})
+        setCasosActuales([])
+        document.getElementById("marcarTodas").checked = false
+        resetCuboBas()
     },[algsetSeleccionado])
     useEffect(()=>{
         if(todosPulsados) setCasosActuales(algset)
@@ -106,9 +91,8 @@ function ContenedorAlgsets({casosActuales, setCasosActuales}){
     )
 }
 
-function ContenedorCuboYTiempos({casosActuales}) {
+function ContenedorCuboYTiempos({casosActuales, cuboBas, setCuboBas}) {
     const {resolviendoAlg, setResolviendoAlg,inicioTiempoAlg, tiemposAlg,setinicioTiempoAlg, setTiemposAlg} = useStore()
-    const [cuboBas, setCuboBas] = useState(casoBase)
     function movimientoPractica(move) {
         window.moveAN(move)
         if(!resolviendoAlg){
@@ -117,20 +101,29 @@ function ContenedorCuboYTiempos({casosActuales}) {
             document.getElementById("pantalla-practica").classList.add("enResolucion")
         }
         if(window.isSolved()){
-            console.log("tooma")
             setResolviendoAlg(false)
             document.getElementById("pantalla-practica").classList.remove("enResolucion")
             // mostrar tiempo
             let tiempoAct = (Math.abs(new Date().getTime() - inicioTiempoAlg.getTime())/1000)
-            document.getElementById("tiempo-actual").innerHTML = `Tiempo : ${tiempoAct}s`
+            document.getElementById("tiempo-actual").innerHTML = `Tiempo : ${tiempoAct.toFixed(3)}s`
             // recalcular media
             let arrTiempos = [...tiemposAlg, tiempoAct]
-            setTiemposAlg(arrTiempos)
+            setTiemposAlg(tiempoAct)
             let sumaTiempos = 0
             for (let i = 0; i < arrTiempos.length; i++) {
                 sumaTiempos += arrTiempos[i]
             }
-            document.getElementById("media-sesion").innerHTML = `Media : ${sumaTiempos/arrTiempos.length}`
+            document.getElementById("media-sesion").innerHTML = `Media : ${(sumaTiempos/arrTiempos.length).toFixed(3)}`
+            // resolver cubo
+            window.resetCube()
+            // tiempo a 0
+            setResolviendoAlg(false)
+            // nuevo alg random
+            let nuevoAlg = casosActuales[Math.floor(Math.random() * casosActuales.length)]
+            setCuboBas(nuevoAlg)
+            // rehacer scramble
+            let movimientos = JSON.parse(nuevoAlg.movimientos).reverse()
+            window.moveArrOpp(movimientos)
         }
     }
     window.movimientoPractica = movimientoPractica
@@ -140,7 +133,6 @@ function ContenedorCuboYTiempos({casosActuales}) {
         // rehacer scramble
         let movimientos = JSON.parse(cuboBas.movimientos).reverse()
         window.moveArrOpp(movimientos)
-        console.log(cuboBas.id_alg);
         // tiempo a 0
         setResolviendoAlg(false)
         document.getElementById("pantalla-practica").classList.remove("enResolucion")

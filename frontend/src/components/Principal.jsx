@@ -11,6 +11,13 @@ import { Link } from "react-router-dom"
 function Principal() {
     const [ultimoHover, setUltimoHover] = useState("")
     const [popUpActivo,setPopUpActivo] = useState("")
+    const [errorNoResuelto, setErrorNoResuelto] = useState(false)
+    function mostrarErrorNoResuelto() {
+        setErrorNoResuelto(true)
+        setTimeout(() => {
+            setErrorNoResuelto(false)
+        }, 1000);
+    }
     useEffect(()=>{
         document.getElementById("cubo").style.display = "block"
         document.getElementById("cubo").style.left = "50%"
@@ -21,12 +28,13 @@ function Principal() {
             <Nav setPopUpActivo={setPopUpActivo}/>
             <div id="burbuja" onClick={()=>{window.setColorines();}}></div>
             <BotonPractica ultimoHover={ultimoHover} setUltimoHover={setUltimoHover}/>
-            <BotonCronometro ultimoHover={ultimoHover} setUltimoHover={setUltimoHover}/>
+            <BotonCronometro ultimoHover={ultimoHover} setUltimoHover={setUltimoHover} mostrarErrorNoResuelto={mostrarErrorNoResuelto}/>
             <Boton1vs1 ultimoHover={ultimoHover} setUltimoHover={setUltimoHover}/>
             {popUpActivo === "misRecords" ? <MisRecords setPopUpActivo={setPopUpActivo}/> : ""}
             {popUpActivo === "perfil" ? <Perfil setPopUpActivo={setPopUpActivo}/> : ""}
             {popUpActivo === "amigos" ? <Amigos setPopUpActivo={setPopUpActivo}/> :  ""}
             {popUpActivo === "rankings" ? <Rankings setPopUpActivo={setPopUpActivo}/> :  ""}
+            {errorNoResuelto && <div className="error-cronometro">Cubo no resuelto</div>}
         </div>
     )
 }
@@ -76,7 +84,7 @@ function BotonPractica({ultimoHover, setUltimoHover}) {
     )
 }
 
-function BotonCronometro({ultimoHover, setUltimoHover}) {
+function BotonCronometro({ultimoHover, setUltimoHover, mostrarErrorNoResuelto}) {
     return(
         <Link to={"/cronometro"} id="boton-cronometro" className="boton-modo" onMouseEnter={()=>{
             let burbuja = document.getElementById("burbuja")
@@ -86,7 +94,8 @@ function BotonCronometro({ultimoHover, setUltimoHover}) {
             else burbuja.style.transform = "rotateZ(15deg)"
             setUltimoHover("cronometro")
             }} 
-            onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}>
+            onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}
+            onClick={(e) => {if(!window.isSolvedC()) {e.preventDefault(); mostrarErrorNoResuelto()}}}>
             Cronómetro
         </Link>
     )

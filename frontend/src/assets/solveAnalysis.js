@@ -19,7 +19,6 @@ function setup() {
   }
    function moveArr(arrMoves) {
     for (let i = 0; i < arrMoves.length; i++) {
-      console.log(arrMoves[i])
       moveAN(arrMoves[i])
     }
   }
@@ -31,7 +30,6 @@ function setup() {
   }
    function moveArrOpp(arrMoves) {
     for (let i = 0; i < arrMoves.length; i++) {
-      console.log(arrMoves[i])
       moveOpp(arrMoves[i])
     }
   }
@@ -451,9 +449,7 @@ function isSolved() {
       break;
     }
   }
-  if (allMatch) {
-    console.log("resuelto");
-  }
+  return allMatch
 }
 window.isSolved = isSolved
 
