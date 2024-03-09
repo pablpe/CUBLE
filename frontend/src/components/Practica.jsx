@@ -4,6 +4,7 @@ import "../assets/Practica.css"
 import useStore from "../stateManager";
 function Practica() {
     const [cuboBas, setCuboBas] = useState(casoBase)
+    const [algsetSeleccionado,setAlgsetSeleccionado] = useState("CMLL")
     function resetCuboBas() {
         setCuboBas({
             Ulb: 'white',
@@ -48,13 +49,12 @@ function Practica() {
     //useEffect(()=>{console.log(casosActuales)},[casosActuales])
     return (
         <div id="pantalla-practica" className={""/*"enResolucion"*/}>
-            <ContenedorAlgsets casosActuales={casosActuales} setCasosActuales={setCasosActuales} resetCuboBas={resetCuboBas}/>
-            <ContenedorCuboYTiempos casosActuales={casosActuales} setCasosActuales={setCasosActuales} cuboBas={cuboBas} setCuboBas={setCuboBas}/>
+            <ContenedorAlgsets casosActuales={casosActuales} setCasosActuales={setCasosActuales} resetCuboBas={resetCuboBas} algsetSeleccionado={algsetSeleccionado} setAlgsetSeleccionado={setAlgsetSeleccionado}/>
+            <ContenedorCuboYTiempos casosActuales={casosActuales} setCasosActuales={setCasosActuales} cuboBas={cuboBas} setCuboBas={setCuboBas} algsetSeleccionado={algsetSeleccionado}/>
         </div>
     )
 }
-function ContenedorAlgsets({casosActuales, setCasosActuales, resetCuboBas}){
-    const [algsetSeleccionado,setAlgsetSeleccionado] = useState("CMLL")
+function ContenedorAlgsets({casosActuales, setCasosActuales, resetCuboBas , algsetSeleccionado, setAlgsetSeleccionado}){
     const [algset,setAlgset] = useState([])
     const [todosPulsados,setTodosPulsados] = useState(false)
     useEffect(()=>{
@@ -91,7 +91,7 @@ function ContenedorAlgsets({casosActuales, setCasosActuales, resetCuboBas}){
     )
 }
 
-function ContenedorCuboYTiempos({casosActuales, cuboBas, setCuboBas}) {
+function ContenedorCuboYTiempos({casosActuales, cuboBas, setCuboBas, algsetSeleccionado}) {
     const {resolviendoAlg, setResolviendoAlg,inicioTiempoAlg, tiemposAlg,setinicioTiempoAlg, setTiemposAlg} = useStore()
     function movimientoPractica(move) {
         window.moveAN(move)
@@ -100,7 +100,7 @@ function ContenedorCuboYTiempos({casosActuales, cuboBas, setCuboBas}) {
             setinicioTiempoAlg(new Date())
             document.getElementById("pantalla-practica").classList.add("enResolucion")
         }
-        if(window.isSolved()){
+        if(window.isSolved(algsetSeleccionado)){
             setResolviendoAlg(false)
             document.getElementById("pantalla-practica").classList.remove("enResolucion")
             // mostrar tiempo
