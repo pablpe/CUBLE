@@ -112,7 +112,7 @@ function Boton1vs1({ultimoHover, setUltimoHover}) {
             }} 
             onMouseLeave={()=>{document.getElementById("burbuja").classList.toggle("activo")}}
             onClick={window.connect}>
-            1 <span style={{fontSize : "15px"}}>vs</span> 1
+            Conectar cubo
         </Link>
     )
 }

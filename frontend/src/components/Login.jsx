@@ -52,7 +52,7 @@ function FormRegistro({ setEnlogin }) {
                     return response.json();
                 })
                 .then(data => {
-                    if (data.length > 0 || document.getElementById("inputCorreo").value.length == 0) resolve(true)
+                    if (data.length > 0 || document.getElementById("inputCorreo").value.length == 0) {alert("mail usado por otro usuario");resolve(true)}
                     else {resolve(false)}
                 })
                 .catch(error => console.error('Error:', error));
@@ -78,15 +78,13 @@ function FormRegistro({ setEnlogin }) {
                     return response.json();
                 })
                 .then(data => {
-                    if (data.length > 0 || document.getElementById("inputNick").value.length == 0) resolve(true)
+                    if (data.length > 0 || document.getElementById("inputNick").value.length == 0) {alert("nick usado por otro usuario");resolve(true)}
                     else {resolve(false)}
                 })
                 .catch(error => console.error('Error:', error));
         })
     }
-    function inputsValidos() {
-        return true
-    }
+    
     async function datosEnSessionStorage(nick) {
         let b = "http://localhost:8081/getUsuarioNick?nick="+nick
         fetch(b)
@@ -251,3 +249,43 @@ function FormLogin({ setEnlogin }) {
     )
 }
 
+
+function inputsValidos() {
+    const datos = {
+        nombre: document.getElementById("inputNombre").value,
+        apellido1: document.getElementById("inputApellido1").value,
+        apellido2: document.getElementById("inputApellido2").value,
+        email: document.getElementById("inputCorreo").value,
+        contrasena: document.getElementById("inputPwd").value
+    }
+    if (!nombreValido(datos.nombre)) {
+        alert("nombre incorrecto")
+        return false
+    }
+    if (!nombreValido(datos.apellido1)) {
+        alert("apellido1 incorrecto")
+        return false
+    }
+    if (!nombreValido(datos.apellido2)) {
+        alert("apellido2 incorrecto")
+        return false
+    }
+    if (!emailCorrecto(datos.email)) {
+        alert("email incorrecto")
+        return false
+    }
+    
+    if (datos.contrasena.length == 0) {
+        alert("contraseña incorrecta")
+        return false
+    }
+    return true
+}
+function emailCorrecto(mail) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(mail);
+}
+function nombreValido(str) {
+    const regex = /^[A-Za-z]+$/;
+    return regex.test(str);
+}

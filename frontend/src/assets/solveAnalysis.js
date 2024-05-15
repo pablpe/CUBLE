@@ -469,6 +469,16 @@ function isSolved(algset) {
       }
     }
   }
+  if (algset === "") {
+    for (let i = 0; i < cubos.length; i++) {
+      //if (i == 4 || i == 10 || i == 12 || i == 13 || i == 14 || i == 16 || i == 22) continue
+      if (!cubeRef.vectorsColor[0].equals(cubos[i].vectorsColor[0]) || !cubeRef.vectorsColor[2].equals(cubos[i].vectorsColor[2])) { //!cubesInSamePosition(cubeRef,cubos[i])
+        allMatch = false;
+        break;
+      }
+    }
+  }
+
   return allMatch
 }
 window.isSolved = isSolved

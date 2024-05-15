@@ -96,35 +96,37 @@ function MejoresMedias({mejoresMedias}) {
 function MasVictorias({masVictorias}) {
     return(
         <div className="contenedor-rankings" onClick={(e)=>{e.stopPropagation()}}>
-                <h1 className="tituloRanking">Mas Victorias</h1>
-                {masVictorias.length > 0 && <div className="contenedor-personas-ranking">
-                <div className="persona-ranking primero">
-                    <h1 className="puesto-ranking">#1</h1>
-                    <p className="nombre-ranking">{masVictorias[0].nick}</p>
-                    <h1 className="valor-ranking">{masVictorias[0].victorias}</h1>
-                </div>
-                <div className="persona-ranking segundo">
-                    <h1 className="puesto-ranking">#2</h1>
-                    <p className="nombre-ranking">{masVictorias[1].nick}</p>
-                    <h1 className="valor-ranking">{masVictorias[1].victorias}</h1>
-                </div>
-                <div className="persona-ranking tercero">
-                    <h1 className="puesto-ranking">#3</h1>
-                    <p className="nombre-ranking">{masVictorias[2].nick}</p>
-                    <h1 className="valor-ranking">{masVictorias[2].victorias}</h1>
-                </div>
-                <div className="persona-ranking cuartoquinto">
-                    <h1 className="puesto-ranking">#4</h1>
-                    <p className="nombre-ranking">{masVictorias[3].nick}</p>
-                    <h1 className="valor-ranking">{masVictorias[3].victorias}</h1>
-                </div>
-                <div className="persona-ranking cuartoquinto">
-                    <h1 className="puesto-ranking">#5</h1>
-                    <p className="nombre-ranking">{masVictorias[4].nick}</p>
-                    <h1 className="valor-ranking">{masVictorias[4].victorias}</h1>
-                </div>
-                </div>}
+            <h1 className="tituloRanking">Mas Victorias</h1>
+            {/* {masVictorias.length > 0 && <div className="contenedor-personas-ranking">
+            <div className="persona-ranking primero">
+                <h1 className="puesto-ranking">#1</h1>
+                <p className="nombre-ranking">{masVictorias[0].nick}</p>
+                <h1 className="valor-ranking">{masVictorias[0].victorias}</h1>
             </div>
+            <div className="persona-ranking segundo">
+                <h1 className="puesto-ranking">#2</h1>
+                <p className="nombre-ranking">{masVictorias[1].nick}</p>
+                <h1 className="valor-ranking">{masVictorias[1].victorias}</h1>
+            </div>
+            <div className="persona-ranking tercero">
+                <h1 className="puesto-ranking">#3</h1>
+                <p className="nombre-ranking">{masVictorias[2].nick}</p>
+                <h1 className="valor-ranking">{masVictorias[2].victorias}</h1>
+            </div>
+            <div className="persona-ranking cuartoquinto">
+                <h1 className="puesto-ranking">#4</h1>
+                <p className="nombre-ranking">{masVictorias[3].nick}</p>
+                <h1 className="valor-ranking">{masVictorias[3].victorias}</h1>
+            </div>
+            <div className="persona-ranking cuartoquinto">
+                <h1 className="puesto-ranking">#5</h1>
+                <p className="nombre-ranking">{masVictorias[4].nick}</p>
+                <h1 className="valor-ranking">{masVictorias[4].victorias}</h1>
+            </div>
+            </div>
+            } */}
+            <h1 id="proximamente">PROXIMAMENTE</h1>
+        </div>
     )
 }
 export default Rankings

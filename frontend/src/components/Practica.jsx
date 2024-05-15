@@ -100,7 +100,8 @@ function ContenedorCuboYTiempos({casosActuales, cuboBas, setCuboBas, algsetSelec
             setinicioTiempoAlg(new Date())
             document.getElementById("pantalla-practica").classList.add("enResolucion")
         }
-        if(window.isSolved(algsetSeleccionado)){
+        if(window.isSolved("")){ //if(window.isSolved(algsetSeleccionado)){
+            console.log("hop")
             setResolviendoAlg(false)
             document.getElementById("pantalla-practica").classList.remove("enResolucion")
             // mostrar tiempo
@@ -174,8 +175,8 @@ function ContenedorCuboYTiempos({casosActuales, cuboBas, setCuboBas, algsetSelec
     return(
         <div id="cubo-y-tiempos">
             <div id="caso-actual"><Cubo2D caso={cuboBas}/></div>
-            <div id="tiempo-actual">Tiempo : 2.75s</div>
-            <div id="media-sesion">Media : 3.21s</div>
+            <div id="tiempo-actual">Tiempo : </div>
+            <div id="media-sesion">Media : </div>
         </div>
     )
 }

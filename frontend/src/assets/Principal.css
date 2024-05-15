@@ -105,6 +105,7 @@ main{
     left: calc(50% - 150px);
     border-radius: 50%;
     transition: border-radius 0.35s;
+    transition-timing-function: cubic-bezier(.36,1.95,.77,.48);
 }
 #burbuja.activo{
     border-radius: 70% 30% 50% 50% / 50% 30% 70% 50%;
@@ -418,6 +419,12 @@ main{
 }
 
 /* rankings */
+#proximamente{
+    width: 100cqh;
+    text-align: center;
+    transform: rotateZ(-45deg);
+    margin-top: 10rem;
+}
 .contenedor-rankings{
     height: 82.3%;
     width: 28.47%;
