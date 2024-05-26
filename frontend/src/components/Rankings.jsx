@@ -21,7 +21,7 @@ function Rankings({setPopUpActivo}) {
         <div className="fondo-popup" onClick={()=>{setPopUpActivo("");}}>
             <MejoresTiempos mejoresTiempos={mejoresTiempos}/>
             <MejoresMedias mejoresMedias={mejoresMedias}/>
-            <MasVictorias masVictorias={masVictorias}/>
+            {/* <MasVictorias masVictorias={masVictorias}/> */}
         </div>
     )
 }

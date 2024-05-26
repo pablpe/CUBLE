@@ -36,7 +36,7 @@ function MisRecords({setPopUpActivo}) {
                             {datosUsuario.mejor_media == 0 ? "?" : datosUsuario.mejor_media + "s"}
                         </p>
                     </div>
-                    <div className="stat">
+                    {/* <div className="stat">
                         <div className="contTituloRango">
                             <h2 className="titulo">Victorias</h2>
                             <span className="rango">#{datosUsuario.rank_victorias + 1}</span>
@@ -48,12 +48,12 @@ function MisRecords({setPopUpActivo}) {
                     <div className="stat">
                         <div className="contTituloRango">
                             <h2 className="titulo">Derrotas</h2>
-                            {/* <span className="rango">#{datosUsuario.rank_derrotas}</span> */}
+                            <span className="rango">#{datosUsuario.rank_derrotas}</span> //esta linea estaba comentada
                         </div>
                         <p className="valor">
                             {datosUsuario.derrotas}
                         </p>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>}

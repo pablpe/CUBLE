@@ -56,7 +56,7 @@ function Perfil({id_perfil}) {
                             {datosPerfil.mejor_media == 0 ? "?" : datosPerfil.mejor_media + "s"}
                         </p>
                     </div>
-                    <div className="stat">
+                    {/* <div className="stat">
                         <div className="contTituloRango">
                             <h2 className="titulo">Victorias</h2>
                             <span className="rango">#{datosPerfil.rank_victorias + 1}</span>
@@ -68,12 +68,12 @@ function Perfil({id_perfil}) {
                     <div className="stat">
                         <div className="contTituloRango">
                             <h2 className="titulo">Derrotas</h2>
-                            {/* <span className="rango">#{datosPerfil.rank_derrotas}</span> */}
+                            <span className="rango">#{datosPerfil.rank_derrotas}</span> // esta linea estaba comentada
                         </div>
                         <p className="valor">
                             {datosPerfil.derrotas}
                         </p>
-                    </div>
+                    </div> */}
                 </div>
             </div>}
         </>
